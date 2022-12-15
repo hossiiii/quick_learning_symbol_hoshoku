@@ -3,7 +3,7 @@
 <p><a href="https://learn.ja.symbol-community.com/05_mosaic.html" target="_blank">5.モザイク・速習Symbol</a></p>
 
 # 環境構築
-F12コンソールに以下順番に入力していく
+別ウィンドウで開いているF12コンソールに以下順番に入力していく
 ### 1.Symbol SDKの読み込み
 ```js
 (script = document.createElement("script")).src = "https://xembook.github.io/nem2-browserify/symbol-sdk-pack-2.0.3.js";
