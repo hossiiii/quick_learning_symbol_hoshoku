@@ -1,5 +1,5 @@
 # 準備
-以下リンクを開き、F12からコンソールを表示させる
+以下リンクを別ウィンドウで開き、F12からコンソールを表示させる
 <p><a href="https://learn.ja.symbol-community.com/05_mosaic.html" target="_blank">5.モザイク・速習Symbol</a></p>
 
 # 環境構築
