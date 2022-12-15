@@ -1,8 +1,6 @@
 # 準備
 以下リンクを開き、F12からコンソールを表示させる
-
-[5.モザイク・速習Symbol](https://learn.ja.symbol-community.com/05_mosaic.html)
-
+<p><a href="https://learn.ja.symbol-community.com/05_mosaic.html" target="_blank">5.モザイク・速習Symbol</a></p>
 
 # 環境構築
 F12コンソールに以下順番に入力していく
