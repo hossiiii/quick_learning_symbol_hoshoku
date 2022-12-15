@@ -115,7 +115,6 @@ mosaicDefTx = sym.MosaicDefinitionTransaction.create(
     sym.UInt64.fromUint(0), //duration:有効期限0にして無期限にする
     networkType
 );
-nftTxList.push(mosaicDefTx.toAggregate(alice.publicAccount)) //トランザクション配列に追加
 mosaicChangeTx = sym.MosaicSupplyChangeTransaction.create(
     undefined,
     mosaicDefTx.mosaicId,
@@ -123,6 +122,7 @@ mosaicChangeTx = sym.MosaicSupplyChangeTransaction.create(
     sym.UInt64.fromUint(1), //数量を1に（供給量変更も不可なので世界に１枚になる）
     networkType
 );
+nftTxList.push(mosaicDefTx.toAggregate(alice.publicAccount)) //トランザクション配列に追加
 nftTxList.push(mosaicChangeTx.toAggregate(alice.publicAccount)) //トランザクション配列に追加
 aggregateTx = sym.AggregateTransaction.createComplete(
     sym.Deadline.create(epochAdjustment),
