@@ -1,13 +1,19 @@
-//===================== 準備 ===================== 
+# 準備
 以下リンクを開き、F12からコンソールを表示させる
-https://learn.ja.symbol-community.com/05_mosaic.html
 
-//===================== 環境構築 ===================== 
-//1.Symbol SDKの読み込み
+[5.モザイク・速習Symbol](https://learn.ja.symbol-community.com/05_mosaic.html)
+
+
+# 環境構築
+F12コンソールに以下順番に入力していく
+### 1.Symbol SDKの読み込み
+```js
 (script = document.createElement("script")).src = "https://xembook.github.io/nem2-browserify/symbol-sdk-pack-2.0.3.js";
 document.getElementsByTagName("head")[0].appendChild(script);
 
-//2.Symbol用の共通設定
+```
+### 2.Symbol用の共通設定
+```js
 NODE = 'https://sym-test-04.opening-line.jp:3001';
 sym = require("/node_modules/symbol-sdk");
 repo = new sym.RepositoryFactoryHttp(NODE);
@@ -34,8 +40,9 @@ getMosaicInfo = async function(userAddress) { // モザイク情報を参照す�
    console.log("id:" + mosaic.id.toHex() + " amount:" + displayAmount + " addressHeight:" + mosaicInfo.startHeight.compact() + " ownerAddress: " + mosaicInfo.ownerAddress.address);
  });
 };
-
-//3.Aliceアカウント,Alice公開鍵クラス,Aliceアドレスクラスの作成
+```
+### 3.Aliceアカウント,Alice公開鍵クラス,Aliceアドレスクラスの作成
+```js
 alice = sym.Account.generateNewAccount(networkType);
 alicePublicAccount = sym.PublicAccount.createFromPublicKey(
   alice.publicKey,
@@ -46,28 +53,34 @@ aliceAddress = sym.Address.createFromRawAddress(
   alice.address.plain()
 );
 console.log(aliceAddress);
-
-//4.Aliceアカウントへ300XYMを補充（手数料に必要）
+```
+### 4.Aliceアカウントへ300XYMを補充（手数料に必要）
+```js
 `https://testnet.symbol.tools/?amount=300&recipient=${aliceAddress.plain()}` //以下リンクをクリックしてCLAIM！を実行
-
-//5.AliceアカウントのXYM量確認
+```
+### 5.AliceアカウントのXYM量確認
+```js
 `https://testnet.symbol.fyi/accounts/${aliceAddress.plain()}` //以下リンクをクリックして300XYMが入金されているか確認
-
-//6.所有モザイク確認
+```
+### 6.所有モザイク確認
+```js
 await getMosaicInfo(aliceAddress);
-
-//===================== フルオンチェーンNFT作成 ===================== 
-//11.フルオンチェーンNFT用の画像をBase64化
+```
+# 環境構築
+速習Symbol5章を進める
+# フルオンチェーンNFT作成
+### 11.フルオンチェーンNFT用の画像をBase64化
+```js
 `https://rakko.tools/tools/72/` // 長辺が200ピクセル（100KB）以下のNFTにしても良い画像を準備して以下リンクから画像をBase64化する（著作権にお気をつけ下さい）
-
-//12.Base64の分割
+```
+### 12.Base64の分割
+```js
 bigdata = 'base64text'; //ここをBase64化したテキストに置き換えて実行
 let payloads = [];
 for (let i = 0; i < bigdata.length / 1023; i++) { //1023byteで文字列を分割
     payloads.push(bigdata.substr(i * 1023, 1023));
 }
-//分割した文字列でトランザクションを生成
-nftTxList = []
+nftTxList = []//分割した文字列でトランザクションを生成
 payloads.forEach(function(value) {nftTxList.push(
     sym.TransferTransaction.create(
     undefined, //Deadline
@@ -78,8 +91,9 @@ payloads.forEach(function(value) {nftTxList.push(
 ).toAggregate(alice.publicAccount)
 )})
 console.log(nftTxList);
-
-//13.フルオンチェーンNFTの作成
+```
+### 13.フルオンチェーンNFTの作成
+```js
 supplyMutable = false; //供給量変更の可否
 transferable = true; //第三者への譲渡可否
 restrictable = false; //制限設定の可否
@@ -110,15 +124,18 @@ aggregateTx = sym.AggregateTransaction.createComplete(
 ).setMaxFeeForAggregate(100, 0);
 signedNftTx = alice.sign(aggregateTx,generationHash);
 await txRepo.announce(signedNftTx).toPromise();
-
-//14.トランザクションの確認（フルオンチェーンNFT作成確認）
+```
+### 14.トランザクションの確認（フルオンチェーンNFT作成確認）
+```js
 nftTxInfo = await txRepo.getTransaction(signedNftTx.hash,sym.TransactionGroup.Confirmed).toPromise();
 console.log(nftTxInfo); 
-
-//15.所有Mosaicの確認
+```
+### 15.所有Mosaicの確認
+```js
 await getMosaicInfo(aliceAddress);
-
-//16.NFTの送付
+```
+### 16.NFTの送付
+```js
 transferTx = sym.TransferTransaction.create(
     sym.Deadline.create(epochAdjustment), //Deadline:有効期限
     sym.Address.createFromRawAddress("TC5MWZUCDS5JD7FMA3K4A5OIGN2J7MPHEJOOLKI"), //講師のAddress
@@ -133,15 +150,18 @@ transferTx = sym.TransferTransaction.create(
 ).setMaxFee(100); //手数料
 signedTransferTx = alice.sign(transferTx,generationHash);
 await txRepo.announce(signedTransferTx).toPromise();
-
-//17.トランザクションの確認（Transfer確認）
+```
+### 17.トランザクションの確認（Transfer確認）
+```js
 transferTxInfo = await txRepo.getTransaction(signedTransferTx.hash,sym.TransactionGroup.Confirmed).toPromise();
 console.log(transferTxInfo); 
-
-//18.講師から返信用のフルオンチェーンFTを受信する
+```
+### 18.講師から返信用のフルオンチェーンFTを受信する
+```js
 await getMosaicInfo(aliceAddress); //受信後に実行すると、モザイクが増えている
-
-//19.受信したフルオンチェーンFTのデコード
+```
+### 19.受信したフルオンチェーンFTのデコード
+```js
 base64Text = ""
 blockHeight = "addressHeight"  //ここにデコードしたいモザイクの作成時ブロック高（addressHeight）を入力する
 address = sym.Address.createFromRawAddress("ownerAddress")  //ここにデコードしたいモザイクの作成者アドレス（ownerAddress）を入力する
@@ -158,15 +178,18 @@ receiveTxInfo.forEach((transactions) => {
     });         
   });
 });
-
-//20.デコードしたBase64の表示
+```
+### 20.デコードしたBase64の表示
+```js
 console.log(base64Text)
-
-//21.Base64から画像に変換
+```
+### 21.Base64から画像に変換
+```js
 `https://rakko.tools/tools/71/`
-
-//===================== オンチェーンアンケート ===================== 
-//101.オンチェーンでアンケートの回答
+```
+# オンチェーンアンケート
+### 101.オンチェーンでアンケートの回答
+```js
 tx = sym.TransferTransaction.create(
     sym.Deadline.create(epochAdjustment),
     sym.Address.createFromRawAddress("TC5MWZUCDS5JD7FMA3K4A5OIGN2J7MPHEJOOLKI"), 
@@ -182,6 +205,8 @@ tx = sym.TransferTransaction.create(
 ).setMaxFee(100); //手数料
 signedTx = alice.sign(tx, generationHash);
 await txRepo.announce(signedTx).toPromise();
-
-//102.こちらからみなさんの回答を誰もがオンチェーンで見る事ができます。
+```
+### 102.こちらからみなさんの回答を誰もがオンチェーンで見る事ができます。
+```js
 `https://testnet.symbol.fyi/accounts/TC5MWZUCDS5JD7FMA3K4A5OIGN2J7MPHEJOOLKI`
+```
