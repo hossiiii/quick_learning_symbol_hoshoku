@@ -34,8 +34,13 @@ getMosaicInfo = async function(userAddress) { // モザイク情報を参照す�
    supplyMutable = mosaicInfo.flags.supplyMutable; //供給量変更の可否
    transferable = mosaicInfo.flags.transferable; //第三者への譲渡可否
    if (divisibility > 0) {
-   displayAmount =
-     mosaicAmount.slice(0, mosaicAmount.length - divisibility) +  "." + mosaicAmount.slice(-divisibility);
+   	if(mosaicAmount / 10**divisibility >= 1 ){
+     displayAmount =
+       mosaicAmount.slice(0, mosaicAmount.length - divisibility) +  "." + mosaicAmount.slice(-divisibility);		
+   	} else{
+     displayAmount =
+       "0." + "0".repeat(divisibility-mosaicAmount.slice(-divisibility).length) + mosaicAmount.slice(-divisibility);	   		
+   	}
  } else {
    displayAmount = mosaicAmount;
  }
