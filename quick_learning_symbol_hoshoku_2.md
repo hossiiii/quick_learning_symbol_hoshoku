@@ -73,7 +73,7 @@ console.log(aliceAddress);
 ```js
 await getMosaicInfo(aliceAddress);
 ```
-# 環境構築
+# 速習Symbol5章
 速習Symbol5章を進める
 # フルオンチェーンNFT作成
 ### 11.フルオンチェーンNFT用の画像をBase64化
