@@ -220,7 +220,7 @@ await txRepo.announce(signedTx).toPromise();
 ```
 ### 102.こちらからみなさんの回答を誰もがオンチェーンで見る事ができます。
 ```js
-`https://testnet.symbol.fyi/accounts/TC5MWZUCDS5JD7FMA3K4A5OIGN2J7MPHEJOOLKI`
+`https://testnet.symbol.fyi/accounts/TB7JRP3IMW2OK4WNQO7YBTPLFSOI22LL7FMC6PY`
 ```
 
 
