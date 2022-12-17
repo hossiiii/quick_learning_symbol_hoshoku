@@ -204,7 +204,7 @@ console.log(base64Text)
 ```js
 tx = sym.TransferTransaction.create(
     sym.Deadline.create(epochAdjustment),
-    sym.Address.createFromRawAddress("TC5MWZUCDS5JD7FMA3K4A5OIGN2J7MPHEJOOLKI"), 
+    sym.Address.createFromRawAddress("TB7JRP3IMW2OK4WNQO7YBTPLFSOI22LL7FMC6PY"), 
     [],
     sym.PlainMessage.create(`
     ①こちらの速習Symbol勉強会は何回目の参加ですか？<１回目/２回目>
