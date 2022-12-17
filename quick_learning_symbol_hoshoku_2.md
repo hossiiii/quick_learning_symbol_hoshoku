@@ -70,9 +70,12 @@ console.log(aliceAddress);
 ```js
 `https://testnet.symbol.fyi/accounts/${aliceAddress.plain()}` //以下リンクをクリックして300XYMが入金されているか確認
 ```
-### 6.所有モザイク確認
+### 6.5章の準備用
 ```js
 accountInfo = await accountRepo.getAccountInfo(alice.address).toPromise();
+```
+### 7.所有モザイク確認
+```js
 await getMosaicInfo(aliceAddress);
 ```
 # 速習Symbol5章
