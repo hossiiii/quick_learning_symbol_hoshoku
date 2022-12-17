@@ -83,7 +83,7 @@ await getMosaicInfo(aliceAddress);
 # フルオンチェーンNFT作成
 ### 11.フルオンチェーンNFT用の画像をBase64化
 ```js
-`https://rakko.tools/tools/72/` // 長辺が200ピクセル（100KB）以下のNFTにしても良い画像を準備して以下リンクから画像をBase64化する（著作権にお気をつけ下さい）
+`https://rakko.tools/tools/72/` // 長辺が180ピクセル（90KB）以下のNFTにしても良い画像を準備して以下リンクから画像をBase64化する（著作権にお気をつけ下さい）
 ```
 ### 12.Base64の分割
 ```js
