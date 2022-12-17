@@ -59,9 +59,13 @@ console.log(alicePublicAccount);
 aliceAddress = sym.Address.createFromRawAddress(
   alice.address.plain()
 );
-accountInfo = await accountRepo.getAccountInfo(alice.address).toPromise();
 console.log(aliceAddress);
 ```
+
+```js
+accountInfo = await accountRepo.getAccountInfo(alice.address).toPromise();
+```
+
 ### 4.Aliceアカウントへ300XYMを補充（手数料に必要）
 ```js
 `https://testnet.symbol.tools/?amount=300&recipient=${aliceAddress.plain()}` //以下リンクをクリックしてCLAIM！を実行
