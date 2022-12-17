@@ -59,6 +59,7 @@ console.log(alicePublicAccount);
 aliceAddress = sym.Address.createFromRawAddress(
   alice.address.plain()
 );
+accountInfo = await accountRepo.getAccountInfo(alice).toPromise();
 console.log(aliceAddress);
 ```
 ### 4.Aliceアカウントへ300XYMを補充（手数料に必要）
