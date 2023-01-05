@@ -102,30 +102,43 @@ https://github.com/xembook/quick_learning_symbol/blob/main/07_metadata.md
 
 # 自分のDIDを作成する
 今日の勉強をフル活用して充実したDIDを作成します。
+
 ### 11.公開用メタデータ登録
 keyとvalueは自由に設定し、ニックネーム、趣味、など公開してもよいメタデータを登録する
+
 ### 12.検証用メタデータ登録
 keyを『verification』としvalueは検証先となるプラットフォームのURLを入力する
+
 ### 13.検証用プラットフォームにDID情報を登録
 verificationで指定したURLに以下フォーマットでDIDを登録する
+
 did:symbol:YOURADDRESS
+
 ### 14.非公開用メタデータ登録
 keyは自由に設定しvalueは『*********』、としてメタデータを登録する
+
 いくつ設定してもOK
+
 ### 15.修了証の受け取り
 上記まで設定できたら、メタバース上のチャットを使いDIDになるアドレスを講師に教えて下さい。
+
 講師側でDIDを確認しOKであれば今回の修了証を送付します。
+
 送付されたら修了証がMITから発行されたものか検証してみましょう。
 
 # オンチェーンアンケート
 今日の勉強をフル活用してオンチェーンアンケートに回答します。
+
 ### 101.オンチェーンでアンケートを確認する
 アンケートは以下のサブネームスペースにリンクしているアドレスのメタデータに記載しています。
+
 ```js
 `https://testnet.symbol.fyi/namespaces/mit.survey.quick_learning_symbol_lesson3` //以下リンクをクリックしてAliasのアドレスのメタデータを参照する
 ```
+
 ### 102.オンチェーンでアンケートの回答
 サブネームスペースを使ってアンケートをメッセージで回答します。
+
 ```js
 namespaceId = new sym.NamespaceId("mit.survey.quick_learning_symbol_lesson3");
 tx = sym.TransferTransaction.create(
@@ -143,9 +156,10 @@ tx = sym.TransferTransaction.create(
 ).setMaxFee(100);
 signedTx = alice.sign(tx,generationHash);
 await txRepo.announce(signedTx).toPromise();
-
 ```
+
 ### 103.こちらからみなさんの回答を誰もがオンチェーンで見る事ができます。
+
 ```js
 `https://testnet.symbol.fyi/namespaces/mit.survey.quick_learning_symbol_lesson3` //以下リンクをクリックしてAliasのアドレスを参照する
 ```
