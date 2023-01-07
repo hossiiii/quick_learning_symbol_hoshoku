@@ -87,9 +87,6 @@ console.log(aliceAddress);
 ```js
 `https://testnet.symbol.fyi/accounts/${aliceAddress.plain()}` //以下リンクをクリックしてアカウント情報を別タブで表示しておく
 ```
-# DIDについて説明
-メタバース会場の画面に戻り、DIDについての解説を行います。
-
 # 速習Symbol6章ネームスペース
 以下リンクを別タブで開きハンズオンを行っていきます。
 
