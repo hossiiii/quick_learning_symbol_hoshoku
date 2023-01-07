@@ -92,6 +92,44 @@ console.log(aliceAddress);
 
 https://github.com/xembook/quick_learning_symbol/blob/main/06_namespace.md
 
+モザイクの作成
+```js
+supplyMutable = false; //供給量変更の可否
+transferable = false; //第三者への譲渡可否
+restrictable = false; //制限設定の可否
+revokable = false; //発行者からの還収可否
+
+//モザイク定義
+nonce = sym.MosaicNonce.createRandom();
+mosaicDefTx = sym.MosaicDefinitionTransaction.create(
+    undefined, 
+    nonce,
+    sym.MosaicId.createFromNonce(nonce, alice.address), //モザイクID
+    sym.MosaicFlags.create(supplyMutable, transferable, restrictable, revokable),
+    0,//divisibility:可分性
+    sym.UInt64.fromUint(0), //duration:有効期限
+    networkType
+);
+//モザイク変更
+mosaicChangeTx = sym.MosaicSupplyChangeTransaction.create(
+    undefined,
+    mosaicDefTx.mosaicId,
+    sym.MosaicSupplyChangeAction.Increase,
+    sym.UInt64.fromUint(10), //数量
+    networkType
+);
+aggregateTx = sym.AggregateTransaction.createComplete(
+    sym.Deadline.create(epochAdjustment),
+    [
+      mosaicDefTx.toAggregate(alice.publicAccount),
+      mosaicChangeTx.toAggregate(alice.publicAccount),
+    ],
+    networkType,[],
+).setMaxFeeForAggregate(100, 0);
+
+signedTx = alice.sign(aggregateTx,generationHash);
+await txRepo.announce(signedTx).toPromise();
+```
 # 速習Symbol7章メタデータ
 以下リンクを別タブで開きハンズオンを行っていきます。
 
