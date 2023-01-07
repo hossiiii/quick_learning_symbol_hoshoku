@@ -138,6 +138,32 @@ https://github.com/xembook/quick_learning_symbol/blob/main/07_metadata.md
 # 自分のDIDを作成する
 今日の勉強をフル活用して充実したDIDを作成します。
 
+メタデータのvalueフォーマット
+
+```js
+key = sym.KeyGenerator.generateUInt64Key("キーの名前");
+value = '{key:"キーの名前",value:"バリューの値"}'; //こんな形で書くと、何のkeyなのかぱっと見見やすいのでこちらでお願いします
+
+tx = await metaService.createAccountMetadataTransaction(
+    undefined,
+    networkType,
+    alice.address,
+    key,value,
+    alice.address
+).toPromise();
+
+aggregateTx = sym.AggregateTransaction.createComplete(
+  sym.Deadline.create(epochAdjustment),
+  [tx.toAggregate(alice.publicAccount)],
+  networkType,[]
+).setMaxFeeForAggregate(100, 0);
+
+signedTx = alice.sign(aggregateTx,generationHash);
+await txRepo.announce(signedTx).toPromise();
+
+```
+
+
 ### 11.公開用メタデータ登録
 keyとvalueは自由に設定し、ニックネーム、趣味、など公開してもよいメタデータを登録する
 
@@ -147,6 +173,7 @@ keyを『verification』としvalueは検証先となるプラットフォーム
 ### 13.検証用プラットフォームにDID情報を登録
 verificationで指定したURLに以下フォーマットでDIDを登録する
 
+DIDのフォーマット
 did:symbol:YOURADDRESS
 
 ### 14.非公開用メタデータ登録
