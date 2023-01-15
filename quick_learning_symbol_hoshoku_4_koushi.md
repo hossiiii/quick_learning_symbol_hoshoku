@@ -88,9 +88,6 @@ console.log(aliceAddress);
 `https://testnet.symbol.fyi/accounts/${aliceAddress.plain()}` //以下リンクをクリックしてアカウント情報を別タブで表示しておく
 ```
 # モザイク作成とネームスペース割り当て
-以下リンクを別タブで開きハンズオンを行っていきます。
-
-https://github.com/xembook/quick_learning_symbol/blob/main/06_namespace.md
 
 モザイクの作成*4
 ```js
