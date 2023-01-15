@@ -482,3 +482,37 @@ judgeHand = async function(aHand,aAddress,bHand,bAddress,alice,rootNameSpace) {
   txRepo.announce(signedTx).toPromise();
 }
 ```
+
+createRandNumsArray
+```js
+function createRandNumsArray(M,N,O){
+    //1.変数を用意
+    let randNumAmount = M
+    let remain = N
+    let max = O 
+    let result = []
+
+    //2.ループ開始
+    for(let i=1; i <= randNumAmount; i++){
+        if(i!=randNumAmount){ 
+            //3.乱数を生成
+            do {    
+                parcent = Math.floor( Math.random() * max )
+            }while (Math.sign(remain - parcent) == -1 || Math.sign(remain - parcent) == 0)
+            
+            //4.残数から生成した乱数の値をマイナスする
+            remain = remain - parcent
+
+            result.push(parcent)
+        }else{
+            //5最後のループは残数をそのまま使用
+            result.push(remain)
+        }
+    }
+    return result
+}
+```
+
+
+```js
+```
