@@ -89,7 +89,14 @@ console.log(aliceAddress);
 ```
 # モザイク作成とネームスペース割り当て
 
-モザイクの作成*4
+参加者数とモザイク数(暗号メッセージが全て届いてから数をカウントする)
+```js
+list_amount = 4
+card_amount = 3
+star_amount = 3
+```
+
+手札モザイクの作成*3
 ```js
 supplyMutable = false; //供給量変更の可否
 transferable = true; //第三者への譲渡可否
@@ -112,7 +119,46 @@ mosaicChangeTx = sym.MosaicSupplyChangeTransaction.create(
     undefined,
     mosaicDefTx.mosaicId,
     sym.MosaicSupplyChangeAction.Increase,
-    sym.UInt64.fromUint(X), //数量は手札モザイクは3＊人数、星は＊＊＊と人数
+    sym.UInt64.fromUint(list_amount*card_amount), //数量は手札モザイクは3＊人数、星は＊＊＊と人数
+    networkType
+);
+aggregateTx = sym.AggregateTransaction.createComplete(
+    sym.Deadline.create(epochAdjustment),
+    [
+      mosaicDefTx.toAggregate(alice.publicAccount),
+      mosaicChangeTx.toAggregate(alice.publicAccount),
+    ],
+    networkType,[],
+).setMaxFeeForAggregate(100, 0);
+
+signedTx = alice.sign(aggregateTx,generationHash);
+await txRepo.announce(signedTx).toPromise();
+```
+
+スターモザイクの作成*3
+```js
+supplyMutable = false; //供給量変更の可否
+transferable = true; //第三者への譲渡可否
+restrictable = false; //制限設定の可否
+revokable = true; //発行者からの還収可否
+
+//モザイク定義
+nonce = sym.MosaicNonce.createRandom();
+mosaicDefTx = sym.MosaicDefinitionTransaction.create(
+    undefined, 
+    nonce,
+    sym.MosaicId.createFromNonce(nonce, alice.address), //モザイクID
+    sym.MosaicFlags.create(supplyMutable, transferable, restrictable, revokable),
+    0,//divisibility:可分性
+    sym.UInt64.fromUint(0), //duration:有効期限
+    networkType
+);
+//モザイク変更
+mosaicChangeTx = sym.MosaicSupplyChangeTransaction.create(
+    undefined,
+    mosaicDefTx.mosaicId,
+    sym.MosaicSupplyChangeAction.Increase,
+    sym.UInt64.fromUint(list_amount*star_amount), //数量は手札モザイクは3＊人数、星は＊＊＊と人数
     networkType
 );
 aggregateTx = sym.AggregateTransaction.createComplete(
