@@ -87,17 +87,17 @@ console.log(aliceAddress);
 ```js
 `https://testnet.symbol.fyi/accounts/${aliceAddress.plain()}` //以下リンクをクリックしてアカウント情報を別タブで表示しておく
 ```
-# 速習Symbol6章ネームスペース
+# モザイク作成とネームスペース割り当て
 以下リンクを別タブで開きハンズオンを行っていきます。
 
 https://github.com/xembook/quick_learning_symbol/blob/main/06_namespace.md
 
-モザイクの作成
+モザイクの作成*4
 ```js
 supplyMutable = false; //供給量変更の可否
-transferable = false; //第三者への譲渡可否
+transferable = true; //第三者への譲渡可否
 restrictable = false; //制限設定の可否
-revokable = false; //発行者からの還収可否
+revokable = true; //発行者からの還収可否
 
 //モザイク定義
 nonce = sym.MosaicNonce.createRandom();
@@ -115,7 +115,7 @@ mosaicChangeTx = sym.MosaicSupplyChangeTransaction.create(
     undefined,
     mosaicDefTx.mosaicId,
     sym.MosaicSupplyChangeAction.Increase,
-    sym.UInt64.fromUint(10), //数量
+    sym.UInt64.fromUint(X), //数量は手札モザイクは3＊人数、星は＊＊＊と人数
     networkType
 );
 aggregateTx = sym.AggregateTransaction.createComplete(
@@ -130,98 +130,148 @@ aggregateTx = sym.AggregateTransaction.createComplete(
 signedTx = alice.sign(aggregateTx,generationHash);
 await txRepo.announce(signedTx).toPromise();
 ```
-# 速習Symbol7章メタデータ
-以下リンクを別タブで開きハンズオンを行っていきます。
 
-https://github.com/xembook/quick_learning_symbol/blob/main/07_metadata.md
-
-# 自分のDIDを作成する
-今日の勉強をフル活用して充実したDIDを作成します。
-
-メタデータのvalueフォーマット
-
+ルートネームスペースの入力
 ```js
-key = sym.KeyGenerator.generateUInt64Key("キーの名前");
-value = '{key:"キーの名前",value:"バリューの値"}'; //こんな形で書くと、何のkeyなのかぱっと見見やすいのでこちらでお願いします
-
-tx = await metaService.createAccountMetadataTransaction(
-    undefined,
-    networkType,
-    alice.address,
-    key,value,
-    alice.address
-).toPromise();
-
-aggregateTx = sym.AggregateTransaction.createComplete(
-  sym.Deadline.create(epochAdjustment),
-  [tx.toAggregate(alice.publicAccount)],
-  networkType,[]
-).setMaxFeeForAggregate(100, 0);
-
-signedTx = alice.sign(aggregateTx,generationHash);
-await txRepo.announce(signedTx).toPromise();
-
+rootNameSpace = "★ここにルートネームスペース"
 ```
 
-
-### 11.公開用メタデータ登録
-keyとvalueは自由に設定し、ニックネーム、趣味、など公開してもよいメタデータを登録する
-
-### 12.検証用メタデータ登録
-keyを『verification』としvalueは検証先となるプラットフォームのURLを入力する
-
-### 13.検証用プラットフォームにDID情報を登録
-verificationで指定したURLに以下フォーマットでDIDを登録する
-
-DIDのフォーマット
-did:symbol:YOURADDRESS
-
-### 14.非公開用メタデータ登録
-keyは自由に設定しvalueは『*********』、としてメタデータを登録する
-
-いくつ設定してもOK
-
-### 15.修了証の受け取り
-上記まで設定できたら、メタバース上のチャットを使いDIDになるアドレスを講師に教えて下さい。
-
-講師側でDIDを確認しOKであれば今回の修了証を送付します。
-
-送付されたら修了証がMITから発行されたものか検証してみましょう。
-
-# オンチェーンアンケート
-今日の勉強をフル活用してオンチェーンアンケートに回答します。
-
-### 101.オンチェーンでアンケートを確認する
-アンケートは以下のサブネームスペースにリンクしているアドレスのメタデータに記載しています。
-
+ネームスペースの作成
 ```js
-`https://testnet.symbol.fyi/namespaces/mit.survey.quick_learning_symbol_lesson3` //以下リンクをクリックしてAliasのアドレスのメタデータを参照する
-```
-
-### 102.オンチェーンでアンケートの回答
-サブネームスペースを使ってアンケートをメッセージで回答します。
-
-```js
-namespaceId = new sym.NamespaceId("mit.survey.quick_learning_symbol_lesson3");
-tx = sym.TransferTransaction.create(
+tx = sym.NamespaceRegistrationTransaction.createRootNamespace(
     sym.Deadline.create(epochAdjustment),
-    namespaceId, //UnresolvedAccount:未解決アカウントアドレス
-    [],
-    sym.PlainMessage.create(`
-    ①
-    ②
-    ③
-    ④
-    ⑤  
-    `), //全角で300字まで入力できます。
+    rootNameSpace,
+    sym.UInt64.fromUint(86400),
     networkType
 ).setMaxFee(100);
 signedTx = alice.sign(tx,generationHash);
 await txRepo.announce(signedTx).toPromise();
 ```
 
-### 103.こちらからみなさんの回答を誰もがオンチェーンで見る事ができます。
-
+gサブネームスペースの作成
 ```js
-`https://testnet.symbol.fyi/namespaces/mit.survey.quick_learning_symbol_lesson3` //以下リンクをクリックしてAliasのアドレスを参照する
+subNamespaceTx = sym.NamespaceRegistrationTransaction.createSubNamespace(
+    sym.Deadline.create(epochAdjustment),
+    "g",  //作成するサブネームスペース
+    rootNameSpace, //紐づけたいルートネームスペース
+    networkType,
+).setMaxFee(100);
+signedTx = alice.sign(subNamespaceTx,generationHash);
+await txRepo.announce(signedTx).toPromise();
+```
+
+cサブネームスペースの作成
+```js
+subNamespaceTx = sym.NamespaceRegistrationTransaction.createSubNamespace(
+    sym.Deadline.create(epochAdjustment),
+    "c",  //作成するサブネームスペース
+    rootNameSpace, //紐づけたいルートネームスペース
+    networkType,
+).setMaxFee(100);
+signedTx = alice.sign(subNamespaceTx,generationHash);
+await txRepo.announce(signedTx).toPromise();
+```
+
+pサブネームスペースの作成
+```js
+subNamespaceTx = sym.NamespaceRegistrationTransaction.createSubNamespace(
+    sym.Deadline.create(epochAdjustment),
+    "p",  //作成するサブネームスペース
+    rootNameSpace, //紐づけたいルートネームスペース
+    networkType,
+).setMaxFee(100);
+signedTx = alice.sign(subNamespaceTx,generationHash);
+await txRepo.announce(signedTx).toPromise();
+```
+
+starサブネームスペースの作成
+```js
+subNamespaceTx = sym.NamespaceRegistrationTransaction.createSubNamespace(
+    sym.Deadline.create(epochAdjustment),
+    "star",  //作成するサブネームスペース
+    rootNameSpace, //紐づけたいルートネームスペース
+    networkType,
+).setMaxFee(100);
+signedTx = alice.sign(subNamespaceTx,generationHash);
+await txRepo.announce(signedTx).toPromise();
+```
+
+ネームスペースのリンク
+```js
+namespaceId = new sym.NamespaceId(rootNameSpace);
+address = sym.Address.createFromRawAddress(alice.address.plain());
+tx = sym.AliasTransaction.createForAddress(
+    sym.Deadline.create(epochAdjustment),
+    sym.AliasAction.Link,
+    namespaceId,
+    address,
+    networkType
+).setMaxFee(100);
+signedTx = alice.sign(tx,generationHash);
+await txRepo.announce(signedTx).toPromise();
+```
+
+モザイク確認しておく
+```js
+getMosaicInfo(alice.address)
+```
+
+gサブネームスペースのリンク
+```js
+namespaceId = new sym.NamespaceId(`${rootNameSpace}.g`);
+mosaicId = new sym.MosaicId("3A8416DB2D53xxxx"); //目視確認
+tx = sym.AliasTransaction.createForMosaic(
+    sym.Deadline.create(epochAdjustment),
+    sym.AliasAction.Link,
+    namespaceId,
+    mosaicId,
+    networkType
+).setMaxFee(100);
+signedTx = alice.sign(tx,generationHash);
+await txRepo.announce(signedTx).toPromise();
+```
+
+cサブネームスペースのリンク
+```js
+namespaceId = new sym.NamespaceId(`${rootNameSpace}.c`);
+mosaicId = new sym.MosaicId("3A8416DB2D53xxxx"); //目視確認
+tx = sym.AliasTransaction.createForMosaic(
+    sym.Deadline.create(epochAdjustment),
+    sym.AliasAction.Link,
+    namespaceId,
+    mosaicId,
+    networkType
+).setMaxFee(100);
+signedTx = alice.sign(tx,generationHash);
+await txRepo.announce(signedTx).toPromise();
+```
+
+pサブネームスペースのリンク
+```js
+namespaceId = new sym.NamespaceId(`${rootNameSpace}.p`);
+mosaicId = new sym.MosaicId("3A8416DB2D53xxxx"); //目視確認
+tx = sym.AliasTransaction.createForMosaic(
+    sym.Deadline.create(epochAdjustment),
+    sym.AliasAction.Link,
+    namespaceId,
+    mosaicId,
+    networkType
+).setMaxFee(100);
+signedTx = alice.sign(tx,generationHash);
+await txRepo.announce(signedTx).toPromise();
+```
+
+starサブネームスペースのリンク
+```js
+namespaceId = new sym.NamespaceId(`${rootNameSpace}.star`);
+mosaicId = new sym.MosaicId("3A8416DB2D53xxxx"); //目視確認
+tx = sym.AliasTransaction.createForMosaic(
+    sym.Deadline.create(epochAdjustment),
+    sym.AliasAction.Link,
+    namespaceId,
+    mosaicId,
+    networkType
+).setMaxFee(100);
+signedTx = alice.sign(tx,generationHash);
+await txRepo.announce(signedTx).toPromise();
 ```
