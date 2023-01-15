@@ -272,3 +272,168 @@ tx = sym.AliasTransaction.createForMosaic(
 signedTx = alice.sign(tx,generationHash);
 await txRepo.announce(signedTx).toPromise();
 ```
+
+# ヘルパー関数
+accountList
+```js
+nsRepo = repo.createNamespaceRepository();
+accountList = async function(addressList) { // モザイク情報を参照する関数を作成
+  for (const address of addressList){
+    accountInfo = await accountRepo.getAccountInfo(sym.Address.createFromRawAddress(address)).toPromise();
+    mosaicText = ""
+    for (const mosaic of accountInfo.mosaics){
+      let mosaicName = mosaic.id.toHex()
+      mosaicNames = await nsRepo.getMosaicsNames(
+      [new sym.MosaicId(mosaic.id.toHex())]
+      ).toPromise();
+      if(mosaicNames[0].names.length > 0){
+       mosaicName = mosaicNames[0].names[0].name;
+       if(mosaicName.slice(-1) == "g") mosaicName = "✊"
+       if(mosaicName.slice(-1) == "c") mosaicName = "✌️"
+       if(mosaicName.slice(-1) == "p") mosaicName = "✋"
+       if(mosaicName.slice(-1) == "r") mosaicName = "🌟"
+      }
+      mosaicInfo = await mosaicRepo.getMosaic(mosaic.id).toPromise();
+      mosaicAmount = mosaic.amount.toString();
+      divisibility = mosaicInfo.divisibility; //可分性
+      if (divisibility > 0) {
+        if(mosaicAmount / 10**divisibility >= 1 ){
+        displayAmount =
+          mosaicAmount.slice(0, mosaicAmount.length - divisibility) +  "." + mosaicAmount.slice(-divisibility);
+        } else{
+        displayAmount =
+          "0." + "0".repeat(divisibility-mosaicAmount.slice(-divisibility).length) + mosaicAmount.slice(-divisibility);
+        }
+      } else {
+        displayAmount = mosaicAmount;
+      }
+      mosaicText = `${mosaicText} ${mosaicName}(${displayAmount})`
+    };
+    console.log(`${accountInfo.address.address} ${accountInfo.publicKey} ${mosaicText}`);
+  };
+};
+```
+
+judgeHand
+```js
+judgeHand = async function(aHand,aAddress,bHand,bAddress,alice,rootNameSpace) {
+  //モザイクの所有確認(目視)
+  accountList([aAddress,bAddress])
+
+  starNamespaceId = new sym.NamespaceId(`${rootNameSpace}.star`);
+
+  //A手札回収トランザクション
+  revAhandNamespaceId = new sym.NamespaceId(`${rootNameSpace}.${aHand}`);
+  revAhandTx = sym.MosaicSupplyRevocationTransaction.create(
+    sym.Deadline.create(epochAdjustment),
+    sym.Address.createFromRawAddress(aAddress),
+    new sym.Mosaic(revAhandNamespaceId, sym.UInt64.fromUint(1)),
+    networkType
+  );
+
+  //B手札回収トランザクション
+  revBhandNamespaceId = new sym.NamespaceId(`${rootNameSpace}.${bHand}`);
+  revBhandTx = sym.MosaicSupplyRevocationTransaction.create(
+    sym.Deadline.create(epochAdjustment),
+    sym.Address.createFromRawAddress(bAddress),
+    new sym.Mosaic(revBhandNamespaceId, sym.UInt64.fromUint(1)),
+    networkType
+  );
+
+  //Aスター回収トランザクション
+  revAstarTx = sym.MosaicSupplyRevocationTransaction.create(
+    sym.Deadline.create(epochAdjustment),
+    sym.Address.createFromRawAddress(aAddress),
+    new sym.Mosaic(starNamespaceId, sym.UInt64.fromUint(1)),
+    networkType
+  );
+
+  //Bスター回収トランザクション
+  revBstarTx = sym.MosaicSupplyRevocationTransaction.create(
+    sym.Deadline.create(epochAdjustment),
+    sym.Address.createFromRawAddress(bAddress),
+    new sym.Mosaic(starNamespaceId, sym.UInt64.fromUint(1)),
+    networkType
+  );
+
+  //Aスター送付トランザクション
+  sendAstarTx = sym.TransferTransaction.create(
+    sym.Deadline.create(epochAdjustment),
+    sym.Address.createFromRawAddress(aAddress),
+    [new sym.Mosaic(starNamespaceId,sym.UInt64.fromUint(1))],
+    sym.EmptyMessage, //メッセージ無し
+    networkType
+  );
+
+  //Bスター送付トランザクション
+  sendBstarTx = sym.TransferTransaction.create(
+    sym.Deadline.create(epochAdjustment),
+    sym.Address.createFromRawAddress(bAddress),
+    [new sym.Mosaic(starNamespaceId,sym.UInt64.fromUint(1))],
+    sym.EmptyMessage, //メッセージ無し
+    networkType
+  );
+
+  aggregateArray = []
+
+  if(aHand == "g" && bHand == "c"){  //Aの勝ちパターン
+    aggregateArray = [
+      revAhandTx.toAggregate(alice.publicAccount),
+      revBhandTx.toAggregate(alice.publicAccount),
+      revBstarTx.toAggregate(alice.publicAccount),
+      sendAstarTx.toAggregate(alice.publicAccount),
+    ]
+  }else if(aHand == "c" && bHand == "p"){  //Aの勝ちパターン
+    aggregateArray = [
+      revAhandTx.toAggregate(alice.publicAccount),
+      revBhandTx.toAggregate(alice.publicAccount),
+      revBstarTx.toAggregate(alice.publicAccount),
+      sendAstarTx.toAggregate(alice.publicAccount),
+    ]
+  }else if(aHand == "p" && bHand == "g"){  //Aの勝ちパターン
+    aggregateArray = [
+      revAhandTx.toAggregate(alice.publicAccount),
+      revBhandTx.toAggregate(alice.publicAccount),
+      revBstarTx.toAggregate(alice.publicAccount),
+      sendAstarTx.toAggregate(alice.publicAccount),
+    ]
+  }else if(aHand == "c" && bHand == "g"){  //Bの勝ちパターン
+    aggregateArray = [
+      revAhandTx.toAggregate(alice.publicAccount),
+      revBhandTx.toAggregate(alice.publicAccount),
+      revAstarTx.toAggregate(alice.publicAccount),
+      sendBstarTx.toAggregate(alice.publicAccount),
+    ]
+  }else if(aHand == "p" && bHand == "c"){  //Bの勝ちパターン
+    aggregateArray = [
+      revAhandTx.toAggregate(alice.publicAccount),
+      revBhandTx.toAggregate(alice.publicAccount),
+      revAstarTx.toAggregate(alice.publicAccount),
+      sendBstarTx.toAggregate(alice.publicAccount),
+    ]
+  }else if(aHand == "g" && bHand == "p"){  //Bの勝ちパターン
+    aggregateArray = [
+      revAhandTx.toAggregate(alice.publicAccount),
+      revBhandTx.toAggregate(alice.publicAccount),
+      revAstarTx.toAggregate(alice.publicAccount),
+      sendBstarTx.toAggregate(alice.publicAccount),
+    ]
+  }else{  //あいこパターン
+    aggregateArray = [
+      revAhandTx.toAggregate(alice.publicAccount),
+      revBhandTx.toAggregate(alice.publicAccount),
+    ]
+  }
+  aggregateTx = sym.AggregateTransaction.createComplete(
+    sym.Deadline.create(epochAdjustment),
+    aggregateArray,
+    networkType,[],
+  ).setMaxFeeForAggregate(100, 0); //最低手数料はノードの最低手数料設定の分布を見て中央値付近の30に変更
+
+  ///管理者アカウントオブジェクトで署名を行う
+  signedTx = alice.sign(aggregateTx,generationHash);
+
+  //トランザクションをアナウンスする
+  txRepo.announce(signedTx).toPromise();
+}
+```
