@@ -92,7 +92,6 @@ console.log(aliceAddress);
 参加者数とモザイク数(暗号メッセージが全て届いてから数をカウントする)
 ```js
 list_amount = 4
-card_amount = 3
 star_amount = 3
 ```
 
@@ -119,7 +118,7 @@ mosaicChangeTx = sym.MosaicSupplyChangeTransaction.create(
     undefined,
     mosaicDefTx.mosaicId,
     sym.MosaicSupplyChangeAction.Increase,
-    sym.UInt64.fromUint(list_amount*card_amount), //数量は手札モザイクは3＊人数、星は＊＊＊と人数
+    sym.UInt64.fromUint(list_amount), //数量は手札モザイクは3＊人数、星は＊＊＊と人数
     networkType
 );
 aggregateTx = sym.AggregateTransaction.createComplete(
