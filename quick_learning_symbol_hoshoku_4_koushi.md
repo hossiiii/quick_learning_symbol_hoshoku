@@ -327,7 +327,6 @@ accountMap = {
   "accountAddress3":"name3",
   "accountAddress4":"name4",  
 }
-accountAddress1 = "name1"
 ```
 
 accountList
