@@ -317,10 +317,10 @@ accountMap = {
 }
 ```
 
-accountList
+showAllCard
 ```js
 nsRepo = repo.createNamespaceRepository();
-accountList = async function(addressList) { // モザイク情報を参照する関数を作成
+showAllCard = async function(addressList) { // モザイク情報を参照する関数を作成
   for (const address of addressList){
     accountInfo = await accountRepo.getAccountInfo(sym.Address.createFromRawAddress(address)).toPromise();
     mosaicText = ""
@@ -388,7 +388,7 @@ judgeHand
 ```js
 judgeHand = async function(aHand,aAddress,bHand,bAddress,alice,rootNameSpace) {
   //モザイクの所有確認(目視)
-  accountList([aAddress,bAddress])
+  showAllCard([aAddress,bAddress])
   console.log([aAddress,bAddress])
   starNamespaceId = new sym.NamespaceId(`${rootNameSpace}.star`);
 
