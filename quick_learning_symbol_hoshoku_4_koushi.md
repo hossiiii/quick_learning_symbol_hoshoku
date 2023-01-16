@@ -368,10 +368,10 @@ showAllCard = async function(addressList) { // モザイク情報を参照する
       ).toPromise();
       if(mosaicNames[0].names.length > 0){
        mosaicName = mosaicNames[0].names[0].name;
-       if(mosaicName.slice(-1) == "g") mosaicName = "✊"
-       if(mosaicName.slice(-1) == "c") mosaicName = "✌️"
-       if(mosaicName.slice(-1) == "p") mosaicName = "✋"
-       if(mosaicName.slice(-1) == "r") mosaicName = "🌟"
+       if(mosaicName.slice(-1) == "g") mosaicName = "✊ " + mosaicName
+       if(mosaicName.slice(-1) == "c") mosaicName = "✌️ " + mosaicName
+       if(mosaicName.slice(-1) == "p") mosaicName = "✋ " + mosaicName
+       if(mosaicName.slice(-1) == "r") mosaicName = "🌟 " + mosaicName
       }
       mosaicInfo = await mosaicRepo.getMosaic(mosaic.id).toPromise();
       mosaicAmount = mosaic.amount.toString();
