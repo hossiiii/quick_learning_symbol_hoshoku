@@ -141,7 +141,24 @@ getMosaicInfo(aliceAddress)
 
 後方２つの数を変更する
 ```js
-getMosaicInfo(aliceAddress)
+mosaicChangeTx = sym.MosaicSupplyChangeTransaction.create(
+    undefined,
+    new sym.MosaicId("3A8416DB2D53xxxx"), //目視確認
+    sym.MosaicSupplyChangeAction.Increase,
+    sym.UInt64.fromUint((list_amount -1)*star_amount),
+    networkType
+);
+aggregateTx = sym.AggregateTransaction.createComplete(
+    sym.Deadline.create(epochAdjustment),
+    [
+      mosaicChangeTx.toAggregate(alice.publicAccount),
+    ],
+    networkType,[],
+).setMaxFeeForAggregate(100, 0);
+
+signedTx = alice.sign(aggregateTx,generationHash);
+await txRepo.announce(signedTx).toPromise();
+
 ```
 
 ルートネームスペースの入力
