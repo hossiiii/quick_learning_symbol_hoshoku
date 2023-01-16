@@ -516,6 +516,9 @@ judgeHand = async function(aHand,aAddress,bHand,bAddress,alice,rootNameSpace,lis
 
   //トランザクションをアナウンスする
   txRepo.announce(signedTx).toPromise();
+  const transactionStatusUrl = NODE + "/transactionStatus/" + signedTx.hash
+  context.log(transactionStatusUrl);
+
 }
 
 ```
@@ -618,6 +621,9 @@ shuffleCard = async function(accountList,star_amount) {
 
     signedTx = alice.sign(tx,generationHash);
     res = await txRepo.announce(signedTx).toPromise();
+    const transactionStatusUrl = NODE + "/transactionStatus/" + signedTx.hash
+    context.log(transactionStatusUrl);
+
   }
 }
 ```
