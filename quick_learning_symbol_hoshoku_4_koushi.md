@@ -319,6 +319,11 @@ await txRepo.announce(signedTx).toPromise();
 ```
 
 # ヘルパー関数
+アカウントアドレスを変数として、人数分登録しておく
+```js
+accountAddress1 = "name1"
+```
+
 accountList
 ```js
 nsRepo = repo.createNamespaceRepository();
