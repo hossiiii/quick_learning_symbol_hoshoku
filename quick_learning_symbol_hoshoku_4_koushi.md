@@ -363,7 +363,8 @@ judgeHand
 ```js
 judgeHand = async function(aHand,aAddress,bHand,bAddress,alice,rootNameSpace) {
   //モザイクの所有確認(目視)
-  accountList([aAddress,bAddress])
+  accountList([aAddress,bAddress,alice.Address.plain()])
+  console.log(`accountList([aAddress,bAddress,alice.Address.plain()])`)
 
   starNamespaceId = new sym.NamespaceId(`${rootNameSpace}.star`);
 
@@ -481,6 +482,7 @@ judgeHand = async function(aHand,aAddress,bHand,bAddress,alice,rootNameSpace) {
   //トランザクションをアナウンスする
   txRepo.announce(signedTx).toPromise();
 }
+
 ```
 makeAccounts
 ```js
