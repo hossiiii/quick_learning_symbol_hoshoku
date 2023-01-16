@@ -368,14 +368,40 @@ accountList = async function(addressList) { // モザイク情報を参照する
   };
 };
 ```
+statisticsHand
+```js
+statisticsHand = async function(addressList,list_amount) { // モザイク情報を参照する関数を作成
+  for (const address of addressList){
+    accountInfo = await accountRepo.getAccountInfo(sym.Address.createFromRawAddress(address)).toPromise();
+    mosaicText = ""
+    for (const mosaic of accountInfo.mosaics){
+      let mosaicName = mosaic.id.toHex()
+      mosaicNames = await nsRepo.getMosaicsNames(
+      [new sym.MosaicId(mosaic.id.toHex())]
+      ).toPromise();
+      if(mosaicNames[0].names.length > 0){
+       mosaicName = mosaicNames[0].names[0].name;
+       if(mosaicName.slice(-1) == "g") mosaicName = "✊"
+       if(mosaicName.slice(-1) == "c") mosaicName = "✌️"
+       if(mosaicName.slice(-1) == "p") mosaicName = "✋"
+      }
+      mosaicInfo = await mosaicRepo.getMosaic(mosaic.id).toPromise();
+      mosaicAmount = list_amount - Number(mosaic.amount.toString());
 
+      mosaicText = `${mosaicText} ${mosaicName}(${mosaicAmount})`
+    };
+    console.log(`${mosaicText}`);
+  };
+};
+```
 judgeHand
 ```js
-judgeHand = async function(aHand,aAddress,bHand,bAddress,alice,rootNameSpace) {
+judgeHand = async function(aHand,aAddress,bHand,bAddress,alice,rootNameSpace,list_amount) {
   //モザイクの所有確認(目視)
-  accountList([aAddress,bAddress,alice.address.plain()])
-  console.log([aAddress,bAddress,alice.address.plain()])
-  console.log("accountList()")
+  accountList([aAddress,bAddress])
+  statisticsHand([alice.address.plain()],list_amount)
+  console.log([address.plain()])
+  console.log("statisticsHand()")
   starNamespaceId = new sym.NamespaceId(`${rootNameSpace}.star`);
 
   //A手札回収トランザクション
