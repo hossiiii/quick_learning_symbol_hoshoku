@@ -134,7 +134,7 @@ signedTx = alice.sign(aggregateTx,generationHash);
 await txRepo.announce(signedTx).toPromise();
 ```
 
-スターモザイクの作成*1
+スターモザイクの作成*1（ここで作ったモザイクが若番か老番になるまで作成する）
 ```js
 supplyMutable = false; //供給量変更の可否
 transferable = true; //第三者への譲渡可否
