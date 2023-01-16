@@ -94,7 +94,7 @@ console.log(aliceAddress);
 console.log(alice.privateKey);
 ```
 
-# モザイク作成とネームスペース割り当て
+# メッセージを受信
 暗号化メッセージで、参加者からメタバース名を送ってもらう。
 
 
