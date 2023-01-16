@@ -87,6 +87,13 @@ console.log(aliceAddress);
 ```js
 `https://testnet.symbol.fyi/accounts/${aliceAddress.plain()}` //以下リンクをクリックしてアカウント情報を別タブで表示しておく
 ```
+
+# ウォレットと連携
+秘密鍵をウォレットにインポートしておく
+```js
+console.log(alice.privateKey);
+```
+
 # モザイク作成とネームスペース割り当て
 
 参加者数とモザイク数(暗号メッセージが全て届いてから数をカウントする)
