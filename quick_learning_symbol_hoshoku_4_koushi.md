@@ -95,10 +95,13 @@ console.log(alice.privateKey);
 ```
 
 # モザイク作成とネームスペース割り当て
+暗号化メッセージで、参加者からメタバース名を送ってもらう。
 
+
+# モザイク作成とネームスペース割り当て
 参加者数とモザイク数(暗号メッセージが全て届いてから数をカウントする)
 ```js
-list_amount = 4
+list_amount = 参加人数
 star_amount = 3
 ```
 
@@ -233,6 +236,18 @@ signedTx = alice.sign(subNamespaceTx,generationHash);
 await txRepo.announce(signedTx).toPromise();
 ```
 
+ticketサブネームスペースの作成
+```js
+subNamespaceTx = sym.NamespaceRegistrationTransaction.createSubNamespace(
+    sym.Deadline.create(epochAdjustment),
+    "ticket",  //作成するサブネームスペース
+    rootNameSpace, //紐づけたいルートネームスペース
+    networkType,
+).setMaxFee(100);
+signedTx = alice.sign(subNamespaceTx,generationHash);
+await txRepo.announce(signedTx).toPromise();
+```
+
 ネームスペースのリンク
 ```js
 namespaceId = new sym.NamespaceId(rootNameSpace);
@@ -301,6 +316,21 @@ await txRepo.announce(signedTx).toPromise();
 starサブネームスペースのリンク
 ```js
 namespaceId = new sym.NamespaceId(`${rootNameSpace}.star`);
+mosaicId = new sym.MosaicId("3A8416DB2D53xxxx"); //目視確認
+tx = sym.AliasTransaction.createForMosaic(
+    sym.Deadline.create(epochAdjustment),
+    sym.AliasAction.Link,
+    namespaceId,
+    mosaicId,
+    networkType
+).setMaxFee(100);
+signedTx = alice.sign(tx,generationHash);
+await txRepo.announce(signedTx).toPromise();
+```
+
+ticketサブネームスペースのリンク
+```js
+namespaceId = new sym.NamespaceId(`${rootNameSpace}.ticket`);
 mosaicId = new sym.MosaicId("3A8416DB2D53xxxx"); //目視確認
 tx = sym.AliasTransaction.createForMosaic(
     sym.Deadline.create(epochAdjustment),
