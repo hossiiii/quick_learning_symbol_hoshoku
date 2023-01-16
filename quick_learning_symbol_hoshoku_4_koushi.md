@@ -95,9 +95,9 @@ list_amount = 4
 star_amount = 3
 ```
 
-手札モザイクの作成*3
+手札モザイクの作成*5
 ```js
-supplyMutable = false; //供給量変更の可否
+supplyMutable = true; //供給量変更の可否
 transferable = true; //第三者への譲渡可否
 restrictable = false; //制限設定の可否
 revokable = true; //発行者からの還収可否
@@ -118,7 +118,7 @@ mosaicChangeTx = sym.MosaicSupplyChangeTransaction.create(
     undefined,
     mosaicDefTx.mosaicId,
     sym.MosaicSupplyChangeAction.Increase,
-    sym.UInt64.fromUint(list_amount), //数量は手札モザイクは3＊人数、星は＊＊＊と人数
+    sym.UInt64.fromUint(list_amount),
     networkType
 );
 aggregateTx = sym.AggregateTransaction.createComplete(
@@ -134,43 +134,14 @@ signedTx = alice.sign(aggregateTx,generationHash);
 await txRepo.announce(signedTx).toPromise();
 ```
 
-スターモザイクの作成*1（ここで作ったモザイクが若番か老番になるまで作成する）
+一度モザイクを確認し、後方２つを確認
 ```js
-supplyMutable = false; //供給量変更の可否
-transferable = true; //第三者への譲渡可否
-restrictable = false; //制限設定の可否
-revokable = true; //発行者からの還収可否
+getMosaicInfo(aliceAddress)
+```
 
-//モザイク定義
-nonce = sym.MosaicNonce.createRandom();
-mosaicDefTx = sym.MosaicDefinitionTransaction.create(
-    undefined, 
-    nonce,
-    sym.MosaicId.createFromNonce(nonce, alice.address), //モザイクID
-    sym.MosaicFlags.create(supplyMutable, transferable, restrictable, revokable),
-    0,//divisibility:可分性
-    sym.UInt64.fromUint(0), //duration:有効期限
-    networkType
-);
-//モザイク変更
-mosaicChangeTx = sym.MosaicSupplyChangeTransaction.create(
-    undefined,
-    mosaicDefTx.mosaicId,
-    sym.MosaicSupplyChangeAction.Increase,
-    sym.UInt64.fromUint(list_amount*star_amount), //数量は手札モザイクは3＊人数、星は＊＊＊と人数
-    networkType
-);
-aggregateTx = sym.AggregateTransaction.createComplete(
-    sym.Deadline.create(epochAdjustment),
-    [
-      mosaicDefTx.toAggregate(alice.publicAccount),
-      mosaicChangeTx.toAggregate(alice.publicAccount),
-    ],
-    networkType,[],
-).setMaxFeeForAggregate(100, 0);
-
-signedTx = alice.sign(aggregateTx,generationHash);
-await txRepo.announce(signedTx).toPromise();
+後方２つの数を変更する
+```js
+getMosaicInfo(aliceAddress)
 ```
 
 ルートネームスペースの入力
