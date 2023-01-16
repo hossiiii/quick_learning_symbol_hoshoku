@@ -483,36 +483,74 @@ judgeHand = async function(aHand,aAddress,bHand,bAddress,alice,rootNameSpace) {
 }
 ```
 
-createRandNumsArray
+shuffleCard
 ```js
-function createRandNumsArray(list_amount){
-  //1.変数を用意
-  let randNumAmount = list_amount
-  let remain = list_amount
-  let max = 4
-  let result = []
-
-  //2.ループ開始
-  for(let i=1; i <= randNumAmount; i++){
-      if(i!=randNumAmount){ 
-          //3.乱数を生成
-          do {    
-              parcent = Math.floor( Math.random() * max )
-          }while (Math.sign(remain - parcent) == -1 || Math.sign(remain - parcent) == 0)
-          
-          //4.残数から生成した乱数の値をマイナスする
-          remain = remain - parcent
-
-          result.push(parcent)
-      }else{
-          //5最後のループは残数をそのまま使用
-          result.push(remain)
-      }
+shuffleCard = async function(accountList,star_amount) {
+  gList = [...Array(accountList.length)].map((i) => `${rootNameSpace}.g`)
+  cList = [...Array(accountList.length)].map((i) => `${rootNameSpace}.c`)
+  pList = [...Array(accountList.length)].map((i) => `${rootNameSpace}.p`)
+  handList = [...gList,...cList,...pList]
+  const shuffle = ([...array]) => {
+    for (let i = array.length - 1; i >= 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
   }
-  return result
+  handList = shuffle(handList)
+  const sliceByNumber = (array, number) => {
+    const length = Math.ceil(array.length / number);
+    return new Array(length)
+      .fill()
+      .map((_, i) => array.slice(i * number, (i + 1) * number));
+  };
+  handList = sliceByNumber(handList,3)
+  for (let i = 0; i < accountList.length; i++) {
+    Array.prototype.countCertainElements = function(value){
+      return this.filter(arrayElement => arrayElement == value).length
+    }
+    txList = [new sym.Mosaic(
+      new sym.NamespaceId(`${rootNameSpace}.star`),
+      sym.UInt64.fromUint(star_amount)
+    )]
+
+    if(handList[i].countCertainElements(`${rootNameSpace}.g`) > 0 ){
+      txList.push(
+        new sym.Mosaic(
+          new sym.NamespaceId(`${rootNameSpace}.g`),
+          sym.UInt64.fromUint(handList[i].countCertainElements(`${rootNameSpace}.g`))
+        ),
+      )
+    }
+
+    if(handList[i].countCertainElements(`${rootNameSpace}.c`) > 0 ){
+      txList.push(
+        new sym.Mosaic(
+          new sym.NamespaceId(`${rootNameSpace}.c`),
+          sym.UInt64.fromUint(handList[i].countCertainElements(`${rootNameSpace}.c`))
+        ),
+      )
+    }
+
+    if(handList[i].countCertainElements(`${rootNameSpace}.p`) > 0 ){
+      txList.push(
+        new sym.Mosaic(
+          new sym.NamespaceId(`${rootNameSpace}.p`),
+          sym.UInt64.fromUint(handList[i].countCertainElements(`${rootNameSpace}.p`))
+        ),
+      )
+    }
+
+    tx = sym.TransferTransaction.create(
+      sym.Deadline.create(epochAdjustment),
+      sym.Address.createFromRawAddress(accountList[i]),
+      txList,
+      sym.PlainMessage.create('限定ジャンケン参加に必要な★と3枚カード'),
+      networkType
+    ).setMaxFee(100);
+
+    signedTx = alice.sign(tx,generationHash);
+    res = await txRepo.announce(signedTx).toPromise();
+  }
 }
-```
-
-
-```js
 ```
