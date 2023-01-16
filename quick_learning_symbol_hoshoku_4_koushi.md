@@ -397,7 +397,7 @@ statisticsHand = async function() { // モザイク情報を参照する関数�
 ```
 judgeHand
 ```js
-judgeHand = async function(aHand,aAddress,bHand,bAddress,alice,rootNameSpace,list_amount) {
+judgeHand = async function(aHand,aAddress,bHand,bAddress,alice,rootNameSpace) {
   //モザイクの所有確認(目視)
   accountList([aAddress,bAddress])
   console.log([aAddress,bAddress])
