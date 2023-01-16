@@ -145,7 +145,7 @@ mosaicChangeTx = sym.MosaicSupplyChangeTransaction.create(
     undefined,
     new sym.MosaicId("3A8416DB2D53xxxx"), //目視確認
     sym.MosaicSupplyChangeAction.Increase,
-    sym.UInt64.fromUint((list_amount -1)*star_amount),
+    sym.UInt64.fromUint((star_amount -1)*list_amount),
     networkType
 );
 aggregateTx = sym.AggregateTransaction.createComplete(
