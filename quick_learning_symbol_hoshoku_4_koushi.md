@@ -370,8 +370,8 @@ accountList = async function(addressList) { // モザイク情報を参照する
 ```
 statisticsHand
 ```js
-statisticsHand = async function(addressList,list_amount) { // モザイク情報を参照する関数を作成
-  for (const address of addressList){
+statisticsHand = async function() { // モザイク情報を参照する関数を作成
+  for (const address of [alice.address.plain()]){
     accountInfo = await accountRepo.getAccountInfo(sym.Address.createFromRawAddress(address)).toPromise();
     mosaicText = ""
     for (const mosaic of accountInfo.mosaics){
@@ -393,6 +393,7 @@ statisticsHand = async function(addressList,list_amount) { // モザイク情報
     console.log(`${mosaicText}`);
   };
 };
+
 ```
 judgeHand
 ```js
