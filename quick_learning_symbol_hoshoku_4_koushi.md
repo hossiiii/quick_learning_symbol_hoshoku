@@ -363,9 +363,9 @@ judgeHand
 ```js
 judgeHand = async function(aHand,aAddress,bHand,bAddress,alice,rootNameSpace) {
   //モザイクの所有確認(目視)
-  accountList([aAddress,bAddress,alice.Address.plain()])
-  console.log(`accountList([aAddress,bAddress,alice.Address.plain()])`)
-
+  accountList([aAddress,bAddress,alice.address.plain()])
+  console.log([aAddress,bAddress,alice.address.plain()])
+  console.log("accountList()")
   starNamespaceId = new sym.NamespaceId(`${rootNameSpace}.star`);
 
   //A手札回収トランザクション
