@@ -482,7 +482,37 @@ judgeHand = async function(aHand,aAddress,bHand,bAddress,alice,rootNameSpace) {
   txRepo.announce(signedTx).toPromise();
 }
 ```
+makeAccounts
+```js
+makeAccounts = async function(list_amount) {
+  newAccountList = []
+  for (let i = 0; i < list_amount; i++) {
+    bob = sym.Account.generateNewAccount(networkType);
+    bobPublicAccount = sym.PublicAccount.createFromPublicKey(
+      bob.publicKey,
+      networkType
+    );
+    bobAddress = sym.Address.createFromRawAddress(
+      bob.address.plain()
+    );
+    tx = sym.TransferTransaction.create(
+      sym.Deadline.create(epochAdjustment),
+      bobAddress,
+      [new sym.Mosaic(
+        new sym.NamespaceId(`symbol.xym`),
+        sym.UInt64.fromUint(10000000)
+      )],
+      sym.PlainMessage.create('new account for janken test'),
+      networkType
+    ).setMaxFee(100);
 
+    signedTx = alice.sign(tx,generationHash);
+    res = await txRepo.announce(signedTx).toPromise();
+    newAccountList.push(bob.address.plain())
+  }
+  console.log(newAccountList)
+}
+```
 shuffleCard
 ```js
 shuffleCard = async function(accountList,star_amount) {
