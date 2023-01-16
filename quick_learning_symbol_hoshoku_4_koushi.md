@@ -139,7 +139,7 @@ await txRepo.announce(signedTx).toPromise();
 getMosaicInfo(aliceAddress)
 ```
 
-後方２つの数を変更する
+後方から２つ目を変更する
 ```js
 mosaicChangeTx = sym.MosaicSupplyChangeTransaction.create(
     undefined,
