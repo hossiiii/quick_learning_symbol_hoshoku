@@ -379,6 +379,7 @@ statisticsHand = async function() { // モザイク情報を参照する関数�
       mosaicText = `${mosaicText} ${mosaicName}(${mosaicAmount})`
     };
     console.log(`${mosaicText}`);
+    console.log(`ジャンケンの手札がない部分の数値は${list_amount}`);
   };
 };
 
