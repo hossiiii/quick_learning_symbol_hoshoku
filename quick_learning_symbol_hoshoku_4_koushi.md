@@ -770,3 +770,42 @@ shuffleCard = async function(accountList,star_amount) {
   }
 }
 ```
+sendCard
+```js
+sendCard = async function(accountList,subNameSpace,message,alice) {
+  aggregateArray = []
+  for (let i = 0; i < accountList.length; i++) {
+    innerTx = sym.TransferTransaction.create(
+      sym.Deadline.create(epochAdjustment),
+      sym.Address.createFromRawAddress(accountList[i]),
+      [
+        new sym.Mosaic(
+          new sym.NamespaceId(`${rootNameSpace}.${subNameSpace}`),
+          sym.UInt64.fromUint(1)
+        ),
+      ],
+      sym.PlainMessage.create(message),
+      networkType
+    );
+    aggregateArray.push(
+      innerTx.toAggregate(alice.publicAccount),
+    )
+  }
+
+  ///アグリゲートトランザクションを作成する
+  aggregateTx = sym.AggregateTransaction.createComplete(
+    sym.Deadline.create(epochAdjustment),
+    aggregateArray,
+    networkType,[],
+  ).setMaxFeeForAggregate(100, 0);
+
+  ///管理者アカウントオブジェクトで署名を行う
+  signedTx = alice.sign(aggregateTx,generationHash);
+
+  //トランザクションをアナウンスする
+  txRepo.announce(signedTx).subscribe(x=>console.log(x));
+  transactionStatusUrl = NODE + "/transactionStatus/" + signedTx.hash
+  console.log(transactionStatusUrl);
+}
+
+```
