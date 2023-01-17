@@ -389,7 +389,12 @@ showAllCard = async function(addressList) { // モザイク情報を参照する
       }
       mosaicText = `${mosaicText} ${mosaicName}(${displayAmount})`
     };
-    console.log(`${accountInfo.address.address} ${accountInfo.publicKey} ${mosaicText}`);
+    accountText = address
+    try{
+      accountText = address + "(" + eval(accountText) + ")";
+    }catch(e){
+    }
+    console.log(`${accountText} ${accountInfo.publicKey} ${mosaicText}`);
   };
 };
 ```
@@ -404,19 +409,28 @@ statisticsHand = async function() { // モザイク情報を参照する関数�
       mosaicNames = await nsRepo.getMosaicsNames(
       [new sym.MosaicId(mosaic.id.toHex())]
       ).toPromise();
-      if(mosaicNames[0].names.length > 0){
-       mosaicName = mosaicNames[0].names[0].name;
-       if(mosaicName.slice(-1) == "g") mosaicName = "✊"
-       if(mosaicName.slice(-1) == "c") mosaicName = "✌️"
-       if(mosaicName.slice(-1) == "p") mosaicName = "✋"
-      }
       mosaicInfo = await mosaicRepo.getMosaic(mosaic.id).toPromise();
       mosaicAmount = list_amount - Number(mosaic.amount.toString());
-
-      mosaicText = `${mosaicText} ${mosaicName}(${mosaicAmount})`
+      if(mosaicNames[0].names.length > 0){
+       mosaicName = mosaicNames[0].names[0].name;
+       if(mosaicName.slice(-1) == "g") {
+        mosaicName = "✊"
+        mosaicText = `${mosaicText} ${mosaicName}(${mosaicAmount})`
+       }
+       if(mosaicName.slice(-1) == "c") {
+        mosaicName = "✌️"
+        mosaicText = `${mosaicText} ${mosaicName}(${mosaicAmount})`
+       }
+       if(mosaicName.slice(-1) == "p") {
+        mosaicName = "✋"
+        mosaicText = `${mosaicText} ${mosaicName}(${mosaicAmount})`
+       }
+      }
     };
+    console.log(`==============電光掲示板==============`);
     console.log(`${mosaicText}`);
     console.log(`ジャンケンの手札がない部分の数値は${list_amount}`);
+    console.log(`=====================================`);
   };
 };
 
@@ -426,7 +440,6 @@ judgeHand
 judgeHand = async function(aHand,aAddress,bHand,bAddress,alice,rootNameSpace) {
   //モザイクの所有確認(目視)
   showAllCard([aAddress,bAddress])
-  console.log([aAddress,bAddress])
   starNamespaceId = new sym.NamespaceId(`${rootNameSpace}.star`);
 
   //A手札回収トランザクション
@@ -484,6 +497,15 @@ judgeHand = async function(aHand,aAddress,bHand,bAddress,alice,rootNameSpace) {
   aggregateArray = []
 
   if(aHand == "g" && bHand == "c"){  //Aの勝ちパターン
+    try{
+      console.log("--------------------------------")
+      console.log("勝者　" + eval(aAddress))
+      console.log("--------------------------------")
+    }catch(e){
+      console.log("--------------------------------")
+      console.log("勝者　" + aAddress)
+      console.log("--------------------------------")
+    }
     aggregateArray = [
       revAhandTx.toAggregate(alice.publicAccount),
       revBhandTx.toAggregate(alice.publicAccount),
@@ -491,6 +513,15 @@ judgeHand = async function(aHand,aAddress,bHand,bAddress,alice,rootNameSpace) {
       sendAstarTx.toAggregate(alice.publicAccount),
     ]
   }else if(aHand == "c" && bHand == "p"){  //Aの勝ちパターン
+    try{
+      console.log("--------------------------------")
+      console.log("勝者　" + eval(aAddress))
+      console.log("--------------------------------")
+    }catch(e){
+      console.log("--------------------------------")
+      console.log("勝者　" + aAddress)
+      console.log("--------------------------------")
+    }
     aggregateArray = [
       revAhandTx.toAggregate(alice.publicAccount),
       revBhandTx.toAggregate(alice.publicAccount),
@@ -498,6 +529,15 @@ judgeHand = async function(aHand,aAddress,bHand,bAddress,alice,rootNameSpace) {
       sendAstarTx.toAggregate(alice.publicAccount),
     ]
   }else if(aHand == "p" && bHand == "g"){  //Aの勝ちパターン
+    try{
+      console.log("--------------------------------")
+      console.log("勝者　" + eval(aAddress))
+      console.log("--------------------------------")
+    }catch(e){
+      console.log("--------------------------------")
+      console.log("勝者　" + aAddress)
+      console.log("--------------------------------")
+    }
     aggregateArray = [
       revAhandTx.toAggregate(alice.publicAccount),
       revBhandTx.toAggregate(alice.publicAccount),
@@ -505,6 +545,15 @@ judgeHand = async function(aHand,aAddress,bHand,bAddress,alice,rootNameSpace) {
       sendAstarTx.toAggregate(alice.publicAccount),
     ]
   }else if(aHand == "c" && bHand == "g"){  //Bの勝ちパターン
+    try{
+      console.log("--------------------------------")
+      console.log("勝者　" + eval(bAddress))
+      console.log("--------------------------------")
+    }catch(e){
+      console.log("--------------------------------")
+      console.log("勝者　" + bAddress)
+      console.log("--------------------------------")
+    }
     aggregateArray = [
       revAhandTx.toAggregate(alice.publicAccount),
       revBhandTx.toAggregate(alice.publicAccount),
@@ -512,6 +561,15 @@ judgeHand = async function(aHand,aAddress,bHand,bAddress,alice,rootNameSpace) {
       sendBstarTx.toAggregate(alice.publicAccount),
     ]
   }else if(aHand == "p" && bHand == "c"){  //Bの勝ちパターン
+    try{
+      console.log("--------------------------------")
+      console.log("勝者　" + eval(bAddress))
+      console.log("--------------------------------")
+    }catch(e){
+      console.log("--------------------------------")
+      console.log("勝者　" + bAddress)
+      console.log("--------------------------------")
+    }
     aggregateArray = [
       revAhandTx.toAggregate(alice.publicAccount),
       revBhandTx.toAggregate(alice.publicAccount),
@@ -519,6 +577,15 @@ judgeHand = async function(aHand,aAddress,bHand,bAddress,alice,rootNameSpace) {
       sendBstarTx.toAggregate(alice.publicAccount),
     ]
   }else if(aHand == "g" && bHand == "p"){  //Bの勝ちパターン
+    try{
+      console.log("--------------------------------")
+      console.log("勝者　" + eval(bAddress))
+      console.log("--------------------------------")
+    }catch(e){
+      console.log("--------------------------------")
+      console.log("勝者　" + bAddress)
+      console.log("--------------------------------")
+    }
     aggregateArray = [
       revAhandTx.toAggregate(alice.publicAccount),
       revBhandTx.toAggregate(alice.publicAccount),
@@ -526,6 +593,15 @@ judgeHand = async function(aHand,aAddress,bHand,bAddress,alice,rootNameSpace) {
       sendBstarTx.toAggregate(alice.publicAccount),
     ]
   }else{  //あいこパターン
+    try{
+      console.log("--------------------------------")
+      console.log("あいこ　" + eval(aAddress) + " = " + eval(bAddress))
+      console.log("--------------------------------")
+    }catch(e){
+      console.log("--------------------------------")
+      console.log("あいこ　" + aAddress + " = " + bAddress)
+      console.log("--------------------------------")
+    }
     aggregateArray = [
       revAhandTx.toAggregate(alice.publicAccount),
       revBhandTx.toAggregate(alice.publicAccount),
@@ -544,7 +620,6 @@ judgeHand = async function(aHand,aAddress,bHand,bAddress,alice,rootNameSpace) {
   txRepo.announce(signedTx).toPromise();
   const transactionStatusUrl = NODE + "/transactionStatus/" + signedTx.hash
   console.log(transactionStatusUrl);
-
 }
 
 ```
