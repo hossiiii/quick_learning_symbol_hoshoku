@@ -80,7 +80,7 @@ console.log(aliceAddress);
 ```
 ### 4.Aliceアカウントへ500XYMを補充（手数料に必要）
 ```js
-`https://testnet.symbol.tools/?amount=500&recipient=${aliceAddress.plain()}` //以下リンクをクリックしてCLAIM！を実行
+`https://testnet.symbol.tools/?amount=50&recipient=${aliceAddress.plain()}` //以下リンクをクリックしてCLAIM！を実行
 ```
 # アカウント情報確認
 ### 5.Aliceアカウント情報をSymbolエクスプローラーで表示する
