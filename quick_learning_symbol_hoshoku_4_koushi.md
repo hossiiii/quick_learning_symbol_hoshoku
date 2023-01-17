@@ -561,6 +561,7 @@ makeAccounts = async function(list_amount) {
     bobAddress = sym.Address.createFromRawAddress(
       bob.address.plain()
     );
+    console.log(bob.privateKey);
     tx = sym.TransferTransaction.create(
       sym.Deadline.create(epochAdjustment),
       bobAddress,
