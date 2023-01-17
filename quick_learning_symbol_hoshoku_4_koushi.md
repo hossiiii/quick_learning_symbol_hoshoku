@@ -619,6 +619,51 @@ judgeHand = async function(aHand,aAddress,bHand,bAddress,alice,rootNameSpace) {
 }
 
 ```
+revokeStar
+```js
+revokeStar = async function(address,alice) {
+  //モザイクの所有確認(目視)
+  showAllCard([address])
+  starNamespaceId = new sym.NamespaceId(`${rootNameSpace}.star`);
+
+  //Star手札回収トランザクション
+  revStarTx = sym.MosaicSupplyRevocationTransaction.create(
+    sym.Deadline.create(epochAdjustment),
+    sym.Address.createFromRawAddress(address),
+    new sym.Mosaic(starNamespaceId, sym.UInt64.fromUint(1)),
+    networkType
+  );
+
+  aggregateArray = []
+  try{
+    console.log("--------------------------------")
+    console.log("星を回収します　" + eval(address))
+    console.log("--------------------------------")
+  }catch(e){
+    console.log("--------------------------------")
+    console.log("星を回収します　" + address)
+    console.log("--------------------------------")
+  }
+  aggregateArray = [
+    revStarTx.toAggregate(alice.publicAccount),
+  ]
+
+  aggregateTx = sym.AggregateTransaction.createComplete(
+    sym.Deadline.create(epochAdjustment),
+    aggregateArray,
+    networkType,[],
+  ).setMaxFeeForAggregate(100, 0); //最低手数料はノードの最低手数料設定の分布を見て中央値付近の30に変更
+
+  ///管理者アカウントオブジェクトで署名を行う
+  signedTx = alice.sign(aggregateTx,generationHash);
+
+  //トランザクションをアナウンスする
+  txRepo.announce(signedTx).toPromise();
+  const transactionStatusUrl = NODE + "/transactionStatus/" + signedTx.hash
+  console.log(transactionStatusUrl);
+}
+```
+
 makeAccounts
 ```js
 makeAccounts = async function(list_amount) {
