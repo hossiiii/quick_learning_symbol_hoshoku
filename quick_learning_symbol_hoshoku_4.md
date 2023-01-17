@@ -78,7 +78,7 @@ aliceAddress = sym.Address.createFromRawAddress(
 );
 console.log(aliceAddress);
 ```
-### 4.Aliceアカウントへ500XYMを補充（手数料に必要）
+### 4.Aliceアカウントへ50XYMを補充（手数料に必要）
 ```js
 `https://testnet.symbol.tools/?amount=50&recipient=${aliceAddress.plain()}` //以下リンクをクリックしてCLAIM！を実行
 ```
@@ -92,4 +92,14 @@ console.log(aliceAddress);
 
 https://github.com/xembook/quick_learning_symbol/blob/main/08_lock.md
 
+bobへの署名要求を可視化するために、最初のbobアカウントを作成後に入金、エクスプローラー表示を行なっておく
+
+### 6.Bobアカウントへ10XYMを補充（手数料に必要）
+```js
+`https://testnet.symbol.tools/?amount=50&recipient=${bob.address.plain()}` //以下リンクをクリックしてCLAIM！を実行
+```
+### 7.Bobアカウント情報をSymbolエクスプローラーで表示する
+```js
+`https://testnet.symbol.fyi/accounts/${bob.address.plain()}` //以下リンクをクリックしてアカウント情報を別タブで表示しておく
+```
 
