@@ -346,12 +346,8 @@ await txRepo.announce(signedTx).toPromise();
 # ヘルパー関数
 アカウントアドレスとメタバース名のMAPを登録しておく
 ```js
-accountMap = {
-  "accountAddress1":"name1",
-  "accountAddress2":"name2",
-  "accountAddress3":"name3",
-  "accountAddress4":"name4",  
-}
+accountAddress1 = "name1"
+accountAddress2 = "name2"
 ```
 
 showAllCard
