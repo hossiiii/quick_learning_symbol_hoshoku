@@ -165,13 +165,14 @@ await txRepo.announce(signedLockTx).toPromise();
 ```
 
 ハッシュロックTXがブロックチェーン上で認識された後にアグリゲートボンデッドトランザクションをアナウンスします
-ハッシュロックTXはエクスプローラーのpartialで確認するか以下コマンドでエラーが発生しなければ成功しています。
+以下コマンドでエラーが発生しなければ成功しています。もしくはエクスプローラーのトランザクション履歴でも確認ができます。
 
 ```js
 await txRepo.getTransaction(signedLockTx.hash,sym.TransactionGroup.Confirmed).toPromise();
 ```
 
 ### 8.アグリゲートボンデッドトランザクションのアナウンス
+ハッシュロックTXがブロックチェーン上で認識された後に実行しないと承認されないので注意して下さい。
 ```js
 await txRepo.announceAggregateBonded(signedAggregateTx).toPromise();
 ```
