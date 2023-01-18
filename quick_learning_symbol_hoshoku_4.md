@@ -92,7 +92,8 @@ console.log(aliceAddress);
 
 https://github.com/xembook/quick_learning_symbol/blob/main/08_lock.md
 
-8章が終わったら、補足として講師に対してハッシュロックトランザクションを行い署名が成立するか試してみる
+8章が終わったら、講師に対してハッシュロックトランザクションを行い
+わずかなxymと勉強会の修了書を交換する要求を出して下しさい。
 
 ### 6.アグリゲートボンデッドトランザクションの作成
 ```js
@@ -112,7 +113,7 @@ tx1 = sym.TransferTransaction.create(
         sym.UInt64.fromUint(1)
       )
     ],
-    sym.EmptyMessage, //メッセージ無し
+    sym.PlainMessage.create('４回目の修了書を下さい'), //メッセージ
     networkType
 );
 
@@ -121,11 +122,11 @@ tx2 = sym.TransferTransaction.create(
     alice.address,  //ターゲットからの送信
     [
       new sym.Mosaic(
-        new sym.NamespaceId("symbol.xym"), //XYM
+        new sym.NamespaceId("mit.certificate.quick_learning_symbol_lesson4"), //４回目の修了書
         sym.UInt64.fromUint(2)
       )
     ],
-    sym.PlainMessage.create('倍返しだ'), //メッセージ
+    sym.PlainMessage.create('４回目の受講お疲れ様でした'), //メッセージ
     networkType
 );
 
@@ -176,8 +177,9 @@ await txRepo.getTransaction(signedLockTx.hash,sym.TransactionGroup.Confirmed).to
 ```js
 await txRepo.announceAggregateBonded(signedAggregateTx).toPromise();
 ```
-アグリゲートボンデッドトランザクションをアナウンスしないと、相手への署名要求が発生しません。
-アナウンス後、相手の署名が実行されるとアグリゲートトランザクションの内容が実行されます。
+アグリゲートボンデッドトランザクションをアナウンスしないと、ロックしただけで相手への署名要求が発生しません。
+相手の未署名の場合や自分宛の署名要求はエクスプローラーのトランザクション履歴でフィルターをRecentからPartialに変えて検索して下さい。
+相手の署名が完了すると、アグリゲートトランザクションが実行されます。
 
 # 限定ジャンケンの準備
 会場に行く前に、限定ジャンケンの準備をしておきます
