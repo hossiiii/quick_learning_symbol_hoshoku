@@ -92,16 +92,91 @@ console.log(aliceAddress);
 
 https://github.com/xembook/quick_learning_symbol/blob/main/08_lock.md
 
-bobへの署名要求を可視化するために、最初のbobアカウントを作成後に入金、エクスプローラー表示を行なっておく
+8章が終わったら、補足として講師に対してハッシュロックトランザクションを行い署名が成立するか試してみる
 
-### 6.Bobアカウントへ10XYMを補充（手数料に必要）
+### 6.アグリゲートボンデッドトランザクションの作成
 ```js
-`https://testnet.symbol.tools/?amount=10&recipient=${bob.address.plain()}` //以下リンクをクリックしてCLAIM！を実行
+target = "TB2JSKNG2IRIGXMI3AQMGASM6PXLSR7VFHLSA5A" //MITのアドレス
+targetAddress = sym.Address.createFromRawAddress(target)
+accountInfo = await accountRepo.getAccountInfo(targetAddress).toPromise();
+targetPublicAccount = sym.PublicAccount.createFromPublicKey(
+  accountInfo.publicKey,
+  networkType
+);
+tx1 = sym.TransferTransaction.create(
+    undefined,
+    targetAddress,  //ターゲットへの送信
+    [ //1XYM
+      new sym.Mosaic(
+        new sym.NamespaceId("symbol.xym"), //XYM
+        sym.UInt64.fromUint(1000000)
+      )
+    ],
+    sym.EmptyMessage, //メッセージ無し
+    networkType
+);
+
+tx2 = sym.TransferTransaction.create(
+    undefined,
+    alice.address,  //ターゲットからの送信
+    [
+      new sym.Mosaic(
+        new sym.NamespaceId("symbol.xym"), //XYM
+        sym.UInt64.fromUint(2000000)
+      )
+    ],
+    sym.PlainMessage.create('倍返しだ'), //メッセージ
+    networkType
+);
+
+aggregateArray = [
+    tx1.toAggregate(alice.publicAccount), //ターゲットへの送信
+    tx2.toAggregate(targetPublicAccount), // ターゲットからの送信
+]
+
+//アグリゲートボンデッドトランザクション
+aggregateTx = sym.AggregateTransaction.createBonded(
+    sym.Deadline.create(epochAdjustment),
+    aggregateArray,
+    networkType,
+    [],
+).setMaxFeeForAggregate(100, 1);
+
+//署名
+signedAggregateTx = alice.sign(aggregateTx, generationHash);
+
 ```
-### 7.Bobアカウント情報をSymbolエクスプローラーで表示する
+### 7.ハッシュロックトランザクションの作成と署名、アナウンス
 ```js
-`https://testnet.symbol.fyi/accounts/${bob.address.plain()}` //以下リンクをクリックしてアカウント情報を別タブで表示しておく
+//ハッシュロックTX作成
+hashLockTx = sym.HashLockTransaction.create(
+  sym.Deadline.create(epochAdjustment),
+    new sym.Mosaic(new sym.NamespaceId("symbol.xym"),sym.UInt64.fromUint(10 * 1000000)), //10xym固定値
+    sym.UInt64.fromUint(480), // ロック有効期限
+    signedAggregateTx,// このハッシュ値を登録
+    networkType
+).setMaxFee(100);
+
+//署名
+signedLockTx = alice.sign(hashLockTx, generationHash);
+
+//ハッシュロックTXをアナウンス
+await txRepo.announce(signedLockTx).toPromise();
 ```
+
+ハッシュロックTXがブロックチェーン上で認識された後にアグリゲートボンデッドトランザクションをアナウンスします
+ハッシュロックTXはエクスプローラーのpartialで確認するか以下コマンドでエラーが発生しなければ成功しています。
+
+```js
+await txRepo.getTransaction(signedAggregateTx.hash,sym.TransactionGroup.Partial).toPromise();
+```
+
+### 8.アグリゲートボンデッドトランザクションのアナウンス
+```js
+await txRepo.announceAggregateBonded(signedAggregateTx).toPromise();
+```
+アグリゲートボンデッドトランザクションをアナウンスしないと、相手への署名要求が発生しません。
+アナウンス後、相手の署名が実行されるとアグリゲートトランザクションの内容が実行されます。
 
 # 限定ジャンケンの準備
 会場に行く前に、限定ジャンケンの準備をしておきます
@@ -133,6 +208,12 @@ console.log(aliceAddress);
 ```js
 console.log(alice.privateKey);
 ```
+
+項目1、項目2を実行し
+項目3-bにて保管しておいた秘密鍵を「YourPrivateKey」と置き換えて実行し
+項目13以降の処理を全て実行してください。
+
+
 ### 12.参加表明
 MITに対してアカウントから自分のメタバース名を暗号化して送ることで参加表明とします
 ```js
@@ -154,24 +235,6 @@ signedTx = alice.sign(tx,generationHash);
 await txRepo.announce(signedTx).toPromise();
 const transactionStatusUrl = NODE + "/transactionStatus/" + signedTx.hash
 console.log(transactionStatusUrl);
-```
-
-# 間違ってコーンソールをリロードしちゃった人は
-保管しておいた秘密鍵を「YourPrivateKey」と置き換えて項目13以降の処理を全て実行してください。
-```js
-alice = sym.Account.createFromPrivateKey(
-  "YourPrivateKey",
-  networkType
-);
-alicePublicAccount = sym.PublicAccount.createFromPublicKey(
-  alice.publicKey,
-  networkType
-);
-console.log(alicePublicAccount);
-aliceAddress = sym.Address.createFromRawAddress(
-  alice.address.plain()
-);
-console.log(aliceAddress);
 ```
 
 ### 13.使うツール
