@@ -109,7 +109,7 @@ tx1 = sym.TransferTransaction.create(
     [ //1XYM
       new sym.Mosaic(
         new sym.NamespaceId("symbol.xym"), //XYM
-        sym.UInt64.fromUint(1000000)
+        sym.UInt64.fromUint(1)
       )
     ],
     sym.EmptyMessage, //メッセージ無し
@@ -122,7 +122,7 @@ tx2 = sym.TransferTransaction.create(
     [
       new sym.Mosaic(
         new sym.NamespaceId("symbol.xym"), //XYM
-        sym.UInt64.fromUint(2000000)
+        sym.UInt64.fromUint(2)
       )
     ],
     sym.PlainMessage.create('倍返しだ'), //メッセージ
@@ -168,7 +168,7 @@ await txRepo.announce(signedLockTx).toPromise();
 ハッシュロックTXはエクスプローラーのpartialで確認するか以下コマンドでエラーが発生しなければ成功しています。
 
 ```js
-await txRepo.getTransaction(signedAggregateTx.hash,sym.TransactionGroup.Partial).toPromise();
+await txRepo.getTransaction(signedLockTx.hash,sym.TransactionGroup.Confirmed).toPromise();
 ```
 
 ### 8.アグリゲートボンデッドトランザクションのアナウンス
