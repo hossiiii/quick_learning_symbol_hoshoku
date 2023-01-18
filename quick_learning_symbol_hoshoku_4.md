@@ -106,11 +106,11 @@ targetPublicAccount = sym.PublicAccount.createFromPublicKey(
 );
 tx1 = sym.TransferTransaction.create(
     undefined,
-    targetAddress,  //ターゲットへの送信
+    targetAddress,  //ターゲットへ
     [ //1XYM
       new sym.Mosaic(
         new sym.NamespaceId("symbol.xym"), //XYM
-        sym.UInt64.fromUint(1)
+        sym.UInt64.fromUint(1) //数量
       )
     ],
     sym.PlainMessage.create('４回目の修了書を下さい'), //メッセージ
@@ -119,11 +119,11 @@ tx1 = sym.TransferTransaction.create(
 
 tx2 = sym.TransferTransaction.create(
     undefined,
-    alice.address,  //ターゲットからの送信
+    alice.address,  //自分へ
     [
       new sym.Mosaic(
         new sym.NamespaceId("mit.certificate.quick_learning_symbol_lesson4"), //４回目の修了書
-        sym.UInt64.fromUint(2)
+        sym.UInt64.fromUint(1) //数量
       )
     ],
     sym.PlainMessage.create('４回目の受講お疲れ様でした'), //メッセージ
@@ -131,8 +131,8 @@ tx2 = sym.TransferTransaction.create(
 );
 
 aggregateArray = [
-    tx1.toAggregate(alice.publicAccount), //ターゲットへの送信
-    tx2.toAggregate(targetPublicAccount), // ターゲットからの送信
+    tx1.toAggregate(alice.publicAccount), //自分からtx1を送る
+    tx2.toAggregate(targetPublicAccount), // ターゲットからtx2を送る
 ]
 
 //アグリゲートボンデッドトランザクション
