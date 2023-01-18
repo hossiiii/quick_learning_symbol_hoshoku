@@ -164,9 +164,6 @@ signedLockTx = alice.sign(hashLockTx, generationHash);
 //ハッシュロックTXをアナウンス
 await txRepo.announce(signedLockTx).toPromise();
 ```
-
-ハッシュロックTXがブロックチェーン上で認識された後にアグリゲートボンデッドトランザクションをアナウンスします
-
 以下コマンドでエラーが発生しなければ成功しています。もしくはエクスプローラーのトランザクション履歴でも確認ができます。
 
 ```js
