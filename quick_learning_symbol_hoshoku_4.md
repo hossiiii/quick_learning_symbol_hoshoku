@@ -103,3 +103,75 @@ bobへの署名要求を可視化するために、最初のbobアカウント�
 `https://testnet.symbol.fyi/accounts/${bob.address.plain()}` //以下リンクをクリックしてアカウント情報を別タブで表示しておく
 ```
 
+# 限定ジャンケンの準備
+会場に行く前に、限定ジャンケンの準備をしておきます
+
+### 8.参加用の新規Aliceアカウント,Alice公開鍵クラス,Aliceアドレスクラスの作成
+```js
+alice = sym.Account.generateNewAccount(networkType);
+alicePublicAccount = sym.PublicAccount.createFromPublicKey(
+  alice.publicKey,
+  networkType
+);
+console.log(alicePublicAccount);
+aliceAddress = sym.Address.createFromRawAddress(
+  alice.address.plain()
+);
+console.log(aliceAddress);
+```
+### 9.参加用のAliceアカウントへ250XYMを補充（手数料に必要）
+```js
+`https://testnet.symbol.tools/?amount=250&recipient=${aliceAddress.plain()}` //以下リンクをクリックしてCLAIM！を実行
+```
+### 10.参加用のAliceアカウント情報をSymbolエクスプローラーで表示する
+```js
+`https://testnet.symbol.fyi/accounts/${aliceAddress.plain()}` //以下リンクをクリックしてアカウント情報を別タブで表示しておく
+```
+### 11.秘密鍵を出力し保管しておく
+間違ってコンソールをリロードしてしまうと、アカウントが消えてしまいます。
+そのため秘密鍵を出力し、別途テキストなどに貼り付けておきます。
+```js
+console.log(alice.privateKey);
+```
+### 12.参加表明
+MITに対してアカウントから自分のメタバース名を暗号化して送ることで参加表明とします
+```js
+address = "TB2JSKNG2IRIGXMI3AQMGASM6PXLSR7VFHLSA5A"
+accountInfo = await accountRepo.getAccountInfo(sym.Address.createFromRawAddress(address)).toPromise();
+publicAccount = sym.PublicAccount.createFromPublicKey(
+  accountInfo.publicKey,
+  networkType
+);
+encMsg = alice.encryptMessage("自分のメタバース上の名前を入力",publicAccount);
+tx = sym.TransferTransaction.create(
+  sym.Deadline.create(epochAdjustment), //Deadline:有効期限
+  sym.Address.createFromRawAddress(address),
+  [],
+  encMsg, //メッセージ
+  networkType //テストネット・メインネット区分
+).setMaxFee(100); //手数料
+signedTx = alice.sign(tx,generationHash);
+await txRepo.announce(signedTx).toPromise();
+const transactionStatusUrl = NODE + "/transactionStatus/" + signedTx.hash
+console.log(transactionStatusUrl);
+```
+
+# 間違ってコーンソールをリロードしちゃった人は
+保管しておいた秘密鍵を「YourPrivateKey」と置き換えて項目13以降の処理を全て実行してください。
+```js
+alice = sym.Account.createFromPrivateKey(
+  "YourPrivateKey",
+  networkType
+);
+alicePublicAccount = sym.PublicAccount.createFromPublicKey(
+  alice.publicKey,
+  networkType
+);
+console.log(alicePublicAccount);
+aliceAddress = sym.Address.createFromRawAddress(
+  alice.address.plain()
+);
+console.log(aliceAddress);
+```
+
+### 13.使うツール
