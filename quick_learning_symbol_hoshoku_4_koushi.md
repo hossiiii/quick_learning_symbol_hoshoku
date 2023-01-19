@@ -49,19 +49,6 @@ getMosaicInfo = async function(userAddress) { // モザイク情報を参照す�
  });
 };
 ```
-### 3-a.新規Aliceアカウント,Alice公開鍵クラス,Aliceアドレスクラスの作成
-```js
-alice = sym.Account.generateNewAccount(networkType);
-alicePublicAccount = sym.PublicAccount.createFromPublicKey(
-  alice.publicKey,
-  networkType
-);
-console.log(alicePublicAccount);
-aliceAddress = sym.Address.createFromRawAddress(
-  alice.address.plain()
-);
-console.log(aliceAddress);
-```
 ### 3-b.Aliceアカウントのインポート,Alice公開鍵クラス,Aliceアドレスクラスの作成
 ```js
 alice = sym.Account.createFromPrivateKey(
@@ -79,9 +66,16 @@ aliceAddress = sym.Address.createFromRawAddress(
 console.log(aliceAddress);
 ```
 
-### 3-c.署名したアドレスに対して修了証を送る
+# アカウント情報確認
+### 4.Aliceアカウント情報をSymbolエクスプローラーで表示する
+```js
+`https://testnet.symbol.fyi/accounts/${aliceAddress.plain()}` //以下リンクをクリックしてアカウント情報を別タブで表示しておく
+```
+
+### 5.署名したアドレスに対して修了証を送る * 署名要求の数分
 ```js
 target = "署名要求のアドレス" //受講者のアドレス
+署名要求のアドレス = メタバース名 //後で使うためにここで登録しておく
 targetAddress = sym.Address.createFromRawAddress(target)
 accountInfo = await accountRepo.getAccountInfo(targetAddress).toPromise();
 targetPublicAccount = sym.PublicAccount.createFromPublicKey(
@@ -160,84 +154,27 @@ await txRepo.getTransaction(signedLockTx.hash,sym.TransactionGroup.Confirmed).to
 await txRepo.announceAggregateBonded(signedAggregateTx).toPromise();
 ```
 
-### 4.Aliceアカウントへ500XYMを補充（手数料に必要）
+# 参加者人数の確定とチャットでお知らせ
+リスト用の関数を作成しチャットで通知する
 ```js
-`https://testnet.symbol.tools/?amount=500&recipient=${aliceAddress.plain()}` //以下リンクをクリックしてCLAIM！を実行
-```
-# アカウント情報確認
-### 5.Aliceアカウント情報をSymbolエクスプローラーで表示する
-```js
-`https://testnet.symbol.fyi/accounts/${aliceAddress.plain()}` //以下リンクをクリックしてアカウント情報を別タブで表示しておく
+allAccountList = ['a', 'b', 'c','d']
 ```
 
-# ウォレットと連携
-秘密鍵をウォレットにインポートしておく
+# モザイク数の変更
+最終人数の確定後、追加分の値を入力し数の変更を行う
 ```js
-console.log(alice.privateKey);
-```
-
-# メッセージを受信
-暗号化メッセージで、参加者からメタバース名を送ってもらう。
-
-
-# モザイク作成とネームスペース割り当て
-参加者数とモザイク数(暗号メッセージが全て届いてから数をカウントする)
-```js
+rootNameSpace = "mit"
 list_amount = 参加人数
 star_amount = 3
 ```
 
-手札モザイクの作成*4
-```js
-supplyMutable = true; //供給量変更の可否
-transferable = true; //第三者への譲渡可否
-restrictable = false; //制限設定の可否
-revokable = true; //発行者からの還収可否
-
-//モザイク定義
-nonce = sym.MosaicNonce.createRandom();
-mosaicDefTx = sym.MosaicDefinitionTransaction.create(
-    undefined, 
-    nonce,
-    sym.MosaicId.createFromNonce(nonce, alice.address), //モザイクID
-    sym.MosaicFlags.create(supplyMutable, transferable, restrictable, revokable),
-    0,//divisibility:可分性
-    sym.UInt64.fromUint(0), //duration:有効期限
-    networkType
-);
-//モザイク変更
-mosaicChangeTx = sym.MosaicSupplyChangeTransaction.create(
-    undefined,
-    mosaicDefTx.mosaicId,
-    sym.MosaicSupplyChangeAction.Increase,
-    sym.UInt64.fromUint(list_amount),
-    networkType
-);
-aggregateTx = sym.AggregateTransaction.createComplete(
-    sym.Deadline.create(epochAdjustment),
-    [
-      mosaicDefTx.toAggregate(alice.publicAccount),
-      mosaicChangeTx.toAggregate(alice.publicAccount),
-    ],
-    networkType,[],
-).setMaxFeeForAggregate(100, 0);
-
-signedTx = alice.sign(aggregateTx,generationHash);
-await txRepo.announce(signedTx).toPromise();
-```
-
-一度モザイクを確認し、後方を確認
-```js
-getMosaicInfo(aliceAddress)
-```
-
-後方を変更する
+gの数を変更する
 ```js
 mosaicChangeTx = sym.MosaicSupplyChangeTransaction.create(
     undefined,
-    new sym.MosaicId("3A8416DB2D53xxxx"), //目視確認
+    new sym.MosaicId("01A2933F867CF358"), //目視確認
     sym.MosaicSupplyChangeAction.Increase,
-    sym.UInt64.fromUint((star_amount -1)*list_amount),
+    sym.UInt64.fromUint(list_amount -1),
     networkType
 );
 aggregateTx = sym.AggregateTransaction.createComplete(
@@ -253,178 +190,79 @@ await txRepo.announce(signedTx).toPromise();
 
 ```
 
-ルートネームスペースの入力
+cの数を変更する
 ```js
-rootNameSpace = "★ここにルートネームスペース"
-```
-
-ネームスペースの作成
-```js
-tx = sym.NamespaceRegistrationTransaction.createRootNamespace(
-    sym.Deadline.create(epochAdjustment),
-    rootNameSpace,
-    sym.UInt64.fromUint(86400),
+mosaicChangeTx = sym.MosaicSupplyChangeTransaction.create(
+    undefined,
+    new sym.MosaicId("3D7B7B217981A360"), //目視確認
+    sym.MosaicSupplyChangeAction.Increase,
+    sym.UInt64.fromUint(list_amount -1),
     networkType
-).setMaxFee(100);
-signedTx = alice.sign(tx,generationHash);
+);
+aggregateTx = sym.AggregateTransaction.createComplete(
+    sym.Deadline.create(epochAdjustment),
+    [
+      mosaicChangeTx.toAggregate(alice.publicAccount),
+    ],
+    networkType,[],
+).setMaxFeeForAggregate(100, 0);
+
+signedTx = alice.sign(aggregateTx,generationHash);
 await txRepo.announce(signedTx).toPromise();
+
 ```
 
-gサブネームスペースの作成
+pの数を変更する
 ```js
-subNamespaceTx = sym.NamespaceRegistrationTransaction.createSubNamespace(
-    sym.Deadline.create(epochAdjustment),
-    "g",  //作成するサブネームスペース
-    rootNameSpace, //紐づけたいルートネームスペース
-    networkType,
-).setMaxFee(100);
-signedTx = alice.sign(subNamespaceTx,generationHash);
-await txRepo.announce(signedTx).toPromise();
-```
-
-cサブネームスペースの作成
-```js
-subNamespaceTx = sym.NamespaceRegistrationTransaction.createSubNamespace(
-    sym.Deadline.create(epochAdjustment),
-    "c",  //作成するサブネームスペース
-    rootNameSpace, //紐づけたいルートネームスペース
-    networkType,
-).setMaxFee(100);
-signedTx = alice.sign(subNamespaceTx,generationHash);
-await txRepo.announce(signedTx).toPromise();
-```
-
-pサブネームスペースの作成
-```js
-subNamespaceTx = sym.NamespaceRegistrationTransaction.createSubNamespace(
-    sym.Deadline.create(epochAdjustment),
-    "p",  //作成するサブネームスペース
-    rootNameSpace, //紐づけたいルートネームスペース
-    networkType,
-).setMaxFee(100);
-signedTx = alice.sign(subNamespaceTx,generationHash);
-await txRepo.announce(signedTx).toPromise();
-```
-
-starサブネームスペースの作成
-```js
-subNamespaceTx = sym.NamespaceRegistrationTransaction.createSubNamespace(
-    sym.Deadline.create(epochAdjustment),
-    "star",  //作成するサブネームスペース
-    rootNameSpace, //紐づけたいルートネームスペース
-    networkType,
-).setMaxFee(100);
-signedTx = alice.sign(subNamespaceTx,generationHash);
-await txRepo.announce(signedTx).toPromise();
-```
-
-ネームスペースのリンク
-```js
-namespaceId = new sym.NamespaceId(rootNameSpace);
-address = sym.Address.createFromRawAddress(alice.address.plain());
-tx = sym.AliasTransaction.createForAddress(
-    sym.Deadline.create(epochAdjustment),
-    sym.AliasAction.Link,
-    namespaceId,
-    address,
+mosaicChangeTx = sym.MosaicSupplyChangeTransaction.create(
+    undefined,
+    new sym.MosaicId("5B82332919883CE0"), //目視確認
+    sym.MosaicSupplyChangeAction.Increase,
+    sym.UInt64.fromUint(list_amount -1),
     networkType
-).setMaxFee(100);
-signedTx = alice.sign(tx,generationHash);
-await txRepo.announce(signedTx).toPromise();
-```
-
-モザイク確認しておく
-```js
-getMosaicInfo(alice.address)
-```
-
-gサブネームスペースのリンク
-```js
-namespaceId = new sym.NamespaceId(`${rootNameSpace}.g`);
-mosaicId = new sym.MosaicId("3A8416DB2D53xxxx"); //目視確認
-tx = sym.AliasTransaction.createForMosaic(
+);
+aggregateTx = sym.AggregateTransaction.createComplete(
     sym.Deadline.create(epochAdjustment),
-    sym.AliasAction.Link,
-    namespaceId,
-    mosaicId,
-    networkType
-).setMaxFee(100);
-signedTx = alice.sign(tx,generationHash);
+    [
+      mosaicChangeTx.toAggregate(alice.publicAccount),
+    ],
+    networkType,[],
+).setMaxFeeForAggregate(100, 0);
+
+signedTx = alice.sign(aggregateTx,generationHash);
 await txRepo.announce(signedTx).toPromise();
+
 ```
 
-cサブネームスペースのリンク
+スターの数を変更する
 ```js
-namespaceId = new sym.NamespaceId(`${rootNameSpace}.c`);
-mosaicId = new sym.MosaicId("3A8416DB2D53xxxx"); //目視確認
-tx = sym.AliasTransaction.createForMosaic(
-    sym.Deadline.create(epochAdjustment),
-    sym.AliasAction.Link,
-    namespaceId,
-    mosaicId,
+mosaicChangeTx = sym.MosaicSupplyChangeTransaction.create(
+    undefined,
+    new sym.MosaicId("7DEB4DCBBF8E5090"), //目視確認
+    sym.MosaicSupplyChangeAction.Increase,
+    sym.UInt64.fromUint(star_amount * list_amount -1), //多くなるように
     networkType
-).setMaxFee(100);
-signedTx = alice.sign(tx,generationHash);
-await txRepo.announce(signedTx).toPromise();
-```
+);
+aggregateTx = sym.AggregateTransaction.createComplete(
+    sym.Deadline.create(epochAdjustment),
+    [
+      mosaicChangeTx.toAggregate(alice.publicAccount),
+    ],
+    networkType,[],
+).setMaxFeeForAggregate(100, 0);
 
-pサブネームスペースのリンク
-```js
-namespaceId = new sym.NamespaceId(`${rootNameSpace}.p`);
-mosaicId = new sym.MosaicId("3A8416DB2D53xxxx"); //目視確認
-tx = sym.AliasTransaction.createForMosaic(
-    sym.Deadline.create(epochAdjustment),
-    sym.AliasAction.Link,
-    namespaceId,
-    mosaicId,
-    networkType
-).setMaxFee(100);
-signedTx = alice.sign(tx,generationHash);
+signedTx = alice.sign(aggregateTx,generationHash);
 await txRepo.announce(signedTx).toPromise();
-```
 
-starサブネームスペースのリンク
-```js
-namespaceId = new sym.NamespaceId(`${rootNameSpace}.star`);
-mosaicId = new sym.MosaicId("3A8416DB2D53xxxx"); //目視確認
-tx = sym.AliasTransaction.createForMosaic(
-    sym.Deadline.create(epochAdjustment),
-    sym.AliasAction.Link,
-    namespaceId,
-    mosaicId,
-    networkType
-).setMaxFee(100);
-signedTx = alice.sign(tx,generationHash);
-await txRepo.announce(signedTx).toPromise();
-```
-
-ticketサブネームスペースのリンク
-```js
-namespaceId = new sym.NamespaceId(`${rootNameSpace}.ticket`);
-mosaicId = new sym.MosaicId("3A8416DB2D53xxxx"); //目視確認
-tx = sym.AliasTransaction.createForMosaic(
-    sym.Deadline.create(epochAdjustment),
-    sym.AliasAction.Link,
-    namespaceId,
-    mosaicId,
-    networkType
-).setMaxFee(100);
-signedTx = alice.sign(tx,generationHash);
-await txRepo.announce(signedTx).toPromise();
 ```
 
 # ヘルパー関数
-アカウントアドレスとメタバース名のMAPを登録しておく
-```js
-accountAddress1 = "name1"
-accountAddress2 = "name2"
-```
 
 showAllCard
 ```js
 nsRepo = repo.createNamespaceRepository();
-showAllCard = async function(addressList) { // モザイク情報を参照する関数を作成
-  for (const address of addressList){
+showAllCard = async function() { // モザイク情報を参照する関数を作成
+  for (const address of allAccountList){
     accountInfo = await accountRepo.getAccountInfo(sym.Address.createFromRawAddress(address)).toPromise();
     mosaicText = ""
     for (const mosaic of accountInfo.mosaics){
@@ -503,7 +341,7 @@ statisticsHand = async function() { // モザイク情報を参照する関数�
 ```
 judgeHand
 ```js
-judgeHand = async function(aHand,aAddress,bHand,bAddress,alice,rootNameSpace) {
+judgeHand = async function(aHand,aAddress,bHand,bAddress) {
   //モザイクの所有確認(目視)
   showAllCard([aAddress,bAddress])
   starNamespaceId = new sym.NamespaceId(`${rootNameSpace}.star`);
@@ -691,7 +529,7 @@ judgeHand = async function(aHand,aAddress,bHand,bAddress,alice,rootNameSpace) {
 ```
 revokeStar
 ```js
-revokeStar = async function(address,alice) {
+revokeStar = async function(address) {
   //モザイクの所有確認(目視)
   showAllCard([address])
   starNamespaceId = new sym.NamespaceId(`${rootNameSpace}.star`);
@@ -768,7 +606,7 @@ makeAccounts = async function(list_amount) {
 ```
 shuffleCard
 ```js
-shuffleCard = async function(accountList,star_amount) {
+shuffleCard = async function(accountList) {
   gList = [...Array(accountList.length)].map((i) => `${rootNameSpace}.g`)
   cList = [...Array(accountList.length)].map((i) => `${rootNameSpace}.c`)
   pList = [...Array(accountList.length)].map((i) => `${rootNameSpace}.p`)
