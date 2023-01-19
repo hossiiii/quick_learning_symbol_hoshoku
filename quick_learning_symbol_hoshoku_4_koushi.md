@@ -75,7 +75,7 @@ console.log(aliceAddress);
 ### 5.署名したアドレスに対して修了証を送る * 署名要求の数分
 ```js
 target = "署名要求のアドレス" //受講者のアドレス
-署名要求のアドレス = メタバース名 //後で使うためにここで登録しておく
+"署名要求のアドレス" = "メタバース名" //後で使うためにここで登録しておく
 targetAddress = sym.Address.createFromRawAddress(target)
 accountInfo = await accountRepo.getAccountInfo(targetAddress).toPromise();
 targetPublicAccount = sym.PublicAccount.createFromPublicKey(
