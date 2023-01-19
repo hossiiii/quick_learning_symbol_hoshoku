@@ -272,7 +272,7 @@ showAllCard = async function() { // モザイク情報を参照する関数を�
       accountText = address + "(" + eval(accountText) + ")";
     }catch(e){
     }
-    console.log(`${accountText} ${accountInfo.publicKey} ${mosaicText}`);
+    console.log(`${accountText} ${mosaicText}`);
   };
 };
 ```
@@ -281,9 +281,9 @@ showAllCard = async function() { // モザイク情報を参照する関数を�
 
 引数にアカウントのリストを指定します。
 ```js
-showAllCard(allAccountList)
+showAllCard()
 ```
-* allAccountlist はメタバース上のチャットで指定しますので上記実行する前にチャットのリストを実行しておいて下さい。
+* allAccountlist がない状態で実行するとエラーになります
 
 
 setHand
