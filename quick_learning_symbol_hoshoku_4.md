@@ -63,7 +63,7 @@ aliceAddress = sym.Address.createFromRawAddress(
 console.log(aliceAddress);
 //間違ってコンソールをリロードしてしまうと、アカウントが消えてしまいます。
 //そのため秘密鍵を出力し、別途テキストなどに貼り付けておきます。
-console.log("privateKey" + alice.privateKey);
+console.log("privateKey " + alice.privateKey);
 ```
 ### 3-b.もし間違って途中でリロードしてしまった場合は項目1、項目2の後に保管しておいた秘密鍵を”YourPrivateKey”と置き換えて実行して下さい
 ```js
