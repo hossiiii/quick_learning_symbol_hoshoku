@@ -61,8 +61,11 @@ aliceAddress = sym.Address.createFromRawAddress(
   alice.address.plain()
 );
 console.log(aliceAddress);
+//間違ってコンソールをリロードしてしまうと、アカウントが消えてしまいます。
+//そのため秘密鍵を出力し、別途テキストなどに貼り付けておきます。
+console.log(alice.privateKey);
 ```
-### 3-b.Aliceアカウントのインポート,Alice公開鍵クラス,Aliceアドレスクラスの作成
+### 3-b.もし間違って途中でリロードしてしまった場合は項目1、項目2の後に保管しておいた秘密鍵を”YourPrivateKey”と置き換えて実行して下さい
 ```js
 alice = sym.Account.createFromPrivateKey(
   "YourPrivateKey",
@@ -92,8 +95,12 @@ console.log(aliceAddress);
 
 https://github.com/xembook/quick_learning_symbol/blob/main/08_lock.md
 
-8章が終わったら、講師に対してハッシュロックトランザクションを行い
-わずかなxymと勉強会の修了書を交換する要求を出して下しさい。
+
+# 演習課題
+実際の使い方を想定したハッシュロックの使い方を行います。
+
+## 自分から取引を開始する場合。
+講師に対してわずかなxymを送る代わりにその２倍のxymをもらう取引を行います。
 
 ### 6.アグリゲートボンデッドトランザクションの作成
 ```js
@@ -107,13 +114,13 @@ targetPublicAccount = sym.PublicAccount.createFromPublicKey(
 tx1 = sym.TransferTransaction.create(
     undefined,
     targetAddress,  //ターゲットへ
-    [ //1XYM
+    [
       new sym.Mosaic(
         new sym.NamespaceId("symbol.xym"), //XYM
         sym.UInt64.fromUint(1) //数量
       )
     ],
-    sym.PlainMessage.create('４回目の修了書を下さい'), //メッセージ
+    sym.PlainMessage.create('わずかなxymを送ります'), //メッセージ
     networkType
 );
 
@@ -122,11 +129,11 @@ tx2 = sym.TransferTransaction.create(
     alice.address,  //自分へ
     [
       new sym.Mosaic(
-        new sym.NamespaceId("mit.certificate.quick_learning_symbol_lesson4"), //４回目の修了書
-        sym.UInt64.fromUint(1) //数量
+        new sym.NamespaceId("symbol.xym"), //XYM
+        sym.UInt64.fromUint(2) //数量
       )
     ],
-    sym.PlainMessage.create('４回目の受講お疲れ様でした'), //メッセージ
+    sym.PlainMessage.create('送られたら送り返す、倍返しだ！'), //メッセージ
     networkType
 );
 
@@ -179,50 +186,32 @@ await txRepo.getTransaction(signedLockTx.hash,sym.TransactionGroup.Confirmed).to
 await txRepo.announceAggregateBonded(signedAggregateTx).toPromise();
 ```
 アグリゲートボンデッドトランザクションをアナウンスしないと、ロックしただけで相手への署名要求が発生しません。
+
 相手の未署名の場合や自分宛の署名要求はエクスプローラーのトランザクション履歴でフィルターをRecentからPartialに変えて検索して下さい。
+
 相手の署名が完了すると、アグリゲートトランザクションが実行されます。
 
-■★　ここで逆に署名要求に対して署名するのも実施してみる
+## 相手の取引に応じる場合。
+上記取引が完了したアカウントから順番に講師から
+わずかなxymをいただく代わりに、４回目の修了証（mit.certificate.quick_learning_symbol_lesson4）を送付する取引を行います。
 
+### 9.自分への署名要求があるか確認する
+エクスプローラーを開き自分宛の署名要求を確認して下さい。
+
+この時、どんな契約内容なのか中身をしっかりと確認して下さい（そうでないと不利な取引に署名してしまう事になります）
+
+### 10.連署
+txInfo = await txRepo.getTransaction("ここにエクスプローラーで確認したロックされたハッシュ値を入力",sym.TransactionGroup.Partial).toPromise();
+cosignatureTx = sym.CosignatureTransaction.create(txInfo);
+signedCosTx = alice.signCosignatureTransaction(cosignatureTx);
+await txRepo.announceAggregateBondedCosignature(signedCosTx).toPromise();
+
+ここで修了証をもらえた人だけが、次の限定ジャンケンに参加する事ができます。
 
 # 限定ジャンケンの準備
 会場に行く前に、限定ジャンケンの準備をしておきます
 
-### 8.参加用の新規Aliceアカウント,Alice公開鍵クラス,Aliceアドレスクラスの作成
-```js
-alice = sym.Account.generateNewAccount(networkType);
-alicePublicAccount = sym.PublicAccount.createFromPublicKey(
-  alice.publicKey,
-  networkType
-);
-console.log(alicePublicAccount);
-aliceAddress = sym.Address.createFromRawAddress(
-  alice.address.plain()
-);
-console.log(aliceAddress);
-```
-### 9.参加用のAliceアカウントへ250XYMを補充（手数料に必要）
-```js
-`https://testnet.symbol.tools/?amount=250&recipient=${aliceAddress.plain()}` //以下リンクをクリックしてCLAIM！を実行
-```
-### 10.参加用のAliceアカウント情報をSymbolエクスプローラーで表示する
-```js
-`https://testnet.symbol.fyi/accounts/${aliceAddress.plain()}` //以下リンクをクリックしてアカウント情報を別タブで表示しておく
-```
-### 11.秘密鍵を出力し保管しておく
-間違ってコンソールをリロードしてしまうと、アカウントが消えてしまいます。
-そのため秘密鍵を出力し、別途テキストなどに貼り付けておきます。
-```js
-console.log(alice.privateKey);
-```
-
-項目1、項目2を実行し
-項目3-bにて保管しておいた秘密鍵を「YourPrivateKey」と置き換えて実行し
-項目13以降の処理を全て実行してください。
-間違っても、3-aで新規アカウントを生成したり、xymを追加で入金したりしないで下さい。
-
-
-### 12.参加表明
+### 11.参加表明
 MITに対してアカウントから自分のメタバース名を暗号化して送ることで参加表明とします
 ```js
 address = "TB2JSKNG2IRIGXMI3AQMGASM6PXLSR7VFHLSA5A"
@@ -244,5 +233,109 @@ await txRepo.announce(signedTx).toPromise();
 const transactionStatusUrl = NODE + "/transactionStatus/" + signedTx.hash
 console.log(transactionStatusUrl);
 ```
+### 途中間違ってコンソールをリロードしてしまったら
 
-### 13.使うツール
+記録しておいた秘密鍵を使ってアカウントを復活させます。
+項目1、項目2を実行し
+項目3-bにて保管しておいた秘密鍵を「YourPrivateKey」と置き換えて実行し
+項目12以降の処理を全て実行してください。
+間違っても、3-aで新規アカウントを生成したり、xymを追加で入金したりしないで下さい。
+
+### 12.使うツール
+演習で行った個人間取引のためのハッシュロックの他に
+ゲーム内で使うためのツールを作成しておきます。
+
+showAllCard
+
+モザイクの所有状況を確認する関数です。
+
+```js
+nsRepo = repo.createNamespaceRepository();
+showAllCard = async function(addressList) { // モザイク情報を参照する関数を作成
+  for (const address of addressList){
+    accountInfo = await accountRepo.getAccountInfo(sym.Address.createFromRawAddress(address)).toPromise();
+    mosaicText = ""
+    for (const mosaic of accountInfo.mosaics){
+      let mosaicName = mosaic.id.toHex()
+      mosaicNames = await nsRepo.getMosaicsNames(
+      [new sym.MosaicId(mosaic.id.toHex())]
+      ).toPromise();
+      if(mosaicNames[0].names.length > 0){
+       mosaicName = mosaicNames[0].names[0].name;
+       if(mosaicName.slice(-1) == "g") mosaicName = "✊ " + mosaicName
+       if(mosaicName.slice(-1) == "c") mosaicName = "✌️ " + mosaicName
+       if(mosaicName.slice(-1) == "p") mosaicName = "✋ " + mosaicName
+       if(mosaicName.slice(-1) == "r") mosaicName = "🌟 " + mosaicName
+      }
+      mosaicInfo = await mosaicRepo.getMosaic(mosaic.id).toPromise();
+      mosaicAmount = mosaic.amount.toString();
+      divisibility = mosaicInfo.divisibility; //可分性
+      if (divisibility > 0) {
+        if(mosaicAmount / 10**divisibility >= 1 ){
+        displayAmount =
+          mosaicAmount.slice(0, mosaicAmount.length - divisibility) +  "." + mosaicAmount.slice(-divisibility);
+        } else{
+        displayAmount =
+          "0." + "0".repeat(divisibility-mosaicAmount.slice(-divisibility).length) + mosaicAmount.slice(-divisibility);
+        }
+      } else {
+        displayAmount = mosaicAmount;
+      }
+      mosaicText = `${mosaicText} ${mosaicName}(${displayAmount})`
+    };
+    accountText = address
+    try{
+      accountText = address + "(" + eval(accountText) + ")";
+    }catch(e){
+    }
+    console.log(`${accountText} ${accountInfo.publicKey} ${mosaicText}`);
+  };
+};
+```
+
+使い方
+
+引数にアカウントのリストを指定します。
+```js
+showAllCard(allAccountList)
+```
+* allAccountlist はメタバース上のチャットで指定しますので上記実行する前にチャットのリストを実行しておいて下さい。
+
+
+setHand
+
+ジャンケン台の上でジャンケンの手札をゲームマスターに送る関数です。
+
+```js
+setHand = async function(myhand) {
+  hand = ['g', 'c', 'p'];
+  if(hand.includes(myhand)) {
+    accountInfo = await accountRepo.getAccountInfo(sym.Address.createFromRawAddress(🌟🌟ここは事前にゲームマスターのアドレスを入れておく)).toPromise();
+    publicAccount = sym.PublicAccount.createFromPublicKey(
+      accountInfo.publicKey,
+      networkType
+    );
+    encMsg = alice.encryptMessage(myhand,publicAccount);
+    tx = sym.TransferTransaction.create(
+      sym.Deadline.create(epochAdjustment), //Deadline:有効期限
+      sym.Address.createFromRawAddress(address),
+      [],
+      encMsg, //メッセージ
+      networkType //テストネット・メインネット区分
+    ).setMaxFee(100); //手数料
+    signedTx = alice.sign(tx,generationHash);
+    await txRepo.announce(signedTx).toPromise();
+  }else{
+    console.log("最初の引数は小文字で g（ぐー） c（ちょき） p（ぱー） のいずれかを入力して下さい")
+    return
+  }
+}
+```
+
+使い方
+
+引数に "g" "c" "p" のいずれかを指定します。
+```js
+setHand("g")
+```
+* 自分の所有していない手札は指定しないで下さい。
