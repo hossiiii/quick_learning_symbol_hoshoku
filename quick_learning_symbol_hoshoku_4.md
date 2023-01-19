@@ -100,7 +100,12 @@ https://github.com/xembook/quick_learning_symbol/blob/main/08_lock.md
 実際の使い方を想定したハッシュロックの使い方を行います。
 
 ## 自分から取引を開始する場合。
-講師に対してわずかなxymを送る代わりにその２倍のxymをもらう取引を行います。
+講師に対して
+
+・わずかなxym
+・暗号化した自分のメタバース上の名前
+
+を送り代わりに1xymをもらう取引を行います。
 
 ### 6.アグリゲートボンデッドトランザクションの作成
 ```js
@@ -111,6 +116,7 @@ targetPublicAccount = sym.PublicAccount.createFromPublicKey(
   accountInfo.publicKey,
   networkType
 );
+encMsg = alice.encryptMessage("自分のメタバース上の名前を入力",targetPublicAccount); //ここに自分のメタバース上の名前を入れて下さい
 tx1 = sym.TransferTransaction.create(
     undefined,
     targetAddress,  //ターゲットへ
@@ -120,7 +126,7 @@ tx1 = sym.TransferTransaction.create(
         sym.UInt64.fromUint(1) //数量
       )
     ],
-    sym.PlainMessage.create('わずかなxymを送ります'), //メッセージ
+    encMsg,
     networkType
 );
 
@@ -130,10 +136,10 @@ tx2 = sym.TransferTransaction.create(
     [
       new sym.Mosaic(
         new sym.NamespaceId("symbol.xym"), //XYM
-        sym.UInt64.fromUint(2) //数量
+        sym.UInt64.fromUint(1000000) //数量
       )
     ],
-    sym.PlainMessage.create('送られたら送り返す、倍返しだ！'), //メッセージ
+    sym.PlainMessage.create('サンキュー！'), //メッセージ
     networkType
 );
 
@@ -212,41 +218,6 @@ await txRepo.announceAggregateBondedCosignature(signedCosTx).toPromise();
 
 # 限定ジャンケンの準備
 会場に行く前に、限定ジャンケンの準備をしておきます
-
-### 11.参加表明
-MITに対してアカウントから自分のメタバース名を暗号化して送ることで参加表明とします
-```js
-address = "TB2JSKNG2IRIGXMI3AQMGASM6PXLSR7VFHLSA5A"
-accountInfo = await accountRepo.getAccountInfo(sym.Address.createFromRawAddress(address)).toPromise();
-publicAccount = sym.PublicAccount.createFromPublicKey(
-  accountInfo.publicKey,
-  networkType
-);
-encMsg = alice.encryptMessage("自分のメタバース上の名前を入力",publicAccount);
-tx = sym.TransferTransaction.create(
-  sym.Deadline.create(epochAdjustment), //Deadline:有効期限
-  sym.Address.createFromRawAddress(address),
-  [],
-  encMsg, //メッセージ
-  networkType //テストネット・メインネット区分
-).setMaxFee(100); //手数料
-signedTx = alice.sign(tx,generationHash);
-await txRepo.announce(signedTx).toPromise();
-const transactionStatusUrl = NODE + "/transactionStatus/" + signedTx.hash
-console.log(transactionStatusUrl);
-```
-### 途中間違ってコンソールをリロードしてしまったら
-
-記録しておいた秘密鍵を使ってアカウントを復活させます。
-
-項目1、項目2を実行し
-
-項目3-bにて保管しておいた秘密鍵を「YourPrivateKey」と置き換えて実行し
-
-項目12以降の処理を全て実行してください。
-
-間違っても、3-aで新規アカウントを生成したり、xymを追加で入金したりしないで下さい。
-
 
 ### 12.使うツール
 演習で行った個人間取引のためのハッシュロックの他に
@@ -346,3 +317,17 @@ setHand = async function(myhand) {
 setHand("g")
 ```
 * 自分の所有していない手札は指定しないで下さい。
+
+
+### 途中間違ってコンソールをリロードしてしまったら
+
+記録しておいた秘密鍵を使ってアカウントを復活させます。
+
+項目1、項目2を実行し
+
+項目3-bにて保管しておいた秘密鍵を「YourPrivateKey」と置き換えて実行し
+
+項目12以降の処理を全て実行してください。
+
+間違っても、3-aで新規アカウントを生成したり、xymを追加で入金したりしないで下さい。
+
