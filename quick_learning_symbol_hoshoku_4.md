@@ -201,10 +201,12 @@ await txRepo.announceAggregateBonded(signedAggregateTx).toPromise();
 この時、どんな契約内容なのか中身をしっかりと確認して下さい（そうでないと不利な取引に署名してしまう事になります）
 
 ### 10.連署
+```js
 txInfo = await txRepo.getTransaction("ここにエクスプローラーで確認したロックされたハッシュ値を入力",sym.TransactionGroup.Partial).toPromise();
 cosignatureTx = sym.CosignatureTransaction.create(txInfo);
 signedCosTx = alice.signCosignatureTransaction(cosignatureTx);
 await txRepo.announceAggregateBondedCosignature(signedCosTx).toPromise();
+```
 
 ここで修了証をもらえた人だけが、次の限定ジャンケンに参加する事ができます。
 
