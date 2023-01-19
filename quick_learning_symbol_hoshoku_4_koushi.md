@@ -78,6 +78,88 @@ aliceAddress = sym.Address.createFromRawAddress(
 );
 console.log(aliceAddress);
 ```
+
+### 3-c.署名したアドレスに対して修了証を送る
+```js
+target = "署名要求のアドレス" //受講者のアドレス
+targetAddress = sym.Address.createFromRawAddress(target)
+accountInfo = await accountRepo.getAccountInfo(targetAddress).toPromise();
+targetPublicAccount = sym.PublicAccount.createFromPublicKey(
+  accountInfo.publicKey,
+  networkType
+);
+tx1 = sym.TransferTransaction.create(
+    undefined,
+    targetAddress,  //ターゲットへ
+    [ //1XYM
+      new sym.Mosaic(
+        new sym.NamespaceId("mit.certificate.quick_learning_symbol_lesson4"), //４回目の修了書
+        sym.UInt64.fromUint(1) //数量
+      )
+    ],
+    sym.PlainMessage.create('４回目の修了書を下さい'), //メッセージ
+    networkType
+);
+
+tx2 = sym.TransferTransaction.create(
+    undefined,
+    alice.address,  //自分へ
+    [
+      new sym.Mosaic(
+        new sym.NamespaceId("symbol.xym"), //XYM
+        sym.UInt64.fromUint(1) //数量
+      )
+    ],
+    sym.PlainMessage.create('４回目の受講お疲れ様でした'), //メッセージ
+    networkType
+);
+
+aggregateArray = [
+    tx1.toAggregate(alice.publicAccount), //自分からtx1を送る
+    tx2.toAggregate(targetPublicAccount), // ターゲットからtx2を送る
+]
+
+//アグリゲートボンデッドトランザクション
+aggregateTx = sym.AggregateTransaction.createBonded(
+    sym.Deadline.create(epochAdjustment),
+    aggregateArray,
+    networkType,
+    [],
+).setMaxFeeForAggregate(100, 1);
+
+//署名
+signedAggregateTx = alice.sign(aggregateTx, generationHash);
+
+```
+
+```js
+//ハッシュロックTX作成
+hashLockTx = sym.HashLockTransaction.create(
+  sym.Deadline.create(epochAdjustment),
+    new sym.Mosaic(new sym.NamespaceId("symbol.xym"),sym.UInt64.fromUint(10 * 1000000)), //10xym固定値
+    sym.UInt64.fromUint(480), // ロック有効期限
+    signedAggregateTx,// このハッシュ値を登録
+    networkType
+).setMaxFee(100);
+
+//署名
+signedLockTx = alice.sign(hashLockTx, generationHash);
+
+//ハッシュロックTXをアナウンス
+await txRepo.announce(signedLockTx).toPromise();
+```
+以下コマンドでエラーが発生しなければ成功しています。もしくはエクスプローラーのトランザクション履歴でも確認ができます。
+
+```js
+await txRepo.getTransaction(signedLockTx.hash,sym.TransactionGroup.Confirmed).toPromise();
+```
+
+ハッシュロックTXがブロックチェーン上で認識される前にアグリゲートトランザクションをアナウンスしてしまうとそのハッシュはGOXします。
+
+```js
+await txRepo.announceAggregateBonded(signedAggregateTx).toPromise();
+```
+
 ### 4.Aliceアカウントへ500XYMを補充（手数料に必要）
 ```js
 `https://testnet.symbol.tools/?amount=500&recipient=${aliceAddress.plain()}` //以下リンクをクリックしてCLAIM！を実行
