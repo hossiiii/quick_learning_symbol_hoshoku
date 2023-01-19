@@ -187,7 +187,7 @@ list_amount = 参加人数
 star_amount = 3
 ```
 
-手札モザイクの作成*5
+手札モザイクの作成*4
 ```js
 supplyMutable = true; //供給量変更の可否
 transferable = true; //第三者への譲渡可否
@@ -226,12 +226,12 @@ signedTx = alice.sign(aggregateTx,generationHash);
 await txRepo.announce(signedTx).toPromise();
 ```
 
-一度モザイクを確認し、後方２つを確認
+一度モザイクを確認し、後方を確認
 ```js
 getMosaicInfo(aliceAddress)
 ```
 
-後方から２つ目を変更する
+後方を変更する
 ```js
 mosaicChangeTx = sym.MosaicSupplyChangeTransaction.create(
     undefined,
@@ -311,18 +311,6 @@ starサブネームスペースの作成
 subNamespaceTx = sym.NamespaceRegistrationTransaction.createSubNamespace(
     sym.Deadline.create(epochAdjustment),
     "star",  //作成するサブネームスペース
-    rootNameSpace, //紐づけたいルートネームスペース
-    networkType,
-).setMaxFee(100);
-signedTx = alice.sign(subNamespaceTx,generationHash);
-await txRepo.announce(signedTx).toPromise();
-```
-
-ticketサブネームスペースの作成
-```js
-subNamespaceTx = sym.NamespaceRegistrationTransaction.createSubNamespace(
-    sym.Deadline.create(epochAdjustment),
-    "ticket",  //作成するサブネームスペース
     rootNameSpace, //紐づけたいルートネームスペース
     networkType,
 ).setMaxFee(100);
