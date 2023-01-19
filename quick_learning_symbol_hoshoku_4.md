@@ -219,6 +219,12 @@ await txRepo.announceAggregateBondedCosignature(signedCosTx).toPromise();
 # 限定ジャンケンの準備
 会場に行く前に、限定ジャンケンの準備をしておきます
 
+### 11.参加者リストをチャットで受け取る
+以下のような形で参加者のアドレスリストをメタバースのチャットに貼り付けるのでそれをそのままコピーしてコンソールで実行しておく
+```js
+allAccountList = ["xxxx"]
+```
+
 ### 12.使うツール
 演習で行った個人間取引のためのハッシュロックの他に
 ゲーム内で使うためのツールを作成しておきます。
@@ -229,8 +235,8 @@ showAllCard
 
 ```js
 nsRepo = repo.createNamespaceRepository();
-showAllCard = async function(addressList) { // モザイク情報を参照する関数を作成
-  for (const address of addressList){
+showAllCard = async function() { // モザイク情報を参照する関数を作成
+  for (const address of allAccountList){
     accountInfo = await accountRepo.getAccountInfo(sym.Address.createFromRawAddress(address)).toPromise();
     mosaicText = ""
     for (const mosaic of accountInfo.mosaics){
