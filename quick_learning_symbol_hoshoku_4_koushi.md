@@ -97,7 +97,7 @@ tx1 = sym.TransferTransaction.create(
         sym.UInt64.fromUint(1) //数量
       )
     ],
-    sym.PlainMessage.create('４回目の修了書を下さい'), //メッセージ
+    sym.PlainMessage.create('４回目の受講お疲れ様でした'), //メッセージ
     networkType
 );
 
@@ -110,7 +110,7 @@ tx2 = sym.TransferTransaction.create(
         sym.UInt64.fromUint(1) //数量
       )
     ],
-    sym.PlainMessage.create('４回目の受講お疲れ様でした'), //メッセージ
+    sym.PlainMessage.create('４回目の修了書を下さい'), //メッセージ
     networkType
 );
 
