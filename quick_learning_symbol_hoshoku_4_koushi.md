@@ -298,7 +298,7 @@ showAllCard = async function() { // モザイク情報を参照する関数を�
       accountText = address + "(" + eval(accountText) + ")";
     }catch(e){
     }
-    console.log(`${accountText} ${accountInfo.publicKey} ${mosaicText}`);
+    console.log(`${accountText} ${mosaicText}`);
   };
 };
 ```
