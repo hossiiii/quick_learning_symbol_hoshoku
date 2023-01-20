@@ -350,3 +350,40 @@ setHand("g")
 
 間違っても、3-aで新規アカウントを生成したり、xymを追加で入金したりしないで下さい。
 
+# オンチェーンアンケート
+今日の勉強をオンチェーンアンケートに回答します。
+
+①こちらの速習Symbol勉強会は何回目の参加ですか？<１回目/２回目/3回目/4回目>
+
+②今日の勉強会の理解度を1~10で回答して下さい<5>
+
+③ブロックチェーンで何かサービスを作りたいと思っていますか？<はい/いいえ>
+
+④次回も参加したいと思いますか？<はい/いいえ>
+
+⑤その他ございましたらご感想をお聞かせ下さい
+
+
+```js
+tx = sym.TransferTransaction.create(
+    sym.Deadline.create(epochAdjustment),
+    sym.Address.createFromRawAddress("TCHVQXALVLUAODWFFKDLHAA2T25B4EQP4MRIF4Q"),
+    [],
+    sym.PlainMessage.create(`
+    ①
+    ②
+    ③
+    ④
+    ⑤  
+    `), //全角で300字まで入力できます。
+    networkType
+).setMaxFee(100);
+signedTx = alice.sign(tx,generationHash);
+await txRepo.announce(signedTx).toPromise();
+```
+
+### こちらからみなさんの回答を誰もがオンチェーンで見る事ができます。
+
+```js
+`https://testnet.symbol.fyi/namespaces/mit.survey.quick_learning_symbol_lesson4` //以下リンクをクリックしてAliasのアドレスを参照する
+```
