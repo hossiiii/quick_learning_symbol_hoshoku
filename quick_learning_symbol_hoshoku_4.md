@@ -243,9 +243,61 @@ allAccountList = ["xxxx"]
 演習で行った個人間取引のためのハッシュロックの他に
 ゲーム内で使うためのツールを作成しておきます。
 
+showCard
+
+自分ののモザイクの所有状況を確認する関数です。
+
+```js
+nsRepo = repo.createNamespaceRepository();
+showCard = async function() { // モザイク情報を参照する関数を作成
+  accountInfo = await accountRepo.getAccountInfo(alice.Address).toPromise();
+  mosaicText = ""
+  for (const mosaic of accountInfo.mosaics){
+    let mosaicName = mosaic.id.toHex()
+    mosaicNames = await nsRepo.getMosaicsNames(
+    [new sym.MosaicId(mosaic.id.toHex())]
+    ).toPromise();
+    if(mosaicNames[0].names.length > 0){
+     mosaicName = mosaicNames[0].names[0].name;
+     if(mosaicName.slice(-1) == "g") mosaicName = "✊ " + mosaicName
+     if(mosaicName.slice(-1) == "c") mosaicName = "✌️ " + mosaicName
+     if(mosaicName.slice(-1) == "p") mosaicName = "✋ " + mosaicName
+     if(mosaicName.slice(-1) == "r") mosaicName = "🌟 " + mosaicName
+    }
+    mosaicInfo = await mosaicRepo.getMosaic(mosaic.id).toPromise();
+    mosaicAmount = mosaic.amount.toString();
+    divisibility = mosaicInfo.divisibility; //可分性
+    if (divisibility > 0) {
+      if(mosaicAmount / 10**divisibility >= 1 ){
+      displayAmount =
+        mosaicAmount.slice(0, mosaicAmount.length - divisibility) +  "." + mosaicAmount.slice(-divisibility);
+      } else{
+      displayAmount =
+        "0." + "0".repeat(divisibility-mosaicAmount.slice(-divisibility).length) + mosaicAmount.slice(-divisibility);
+      }
+    } else {
+      displayAmount = mosaicAmount;
+    }
+    mosaicText = `${mosaicText} ${mosaicName}(${displayAmount})`
+  };
+  accountText = address
+  try{
+    accountText = address + "(" + eval(accountText) + ")";
+  }catch(e){
+  }
+  console.log(`${accountText} ${mosaicText}`);
+};
+```
+
+使い方
+
+```js
+showCard()
+```
+
 showAllCard
 
-モザイクの所有状況を確認する関数です。
+参加者全員のモザイクの所有状況を確認する関数です。
 
 ```js
 nsRepo = repo.createNamespaceRepository();
