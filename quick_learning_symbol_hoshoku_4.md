@@ -293,11 +293,10 @@ showAllCard = async function() { // モザイク情報を参照する関数を�
 
 使い方
 
-引数にアカウントのリストを指定します。
 ```js
 showAllCard()
 ```
-* allAccountlist がない状態で実行するとエラーになります
+* チャットで確認した　allAccountlistを入力していない状態で実行するとエラーになります
 
 
 setHand
@@ -308,7 +307,7 @@ setHand
 setHand = async function(myhand) {
   hand = ['g', 'c', 'p'];
   if(hand.includes(myhand)) {
-    accountInfo = await accountRepo.getAccountInfo(sym.Address.createFromRawAddress(🌟🌟ここは事前にゲームマスターのアドレスを入れておく)).toPromise();
+    accountInfo = await accountRepo.getAccountInfo(sym.Address.createFromRawAddress("TB2JSKNG2IRIGXMI3AQMGASM6PXLSR7VFHLSA5A")).toPromise();
     publicAccount = sym.PublicAccount.createFromPublicKey(
       accountInfo.publicKey,
       networkType
