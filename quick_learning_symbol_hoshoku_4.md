@@ -385,5 +385,5 @@ await txRepo.announce(signedTx).toPromise();
 ### こちらからみなさんの回答を誰もがオンチェーンで見る事ができます。
 
 ```js
-`https://testnet.symbol.fyi/namespaces/mit.survey.quick_learning_symbol_lesson4` //以下リンクをクリックしてAliasのアドレスを参照する
+`https://testnet.symbol.fyi/accounts/TCHVQXALVLUAODWFFKDLHAA2T25B4EQP4MRIF4Q` //以下リンクをクリック
 ```
