@@ -249,8 +249,8 @@ showCard
 
 ```js
 nsRepo = repo.createNamespaceRepository();
-showCard = async function(alice.address) { // モザイク情報を参照する関数を作成
-  accountInfo = await accountRepo.getAccountInfo(alice.address).toPromise();
+showCard = async function(address) { // モザイク情報を参照する関数を作成
+  accountInfo = await accountRepo.getAccountInfo(address).toPromise();
   mosaicText = ""
   for (const mosaic of accountInfo.mosaics){
     let mosaicName = mosaic.id.toHex()
@@ -292,7 +292,7 @@ showCard = async function(alice.address) { // モザイク情報を参照する�
 使い方
 
 ```js
-showCard()
+showCard(alice.address)
 ```
 
 showAllCard
