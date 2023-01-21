@@ -367,7 +367,7 @@ setHand = async function(myhand) {
     encMsg = alice.encryptMessage(myhand,publicAccount);
     tx = sym.TransferTransaction.create(
       sym.Deadline.create(epochAdjustment), //Deadline:有効期限
-      sym.Address.createFromRawAddress(address),
+      sym.Address.createFromRawAddress("TB2JSKNG2IRIGXMI3AQMGASM6PXLSR7VFHLSA5A"),
       [],
       encMsg, //メッセージ
       networkType //テストネット・メインネット区分
