@@ -280,9 +280,9 @@ showCard = async function(address) { // モザイク情報を参照する関数�
     }
     mosaicText = `${mosaicText} ${mosaicName}(${displayAmount})`
   };
-  accountText = address
+  accountText = address.plain()
   try{
-    accountText = address + "(" + eval(accountText) + ")";
+    accountText = address.plain() + "(" + eval(accountText) + ")";
   }catch(e){
   }
   console.log(`${accountText} ${mosaicText}`);
