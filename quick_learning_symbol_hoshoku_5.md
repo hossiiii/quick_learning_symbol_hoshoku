@@ -78,15 +78,8 @@ aliceAddress.plain()
 https://github.com/xembook/quick_learning_symbol/blob/main/09_multisig.md
 
 # 演習準備
-### 7.参加メンバーのアドレスリストをコピーして貼り付けておく
-名前からアドレスを呼び出せるように定義しておく
-```js
-たろう = "TA2JD6AB3XOCOKW3OMP3KJY3OPHCD3IJDL4B7TA"
-じろう = "TD3BSNCGZALJE7ULVDVYYZK63I7IBXVKSGKOYZI"
-・・・
-```
 
-### 8.人狼ゲーム用マルチシグ参加への連署（連署方法の確認）
+### 7.人狼ゲーム用マルチシグ参加への連署（連署方法の確認）
 マルチシグアカウントへの参加を行います。
 
 また人狼ゲームが始まった後も追放者への連署で同じ方法を使って連署を行いますのでこの流れは覚えておいて下さい。
@@ -104,14 +97,14 @@ TRANSACTIONS（トランザクション）セクションのフィルターをRe
 
 ③未署名のトランザクションの内容を確認
 
-Hashのリンクをクリックし矢印内部のアイコンにカーソルを合わせるとトランザクションの内容がポップアップされます。
+Hash(トランザクションハッシュ)のリンクをクリックし矢印内部のアイコンにカーソルを合わせるとトランザクションの内容がポップアップされます。
 
-自分が署名したい内容であれば、Hashのテキスト部分をコピーしておきます。
+自分が署名したい内容であれば、Hash(トランザクションハッシュ)のテキスト部分をコピーしておきます。
 
 
 <img width="1333" alt="スクリーンショット 2023-02-01 18 27 47" src="https://user-images.githubusercontent.com/47712051/216004369-0916ee55-c2d6-4910-a133-936476055400.png">
 
-④TargetHashの部分に先ほどのHashを貼り付け、連署を行いアナウンスを行います。これで一連の流れが完了します。
+④TargetHashの部分に先ほどのHash(トランザクションハッシュ)を貼り付け、連署を行いアナウンスを行います。
 
 ```js
 txInfo = await txRepo.getTransaction("TargetHash",sym.TransactionGroup.Partial).toPromise(); //ハッシュ値でトランザクションを検索
@@ -120,6 +113,18 @@ signedCosTx = alice.signCosignatureTransaction(cosignatureTx); //連署
 await txRepo.announceAggregateBondedCosignature(signedCosTx).toPromise(); //ブロックチェーンにアナウンス
 ```
 
+⑤　③と同じページをリロードし、一番した部分にあるAGGREGATE COSIGNATURES(アグリゲート連署名)を確認し、自分のアドレスが入っていれば連署が成功となります。
+
+<img width="1359" alt="スクリーンショット 2023-02-01 18 41 50" src="https://user-images.githubusercontent.com/47712051/216007548-3a799f70-2adc-4cbd-b372-ad631aa56311.png">
+
+# 演習準備
+### 8.参加メンバーのアドレスリストをコピーして貼り付けておく
+名前からアドレスを呼び出せるように定義しておく
+```js
+たろう = "TA2JD6AB3XOCOKW3OMP3KJY3OPHCD3IJDL4B7TA"
+じろう = "TD3BSNCGZALJE7ULVDVYYZK63I7IBXVKSGKOYZI"
+・・・
+```
 
 # オンチェーンアンケート
 今日の勉強をオンチェーンアンケートに回答します。
