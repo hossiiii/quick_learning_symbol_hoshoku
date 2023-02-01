@@ -86,7 +86,45 @@ https://github.com/xembook/quick_learning_symbol/blob/main/09_multisig.md
 ・・・
 ```
 
-### 7.参加メンバーのアドレスリストをコピーして貼り付けておく
+### 8.連署方法の確認
+署名要求に対する連署の方法を確認しておきます。
+
+・このあと、マルチシグアカウントへの参加で使います
+
+・また人狼ゲーム内での追放者への連署で何度も使います
+
+①Symbolエクスプローラーで自分のアカウント情報を開きます。
+```js
+`https://testnet.symbol.fyi/accounts/${aliceAddress.plain()}` //以下リンクをクリックしてアカウント情報を別タブで表示しておく
+```
+
+②未署名のトランザクションの確認
+
+TRANSACTIONS（トランザクション）セクションのフィルターをRecentからPatialに変更し未署名のトランザクションを確認する
+
+【ここに画像】
+
+③未署名のトランザクションの内容を確認
+
+Hashのリンクをクリックし矢印内部のアイコンにカーソルを合わせるとトランザクションの内容がポップアップされます。
+
+自分が署名したい内容であれば、Hashのテキスト部分をコピーしておきます。
+
+
+【ここに画像】
+
+④TargetHashの部分に先ほどのHashを貼り付け、連署を行いアナウンスを行います。これで一連の流れが完了します。
+
+```js
+txInfo = await txRepo.getTransaction("TargetHash",sym.TransactionGroup.Partial).toPromise(); //ハッシュ値でトランザクションを検索
+cosignatureTx = sym.CosignatureTransaction.create(txInfo); //連署用のトランザクションを作成
+signedCosTx = alice.signCosignatureTransaction(cosignatureTx); //連署
+await txRepo.announceAggregateBondedCosignature(signedCosTx).toPromise(); //ブロックチェーンにアナウンス
+```
+
+
+【ここに画像】
+
 
 # オンチェーンアンケート
 今日の勉強をオンチェーンアンケートに回答します。
