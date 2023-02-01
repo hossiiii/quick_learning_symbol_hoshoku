@@ -68,9 +68,9 @@ aliceAddress = sym.Address.createFromRawAddress(
 );
 console.log(aliceAddress);
 ```
-### 4.Aliceアカウントへ30XYMを補充（手数料に必要）
+### 4.Aliceアカウントへ20XYMを補充（手数料に必要）
 ```js
-`https://testnet.symbol.tools/?amount=30&recipient=${aliceAddress.plain()}` //以下リンクをクリックしてCLAIM！を実行
+`https://testnet.symbol.tools/?amount=20&recipient=${aliceAddress.plain()}` //以下リンクをクリックしてCLAIM！を実行
 ```
 ### 5.メタバースのチャットにAliceのアドレスを貼り付ける
 ```js
