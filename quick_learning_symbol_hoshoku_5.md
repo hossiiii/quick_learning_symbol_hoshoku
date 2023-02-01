@@ -88,7 +88,7 @@ https://github.com/xembook/quick_learning_symbol/blob/main/09_multisig.md
 
 ①Symbolエクスプローラーで自分のアカウント情報を開きます。
 ```js
-`https://testnet.symbol.fyi/accounts/${carol2.plain()}` //carol2に対する要求を確認する場合、carol3の場合はここを変更して下さい
+`https://testnet.symbol.fyi/accounts/${carol2.address.plain()}` //carol2に対する要求を確認する場合、carol3の場合はここを変更して下さい
 ```
 
 ②未署名のトランザクションの確認
@@ -123,12 +123,42 @@ await txRepo.announceAggregateBondedCosignature(signedCosTx).toPromise(); //ブ�
 
 # 演習準備
 
-### 7.人狼ゲーム用マルチシグ参加への連署（連署方法の確認）
-マルチシグアカウントへの参加を行います。
+### 8.人狼ゲーム用マルチシグ参加への連署（連署方法の確認）
+人狼ゲーム用のマルチシグアカウントへの参加を行います。
 
-また人狼ゲームが始まった後も追放者への連署で同じ方法を使って連署を行いますのでこの流れは覚えておいて下さい。
+※項番7で行ったアグリゲートボンデッドトランザクションで送信された要求に対して署名を行うと同じ方法です。
+
+①Symbolエクスプローラーで自分のアカウント情報を開きます。
+```js
+`https://testnet.symbol.fyi/accounts/${alice.address.plain()}` //aliceに対する要求を確認する
+```
 
 
+②未署名のトランザクションの確認
+
+TRANSACTIONS（トランザクション）セクションのフィルターをRecentからPatialに変更し未署名のトランザクションを確認する
+
+
+③未署名のトランザクションの内容を確認
+
+Hash(トランザクションハッシュ)のリンクをクリックし矢印内部のアイコンにカーソルを合わせるとトランザクションの内容がポップアップされます。
+
+
+自分が署名したい内容であれば、Hash(トランザクションハッシュ)のテキスト部分をコピーしておきます。
+
+
+
+④TargetHashの部分に先ほどのHash(トランザクションハッシュ)を貼り付け、連署を行いアナウンスを行います。
+
+```js
+txInfo = await txRepo.getTransaction("TargetHash",sym.TransactionGroup.Partial).toPromise(); //ハッシュ値でトランザクションを検索
+cosignatureTx = sym.CosignatureTransaction.create(txInfo); //連署用のトランザクションを作成
+signedCosTx = alice.signCosignatureTransaction(cosignatureTx); //aliceに対する要求に連署する
+await txRepo.announceAggregateBondedCosignature(signedCosTx).toPromise(); //ブロックチェーンにアナウンス
+```
+
+
+⑤　③と同じページをリロードし、一番した部分にあるAGGREGATE COSIGNATURES(アグリゲート連署名)を確認し、自分のアドレスが入っていれば連署が成功となります。
 
 # 操作確認
 ### 8.参加メンバーのアドレスリストをコピーして貼り付けておく
