@@ -278,6 +278,40 @@ listener.open().then(() => {
 
 ```
 
+### 13. 追放（除名）の要求に対する連署
+モニタに映し出される他人が出している追放（除名）要求にaliceアカウントで連署します
+
+※項番7で行ったアグリゲートボンデッドトランザクションで送信された要求に対して署名を行うとほぼ同じ方法です。
+
+①メタバース上でモニタに映し出されている連署したいハッシュ値を確認する。
+
+②Symbolエクスプローラーで自分のアカウント情報を開く
+```js
+`https://testnet.symbol.fyi/accounts/${alice.address.plain()}` //aliceに対する要求を確認する
+```
+
+③未署名のトランザクションの確認
+
+TRANSACTIONS（トランザクション）セクションのフィルターをRecentからPatialに変更し連署したいHash(トランザクションハッシュ)のリンクをクリック
+
+
+④未署名のトランザクションの内容を確認
+
+Hash(トランザクションハッシュ)のテキスト部分をコピーしておきます。
+
+
+④TargetHashの部分に先ほどのHash(トランザクションハッシュ)を貼り付け、連署を行いアナウンスを行います。
+
+```js
+txInfo = await txRepo.getTransaction("TargetHash",sym.TransactionGroup.Partial).toPromise(); //ハッシュ値でトランザクションを検索
+cosignatureTx = sym.CosignatureTransaction.create(txInfo); //連署用のトランザクションを作成
+signedCosTx = alice.signCosignatureTransaction(cosignatureTx); //aliceに対する要求に連署する
+await txRepo.announceAggregateBondedCosignature(signedCosTx).toPromise(); //ブロックチェーンにアナウンス
+```
+
+
+⑤メタバース上のモニタで連署者に自分の名前が入っていれば連署が成功しています。
+
 
 
 # オンチェーンアンケート
