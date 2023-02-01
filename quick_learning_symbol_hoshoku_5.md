@@ -193,6 +193,20 @@ TD3BSNCGZALJE7ULVDVYYZK63I7IBXVKSGKOYZI = "じろう"
 暗号化されているため、他の人には見えません。
 
 人狼の役が当たった方には、役と他の人狼の名前が送られています。
+```js
+accountInfo = await accountRepo.getAccountInfo(sym.Address.createFromRawAddress(tomohiro)).toPromise();
+await txRepo.search({
+  group: sym.TransactionGroup.Confirmed,
+  signerPublicKey:accountInfo.publicKey,
+}).toPromise().then(page=>{
+  if (page.pageSize > 0) {
+    page.data.forEach((tx) => {
+      msg = alice.decryptMessage(tx.message,accountInfo.publicAccount).payload
+      console.log(msg)
+    });
+  }
+});
+```
 
 
 
