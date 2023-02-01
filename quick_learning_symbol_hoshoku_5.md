@@ -82,7 +82,7 @@ https://github.com/xembook/quick_learning_symbol/blob/main/09_multisig.md
 
 ①Symbolエクスプローラーで自分のアカウント情報を開きます。
 ```js
-`https://testnet.symbol.fyi/accounts/${carol2.plain()}` //carol2に対する要求を確認する場合
+`https://testnet.symbol.fyi/accounts/${carol2.plain()}` //carol2に対する要求を確認する場合、carol3の場合はここを変更して下さい
 ```
 
 ②未署名のトランザクションの確認
@@ -105,7 +105,7 @@ Hash(トランザクションハッシュ)のリンクをクリックし矢印�
 ```js
 txInfo = await txRepo.getTransaction("TargetHash",sym.TransactionGroup.Partial).toPromise(); //ハッシュ値でトランザクションを検索
 cosignatureTx = sym.CosignatureTransaction.create(txInfo); //連署用のトランザクションを作成
-signedCosTx = carol2.signCosignatureTransaction(cosignatureTx); //carol2に対する要求に連署する場合
+signedCosTx = carol2.signCosignatureTransaction(cosignatureTx); //carol2に対する要求に連署する場合、carol3の場合はここを変更して下さい
 await txRepo.announceAggregateBondedCosignature(signedCosTx).toPromise(); //ブロックチェーンにアナウンス
 ```
 
