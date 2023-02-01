@@ -78,6 +78,12 @@ console.log(aliceAddress);
 aliceAddress.plain()
 ```
 # 速習Symbol9章マルチシグ化
+![LTS勉強会資料のコピー 016](https://user-images.githubusercontent.com/47712051/216161992-74ce64aa-8129-4820-9cf8-637008106da5.png)
+![LTS勉強会資料のコピー 017](https://user-images.githubusercontent.com/47712051/216161999-b456af21-eae2-46e3-800f-903516fbfdbc.png)
+![LTS勉強会資料のコピー 018](https://user-images.githubusercontent.com/47712051/216162002-212ff545-30a3-4ac4-b3dc-52673d1c498e.png)
+![LTS勉強会資料のコピー 019](https://user-images.githubusercontent.com/47712051/216162007-bbd4405a-645f-4e14-a6db-a982e3df73b6.png)
+![LTS勉強会資料のコピー 020](https://user-images.githubusercontent.com/47712051/216162012-a2ae1750-68e1-415b-9d32-a9a813df9a46.png)
+![LTS勉強会資料のコピー 021](https://user-images.githubusercontent.com/47712051/216162014-b85a106c-730d-464c-806b-d3e0595b358d.png)
 
 ### 6.以下リンクを別タブで開きハンズオンを行っていきます。
 
