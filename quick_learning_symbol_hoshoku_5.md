@@ -102,7 +102,7 @@ https://github.com/xembook/quick_learning_symbol/blob/main/09_multisig.md
 
 TRANSACTIONS（トランザクション）セクションのフィルターをRecentからPatialに変更し未署名のトランザクションを確認する
 
-【ここに画像】
+<img width="1352" alt="スクリーンショット 2023-02-01 18 12 57" src="https://user-images.githubusercontent.com/47712051/216004350-9b84491b-da8d-4d77-a6f7-cbf0fd08a31c.png">
 
 ③未署名のトランザクションの内容を確認
 
@@ -111,7 +111,7 @@ Hashのリンクをクリックし矢印内部のアイコンにカーソルを�
 自分が署名したい内容であれば、Hashのテキスト部分をコピーしておきます。
 
 
-【ここに画像】
+<img width="1333" alt="スクリーンショット 2023-02-01 18 27 47" src="https://user-images.githubusercontent.com/47712051/216004369-0916ee55-c2d6-4910-a133-936476055400.png">
 
 ④TargetHashの部分に先ほどのHashを貼り付け、連署を行いアナウンスを行います。これで一連の流れが完了します。
 
