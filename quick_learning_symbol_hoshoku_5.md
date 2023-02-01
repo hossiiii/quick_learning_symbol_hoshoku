@@ -117,7 +117,7 @@ await txRepo.announceAggregateBondedCosignature(signedCosTx).toPromise(); //ブ�
 
 <img width="1359" alt="スクリーンショット 2023-02-01 18 41 50" src="https://user-images.githubusercontent.com/47712051/216007548-3a799f70-2adc-4cbd-b372-ad631aa56311.png">
 
-# 演習準備
+# 操作確認
 ### 8.参加メンバーのアドレスリストをコピーして貼り付けておく
 名前からアドレスを呼び出せるように定義しておく
 ```js
@@ -125,6 +125,8 @@ await txRepo.announceAggregateBondedCosignature(signedCosTx).toPromise(); //ブ�
 じろう = "TD3BSNCGZALJE7ULVDVYYZK63I7IBXVKSGKOYZI"
 ・・・
 ```
+
+### 9.追放者
 
 # オンチェーンアンケート
 今日の勉強をオンチェーンアンケートに回答します。
