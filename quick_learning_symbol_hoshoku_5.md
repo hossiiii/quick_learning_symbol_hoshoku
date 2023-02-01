@@ -77,16 +77,12 @@ aliceAddress.plain()
 
 https://github.com/xembook/quick_learning_symbol/blob/main/09_multisig.md
 
-# 演習準備
-
-### 7.人狼ゲーム用マルチシグ参加への連署（連署方法の確認）
-マルチシグアカウントへの参加を行います。
-
-また人狼ゲームが始まった後も追放者への連署で同じ方法を使って連署を行いますのでこの流れは覚えておいて下さい。
+### 7. 9.3 マルチシグ署名 アグリゲートボンデッドトランザクションで送信 の補足
+実際にアグリゲートボンデッドトランザクションで送信された要求に対して署名を行う手順を記載します。
 
 ①Symbolエクスプローラーで自分のアカウント情報を開きます。
 ```js
-`https://testnet.symbol.fyi/accounts/${aliceAddress.plain()}` //以下リンクをクリックしてアカウント情報を別タブで表示しておく
+`https://testnet.symbol.fyi/accounts/${carol2.plain()}` //carol2に対する要求を確認する場合
 ```
 
 ②未署名のトランザクションの確認
@@ -109,13 +105,24 @@ Hash(トランザクションハッシュ)のリンクをクリックし矢印�
 ```js
 txInfo = await txRepo.getTransaction("TargetHash",sym.TransactionGroup.Partial).toPromise(); //ハッシュ値でトランザクションを検索
 cosignatureTx = sym.CosignatureTransaction.create(txInfo); //連署用のトランザクションを作成
-signedCosTx = alice.signCosignatureTransaction(cosignatureTx); //連署
+signedCosTx = carol2.signCosignatureTransaction(cosignatureTx); //carol2に対する要求に連署する場合
 await txRepo.announceAggregateBondedCosignature(signedCosTx).toPromise(); //ブロックチェーンにアナウンス
 ```
 
 ⑤　③と同じページをリロードし、一番した部分にあるAGGREGATE COSIGNATURES(アグリゲート連署名)を確認し、自分のアドレスが入っていれば連署が成功となります。
 
 <img width="1359" alt="スクリーンショット 2023-02-01 18 41 50" src="https://user-images.githubusercontent.com/47712051/216007548-3a799f70-2adc-4cbd-b372-ad631aa56311.png">
+
+⑥　carl3についても同じように①〜⑤を実行し連署を行うことで起案者のcarol1,とcarol2,carol3の連署が完成しマルチシグからのトランザクションが実行される
+
+# 演習準備
+
+### 7.人狼ゲーム用マルチシグ参加への連署（連署方法の確認）
+マルチシグアカウントへの参加を行います。
+
+また人狼ゲームが始まった後も追放者への連署で同じ方法を使って連署を行いますのでこの流れは覚えておいて下さい。
+
+
 
 # 操作確認
 ### 8.参加メンバーのアドレスリストをコピーして貼り付けておく
