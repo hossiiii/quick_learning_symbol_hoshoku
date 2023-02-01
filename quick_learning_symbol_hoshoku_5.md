@@ -24,30 +24,11 @@ accountRepo = repo.createAccountRepository();
   generationHash = await repo.getGenerationHash().toPromise();
   epochAdjustment = await repo.getEpochAdjustment().toPromise();
 })();
-getMosaicInfo = async function(userAddress) { // モザイク情報を参照する関数を作成
- accountInfo = await accountRepo.getAccountInfo(userAddress).toPromise();
- accountInfo.mosaics.forEach( async (mosaic) => {
-   mosaicInfo = await mosaicRepo.getMosaic(mosaic.id).toPromise();
-   mosaicAmount = mosaic.amount.toString();
-   divisibility = mosaicInfo.divisibility; //可分性
-   restrictable = mosaicInfo.flags.restrictable; //制限設定の可否
-   revokable = mosaicInfo.flags.revokable; //発行者からの還収可否
-   supplyMutable = mosaicInfo.flags.supplyMutable; //供給量変更の可否
-   transferable = mosaicInfo.flags.transferable; //第三者への譲渡可否
-   if (divisibility > 0) {
-   	if(mosaicAmount / 10**divisibility >= 1 ){
-     displayAmount =
-       mosaicAmount.slice(0, mosaicAmount.length - divisibility) +  "." + mosaicAmount.slice(-divisibility);		
-   	} else{
-     displayAmount =
-       "0." + "0".repeat(divisibility-mosaicAmount.slice(-divisibility).length) + mosaicAmount.slice(-divisibility);	   		
-   	}
- } else {
-   displayAmount = mosaicAmount;
- }
-   console.log("id:" + mosaic.id.toHex() + " amount:" + displayAmount + " addressHeight:" + mosaicInfo.startHeight.compact() + " ownerAddress: " + mosaicInfo.ownerAddress.address + " divisibility:" + divisibility + " restrictable:" + restrictable + " revokable:" + revokable + " supplyMutable:" + supplyMutable + " transferable:" + transferable);
- });
-};
+nsRepo = repo.createNamespaceRepository();
+receiptRepo = repo.createReceiptRepository();
+transactionService = new sym.TransactionService(txRepo, receiptRepo);
+wsEndpoint = NODE.replace('http', 'ws') + "/ws";
+listener = new sym.Listener(wsEndpoint,nsRepo,WebSocket);
 ```
 ### 3-a.新規Aliceアカウント,Alice公開鍵クラス,Aliceアドレスクラスの作成
 ```js
