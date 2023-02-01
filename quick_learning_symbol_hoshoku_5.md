@@ -123,9 +123,6 @@ await txRepo.announceAggregateBondedCosignature(signedCosTx).toPromise(); //ブ�
 ```
 
 
-【ここに画像】
-
-
 # オンチェーンアンケート
 今日の勉強をオンチェーンアンケートに回答します。
 
