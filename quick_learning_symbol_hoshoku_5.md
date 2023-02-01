@@ -62,32 +62,20 @@ aliceAddress = sym.Address.createFromRawAddress(
 );
 console.log(aliceAddress);
 ```
-### 4.Aliceアカウントへ50XYMを補充（手数料に必要）
+### 4.Aliceアカウントへ30XYMを補充（手数料に必要）
 ```js
-`https://testnet.symbol.tools/?amount=50&recipient=${aliceAddress.plain()}` //以下リンクをクリックしてCLAIM！を実行
+`https://testnet.symbol.tools/?amount=30&recipient=${aliceAddress.plain()}` //以下リンクをクリックしてCLAIM！を実行
 ```
-# アカウント情報確認
-### 5.Aliceアカウント情報をSymbolエクスプローラーで表示する
+### 5.メタバースのチャットにAliceのアドレスを貼り付ける
 ```js
-`https://testnet.symbol.fyi/accounts/${aliceAddress.plain()}` //以下リンクをクリックしてアカウント情報を別タブで表示しておく
+//以下のアドレスを貼り付けて下さい
+aliceAddress.plain()
 ```
-# 速習Symbol8章ロック
-<img width="1082" alt="スクリーンショット 2023-01-21 1 39 39" src="https://user-images.githubusercontent.com/47712051/213754095-3cc6bce7-0041-4019-a746-0e18ae5ff684.png">
-
-<img width="1091" alt="スクリーンショット 2023-01-21 2 09 33" src="https://user-images.githubusercontent.com/47712051/213761532-f87e074e-9ef4-437c-8b12-d6073351c410.png">
-
-<img width="1079" alt="スクリーンショット 2023-01-21 2 09 50" src="https://user-images.githubusercontent.com/47712051/213761554-d9ea8b24-0b86-41c0-bcea-aa076b144fd0.png">
-
-<img width="1087" alt="スクリーンショット 2023-01-21 2 10 05" src="https://user-images.githubusercontent.com/47712051/213761569-db5054cb-6bbb-4d83-9fa7-359383d24be3.png">
-
-<img width="1090" alt="スクリーンショット 2023-01-21 2 10 19" src="https://user-images.githubusercontent.com/47712051/213761582-dea5cd80-9c09-4d7d-9c9e-42a44b100c96.png">
-
-<img width="1090" alt="スクリーンショット 2023-01-21 2 10 34" src="https://user-images.githubusercontent.com/47712051/213761600-00ee6a13-e643-4a94-9361-091869deadb3.png">
-
+# 速習Symbol9章マルチシグ化
 
 以下リンクを別タブで開きハンズオンを行っていきます。
 
-https://github.com/xembook/quick_learning_symbol/blob/main/08_lock.md
+https://github.com/xembook/quick_learning_symbol/blob/main/09_multisig.md
 
 
 # 演習課題
