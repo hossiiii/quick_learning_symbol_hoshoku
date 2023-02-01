@@ -208,6 +208,74 @@ await txRepo.search({
 });
 ```
 
+# チュートリアル
+練習として、tomohiroアカウントに対する追放（除名）の要求と、連署を行います。
+
+ゲーム開始後も同じ方法で追放（除名）の要求と、連署を行います。
+
+### 12. 追放（除名）の要求
+自分が起案者となり、ターゲットを決め追放（除名）を行うための投票を募ります。
+```js
+multisigTx = sym.MultisigAccountModificationTransaction.create(
+  undefined,
+  0,
+  0,
+  [],
+  [sym.Address.createFromRawAddress(tomohiro)], //【🌟要変更箇所🌟】除名したい人をメタバース上の名前で指定する（実際はマッピングされたアドレスに変換される）
+  networkType
+);
+
+accountInfo = await accountRepo.getAccountInfo(sym.Address.createFromRawAddress(hossiiii)).toPromise();
+
+aggregateTx = sym.AggregateTransaction.createBonded(
+  sym.Deadline.create(epochAdjustment),
+  [
+    multisigTx.toAggregate(accountInfo.publicAccount),
+  ],
+  networkType,[]
+).setMaxFeeForAggregate(100, 0);
+
+signedAggregateTx = alice.sign(aggregateTx, generationHash);
+
+hashLockTx = sym.HashLockTransaction.create(
+  sym.Deadline.create(epochAdjustment),
+  new sym.Mosaic(new sym.NamespaceId("symbol.xym"),sym.UInt64.fromUint(10 * 1000000)), //ロックするため最低10XYMが必要
+  sym.UInt64.fromUint(20), // 10分 以内に種名が集まらないとトランザクションは無効になる
+  signedAggregateTx,
+  networkType
+).setMaxFee(100);
+
+signedLockTx = alice.sign(hashLockTx, generationHash);
+
+await txRepo.announce(signedLockTx).toPromise();
+console.log("ハッシュロックTXをアナウンスしました、承認されるまで30秒ほどお待ちください"); 
+
+//ハッシュロックTXが承認されたことを検知させる
+listener.open().then(() => {
+  transactionService
+    .announceHashLockAggregateBonded(
+      signedLockTx,
+      signedAggregateTx,
+      listener
+    )
+    .subscribe({
+      next: async (x) => {
+        console.log("ハッシュロックが成功しました、続いてアグリゲートボンデッドを通知しました"); 
+        await txRepo.announceAggregateBonded(signedAggregateTx).toPromise();
+      },
+      error: (err) => {
+        console.error("以下の理由でハッシュロックが失敗しました");
+        console.error(err);
+        listener.close();
+      },
+      complete: () => {
+        listener.close();
+      },
+    });
+});
+
+```
+
 
 
 # オンチェーンアンケート
