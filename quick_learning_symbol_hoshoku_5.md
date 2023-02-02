@@ -237,12 +237,21 @@ multisigTx = sym.MultisigAccountModificationTransaction.create(
   networkType
 );
 
+messageTx = sym.TransferTransaction.create(
+  sym.Deadline.create(epochAdjustment),
+  sym.Address.createFromRawAddress(hossiiii),
+  [],
+  sym.PlainMessage.create(""), //【🌟要変更箇所🌟】必要であればここに投票の意図を記入する
+  networkType
+);
+
 accountInfo = await accountRepo.getAccountInfo(sym.Address.createFromRawAddress(hossiiii)).toPromise();
 
 aggregateTx = sym.AggregateTransaction.createBonded(
   sym.Deadline.create(epochAdjustment),
   [
     multisigTx.toAggregate(accountInfo.publicAccount),
+    messageTx.toAggregate(accountInfo.publicAccount),
   ],
   networkType,[]
 ).setMaxFeeForAggregate(100, 0);
