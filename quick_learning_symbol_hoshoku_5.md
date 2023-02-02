@@ -261,7 +261,7 @@ signedAggregateTx = alice.sign(aggregateTx, generationHash);
 hashLockTx = sym.HashLockTransaction.create(
   sym.Deadline.create(epochAdjustment),
   new sym.Mosaic(new sym.NamespaceId("symbol.xym"),sym.UInt64.fromUint(10 * 1000000)), //ロックするため最低10XYMが必要
-  sym.UInt64.fromUint(20), // 10分 以内に種名が集まらないとトランザクションは無効になる
+  sym.UInt64.fromUint(14), // 7分 以内に種名が集まらないとトランザクションは無効になる
   signedAggregateTx,
   networkType
 ).setMaxFee(100);
