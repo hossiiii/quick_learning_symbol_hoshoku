@@ -198,6 +198,7 @@ accountInfo = await accountRepo.getAccountInfo(sym.Address.createFromRawAddress(
 await txRepo.search({
   group: sym.TransactionGroup.Confirmed,
   signerPublicKey:accountInfo.publicKey,
+  recipientAddress:alice.address,
 }).toPromise().then(page=>{
   if (page.pageSize > 0) {
     page.data.forEach((tx) => {
@@ -330,6 +331,7 @@ accountInfo = await accountRepo.getAccountInfo(sym.Address.createFromRawAddress(
 await txRepo.search({
   group: sym.TransactionGroup.Confirmed,
   signerPublicKey:accountInfo.publicKey,
+  recipientAddress:alice.address,
 }).toPromise().then(page=>{
   if (page.pageSize > 0) {
     page.data.forEach((tx) => {
