@@ -261,3 +261,22 @@ id = setInterval(async() => {
 ```js
 clearInterval(id)
 ```
+
+### 12.追放された人への暗号メッセージ
+・別タブでMITのアカウントでログインをしておく。
+
+・さらに参加者アドレスリストも貼り付けておく
+
+```js
+accountInfo = await accountRepo.getAccountInfo(sym.Address.createFromRawAddress(tuihousaretahitononamae)).toPromise();
+encMsg = alice.encryptMessage("ここに人狼の名前",accountInfo.publicAccount);
+tx = sym.TransferTransaction.create(
+  sym.Deadline.create(epochAdjustment), //Deadline:有効期限
+  accountInfo.address,
+  [],
+  encMsg, //メッセージ
+  networkType //テストネット・メインネット区分
+).setMaxFee(100); //手数料
+signedTx = alice.sign(tx,generationHash);
+await txRepo.announce(signedTx).toPromise();
+```
