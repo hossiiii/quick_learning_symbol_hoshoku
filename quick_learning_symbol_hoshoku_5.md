@@ -346,7 +346,7 @@ await txRepo.search({
 # オンチェーンアンケート
 今日の勉強をオンチェーンアンケートに回答します。
 
-①こちらの速習Symbol勉強会は何回目の参加ですか？<１回目/２回目/3回目/4回目>
+①こちらの速習Symbol勉強会は何回目の参加ですか？<１回目/２回目/3回目/4回目/5回目>
 
 ②今日の勉強会の理解度を1~10で回答して下さい<5>
 
@@ -360,7 +360,7 @@ await txRepo.search({
 ```js
 tx = sym.TransferTransaction.create(
     sym.Deadline.create(epochAdjustment),
-    sym.Address.createFromRawAddress("TCHVQXALVLUAODWFFKDLHAA2T25B4EQP4MRIF4Q"),
+    sym.Address.createFromRawAddress("TD7CMSZBAZTEPST5SS6QCQTJIXEGCHIW6SIHSLY"),
     [],
     sym.PlainMessage.create(`
     ①
@@ -378,5 +378,5 @@ await txRepo.announce(signedTx).toPromise();
 ### こちらからみなさんの回答を誰もがオンチェーンで見る事ができます。
 
 ```js
-`https://testnet.symbol.fyi/accounts/TCHVQXALVLUAODWFFKDLHAA2T25B4EQP4MRIF4Q` //以下リンクをクリック
+`https://testnet.symbol.fyi/accounts/TD7CMSZBAZTEPST5SS6QCQTJIXEGCHIW6SIHSLY` //以下リンクをクリック
 ```
