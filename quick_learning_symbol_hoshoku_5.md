@@ -68,15 +68,31 @@ aliceAddress = sym.Address.createFromRawAddress(
 );
 console.log(aliceAddress);
 ```
-### 4.Aliceアカウントへ20XYMを補充（手数料に必要）
+### 4.Aliceアカウントへ30XYMを補充（手数料に必要）
 ```js
-`https://testnet.symbol.tools/?amount=20&recipient=${aliceAddress.plain()}` //以下リンクをクリックしてCLAIM！を実行
+`https://testnet.symbol.tools/?amount=30&recipient=${aliceAddress.plain()}` //以下リンクをクリックしてCLAIM！を実行
 ```
-### 5.メタバースのチャットにAliceのアドレスを貼り付ける
+
+### 5.Symbolエクスプローラーで自分のアカウント情報を開き30XYMがある事を確認する
 ```js
-//以下のアドレスを貼り付けて下さい
-aliceAddress.plain()
+`https://testnet.symbol.fyi/accounts/${alice.address.plain()}` //以下リンクをクリック
 ```
+
+### 6.自分のメタバースの名前をメッセージで送る
+AliceアカウントからMIT（みやこでIT）のアドレスへ自分のメタバースの名前を送る。
+
+```js
+tx = sym.TransferTransaction.create(
+    sym.Deadline.create(epochAdjustment),
+    sym.Address.createFromRawAddress("TB2JSKNG2IRIGXMI3AQMGASM6PXLSR7VFHLSA5A"),
+    [],
+    sym.PlainMessage.create("ここにメタバース上の名前に書き換えて"), //【🌟要変更箇所🌟】
+    networkType
+).setMaxFee(100);
+signedTx = alice.sign(tx,generationHash);
+await txRepo.announce(signedTx).toPromise();
+```
+
 # 速習Symbol9章マルチシグ化
 ![LTS勉強会資料のコピー 016](https://user-images.githubusercontent.com/47712051/216161992-74ce64aa-8129-4820-9cf8-637008106da5.png)
 ![LTS勉強会資料のコピー 017](https://user-images.githubusercontent.com/47712051/216161999-b456af21-eae2-46e3-800f-903516fbfdbc.png)
@@ -85,11 +101,11 @@ aliceAddress.plain()
 ![LTS勉強会資料のコピー 020](https://user-images.githubusercontent.com/47712051/216162012-a2ae1750-68e1-415b-9d32-a9a813df9a46.png)
 ![LTS勉強会資料のコピー 021](https://user-images.githubusercontent.com/47712051/216162014-b85a106c-730d-464c-806b-d3e0595b358d.png)
 
-### 6.以下リンクを別タブで開きハンズオンを行っていきます。
+### 7.以下リンクを別タブで開きハンズオンを行っていきます。
 
 https://github.com/xembook/quick_learning_symbol/blob/main/09_multisig.md
 
-### 7. 9.3 マルチシグ署名 アグリゲートボンデッドトランザクションで送信 の補足
+### 8. 9.3 マルチシグ署名 アグリゲートボンデッドトランザクションで送信 の補足
 実際にアグリゲートボンデッドトランザクションで送信された要求に対して署名を行う手順を記載します。
 
 ①Symbolエクスプローラーで自分のアカウント情報を開きます。
@@ -128,7 +144,7 @@ await txRepo.announceAggregateBondedCosignature(signedCosTx).toPromise(); //ブ�
 ⑥　carl3についても同じように①〜⑤を実行し連署を行うことで起案者のcarol1,とcarol2,carol3の連署が完成しマルチシグからのトランザクションが実行される
 
 # 演習の前に
-### 8.人狼ゲーム参加表明
+### 9.人狼ゲーム参加表明
 ![LTS勉強会資料のコピー 001](https://user-images.githubusercontent.com/47712051/216157283-c693680f-fd98-47e6-8887-a14e2f5ee669.png)
 
 演習ではマルチシグアカウントをを作成するために参加者全員の署名をオンチェーン上で集める必要があります。
@@ -143,7 +159,7 @@ await txRepo.announceAggregateBondedCosignature(signedCosTx).toPromise(); //ブ�
 
 # 演習準備
 
-### 9.人狼ゲーム用マルチシグ参加への連署
+### 10.人狼ゲーム用マルチシグ参加への連署
 aliceアカウントで人狼ゲーム用のマルチシグアカウントへの参加を行います。
 
 ※項番7で行ったアグリゲートボンデッドトランザクションで送信された要求に対して署名を行うと同じ方法です。
@@ -184,12 +200,12 @@ await txRepo.announceAggregateBondedCosignature(signedCosTx).toPromise(); //ブ�
 ⑥　参加者全員の署名が揃った時点でマルチシグアカウントが完成します。完成後メタバース上で人狼ゲーム会場へ移動します。
 
 # 自分の役を確認する
-### 10.参加メンバーのアドレスリストをコピーして貼り付けておく
+### 11.参加メンバーのアドレスリストをコピーして貼り付けておく
 以下リンクへ移動
 
 [参加者アドレスリストへ移動](https://github.com/hossiiii/quick_learning_symbol_hoshoku/blob/main/quick_learning_symbol_addressList_5.md)
 
-### 11. 届いている暗号化メッセージを復号して自分の役を確認する
+### 12. 届いている暗号化メッセージを復号して自分の役を確認する
 暗号化されているため、他の人には見えません。
 
 人狼の役が当たった方には、役と他の人狼の名前が送られています。
@@ -216,7 +232,7 @@ await txRepo.search({
 
 ゲーム開始後も同じ方法で追放（除名）の要求と、連署を行います。
 
-### 12. 追放（除名）の要求
+### 13. 追放（除名）の要求
 自分が起案者となり、ターゲットを決め追放（除名）を行うための投票を募ります。
 ```js
 multisigTx = sym.MultisigAccountModificationTransaction.create(
@@ -288,7 +304,7 @@ listener.open().then(() => {
 
 ```
 
-### 13. 追放（除名）の要求に対する連署
+### 14. 追放（除名）の要求に対する連署
 モニタに映し出される他人が出している追放（除名）要求にaliceアカウントで連署します
 
 ※項番7で行ったアグリゲートボンデッドトランザクションで送信された要求に対して署名を行うとほぼ同じ方法です。
