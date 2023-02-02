@@ -187,7 +187,7 @@ await txRepo.announceAggregateBondedCosignature(signedCosTx).toPromise(); //ブ�
 ### 10.参加メンバーのアドレスリストをコピーして貼り付けておく
 以下リンクへ移動
 
-https://github.com/hossiiii/quick_learning_symbol_hoshoku/blob/main/quick_learning_symbol_addressList_5.md
+[参加者アドレスリストへ移動](https://github.com/hossiiii/quick_learning_symbol_hoshoku/blob/main/quick_learning_symbol_addressList_5.md)
 
 ### 11. 届いている暗号化メッセージを復号して自分の役を確認する
 暗号化されているため、他の人には見えません。
