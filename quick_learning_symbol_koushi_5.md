@@ -148,3 +148,116 @@ listener.open().then(() => {
     });
 });
 ```
+
+### 10.ディスプレイ表示用コマンド
+```js
+id = setInterval(async() => {
+  console.log("==================🔥受付中の追放投票🔥=================")
+  result = await txRepo.search(
+    {
+      group:sym.TransactionGroup.Partial,
+      embedded:true,
+      address:alice.address
+    }
+  ).toPromise();
+  
+  msigRepo = repo.createMultisigRepository();
+  multisigInfo = await msigRepo.getMultisigAccountInfo(alice.address).toPromise();
+  cahinRepo = repo.createChainRepository()
+  cahinInfo = await cahinRepo.getChainInfo().toPromise();
+  
+  txes = result.data;
+  
+  for (let index = 0; index < txes.length; index++) {
+    try{
+      hlRepo = repo.createHashLockRepository();
+      lockInfo = await hlRepo.search({group:sym.TransactionGroup.Confirmed,address:sym.Address.createFromRawAddress(txes[index].signer.address.address)}).toPromise();
+      if(lockInfo.data.length > 0){ //署名が集まったら表示されなくなる
+        txInfo = await txRepo.getTransaction(txes[index].transactionInfo.hash,sym.TransactionGroup.Partial).toPromise();
+        text = `投票内容： ${eval(txes[index].signer.address.address)}　=>　${eval(txInfo.innerTransactions[0].addressDeletions[0].address)}
+  連署者(${txInfo.cosignatures.length}/${multisigInfo.minRemoval-1})： `
+          if(txInfo.cosignatures.length>0){
+              for (let index = 0; index < txInfo.cosignatures.length; index++) {
+              text = `${text} ${eval(txInfo.cosignatures[index].signer.address.address)},`
+              }
+          }
+          text = `${text}
+  起案者からのメッセージ： ${txInfo.innerTransactions[1].message.payload}
+  hash値： ${txes[index].transactionInfo.hash}`
+          if(lockInfo.data[0].endHeight.compact() - cahinInfo.height.compact() > 0){ //有効
+            text = `${text}
+  有効期限： 残り${(lockInfo.data[0].endHeight.compact() - cahinInfo.height.compact())*30}秒`
+          }else{
+            text = `${text}
+  有効期限： 期限切れ❌このhash値に連署しても除名は実行されませんが署名は可能です`
+          }
+          console.log(text)
+      }
+    }catch{
+    }
+  }
+
+  setTimeout(async() => {
+    result = await txRepo.search(
+      {
+        group:sym.TransactionGroup.Confirmed,
+        embedded:true,
+        address:alice.address
+      }
+    ).toPromise();
+  
+    txes = result.data;
+    for (let index = 0; index < txes.length; index++) {
+        if(txes[index].type == 16961){
+          txInfo = await txRepo.getTransaction(txes[index].transactionInfo.hash,sym.TransactionGroup.Confirmed).toPromise();
+          text = `⏹終了した投票⏹ ${eval(txes[index].signer.address.address)},`
+            if(txInfo.cosignatures.length>0){
+                for (let index = 0; index < txInfo.cosignatures.length; index++) {
+                text = `${text} ${eval(txInfo.cosignatures[index].signer.address.address)},`
+                }
+            }
+            text = `${text} => ${eval(txInfo.innerTransactions[0].addressDeletions[0].address)}`
+            console.log(text)
+        }
+    }
+  }, 100);
+  
+  setTimeout(async() => {
+    msigRepo = repo.createMultisigRepository();
+    multisigInfo = await msigRepo.getMultisigAccountInfo(alice.address).toPromise();
+  
+    txes = multisigInfo.cosignatoryAddresses;
+    text = "😇生存者リスト😇"
+    for (let index = 0; index < txes.length; index++) {
+      text = `${text} ${eval(txes[index].plain())},`
+    }
+    console.log(text)
+  
+    result = await txRepo.search(
+      {
+        group:sym.TransactionGroup.Confirmed,
+        embedded:true,
+        address:alice.address
+      }
+    ).toPromise();
+  
+    txes = result.data;
+    text = "💀追放者リスト💀"
+    for (let index = 0; index < txes.length; index++) {
+        if(txes[index].type == 16961){
+            txInfo = await txRepo.getTransaction(txes[index].transactionInfo.hash,sym.TransactionGroup.Confirmed).toPromise();
+            if(txInfo.innerTransactions[0].addressDeletions.length > 0)
+            text = `${text} ${eval(txInfo.innerTransactions[0].addressDeletions[0].address)},`
+        }
+    }
+    console.log(text)
+    console.log("================================================")
+    console.log("")
+  }, 500);
+
+}, 10000);
+```
+### 11.定期実行の停止
+```js
+clearInterval(id)
+```
