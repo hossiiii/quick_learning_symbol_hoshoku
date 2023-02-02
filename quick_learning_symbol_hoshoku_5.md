@@ -202,8 +202,10 @@ await txRepo.search({
 }).toPromise().then(page=>{
   if (page.pageSize > 0) {
     page.data.forEach((tx) => {
-      msg = alice.decryptMessage(tx.message,accountInfo.publicAccount).payload
-      console.log(msg)
+      if(tx.message.type == 1){
+        msg = alice.decryptMessage(tx.message,accountInfo.publicAccount).payload
+        console.log(msg)
+      }
     });
   }
 });
