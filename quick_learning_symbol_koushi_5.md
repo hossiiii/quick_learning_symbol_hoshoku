@@ -93,7 +93,24 @@ await txRepo.announce(signedTx).toPromise();
 
 # 演習準備
 ### 7.参加メンバーのアドレスリストをコピーしてコンソールに貼り付けておく
-Discordからデータをコピーして、コンソールに貼り付ける
+```js
+accountInfo = await accountRepo.getAccountInfo(sym.Address.createFromRawAddress("TB2JSKNG2IRIGXMI3AQMGASM6PXLSR7VFHLSA5A")).toPromise();
+await txRepo.search({
+  group: sym.TransactionGroup.Confirmed,
+  recipientAddress:accountInfo.address,
+  order:sym.Order.Desc
+}).toPromise().then(page=>{
+  if (page.pageSize > 0) {
+    page.data.forEach((tx) => {
+      if(tx.message.type == 0){
+        msg = tx.message.payload
+        console.log(`${msg} = "${tx.signer.address.address}"`)
+        console.log(`${tx.signer.address.address} = "${msg}"`)
+      }
+    });
+  }
+});
+```
 
 ### 8.参加者用のｇｉｔｈｕｂで参加者リストを更新する
 [アドレスリストへ行きgitを更新する](https://github.com/hossiiii/quick_learning_symbol_hoshoku/blob/main/quick_learning_symbol_addressList_5.md)
