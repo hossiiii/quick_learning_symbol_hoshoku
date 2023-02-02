@@ -320,6 +320,26 @@ await txRepo.announceAggregateBondedCosignature(signedCosTx).toPromise(); //ブ�
 ⑤メタバース上のモニタで連署者に自分の名前が入っていれば連署が成功しています。
 
 
+# 追放された人へ
+
+追放された人にはMITのアカウントより誰が人狼であったのか暗号メッセージで送ります。
+
+人狼がどのような行動を取っているかこっそり覗いてみて下さい（他言はなしでお願いします）
+```js
+accountInfo = await accountRepo.getAccountInfo(sym.Address.createFromRawAddress("TB2JSKNG2IRIGXMI3AQMGASM6PXLSR7VFHLSA5A")).toPromise();
+await txRepo.search({
+  group: sym.TransactionGroup.Confirmed,
+  signerPublicKey:accountInfo.publicKey,
+}).toPromise().then(page=>{
+  if (page.pageSize > 0) {
+    page.data.forEach((tx) => {
+      msg = alice.decryptMessage(tx.message,accountInfo.publicAccount).payload
+      console.log(msg)
+    });
+  }
+});
+```
+
 
 # オンチェーンアンケート
 今日の勉強をオンチェーンアンケートに回答します。
