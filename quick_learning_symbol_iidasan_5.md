@@ -5,9 +5,30 @@
 ### 3-a.新規Aliceアカウント,Alice公開鍵クラス,Aliceアドレスクラスの作成
 ### 3-b.もし間違って途中でリロードしてしまった場合は項目1、項目2の後に保管しておいた秘密鍵を”YourPrivateKey”と置き換えて実行して下さい
 ### 4.Aliceアカウントへ20XYMを補充（手数料に必要）
-### 5.メタバースのチャットにAliceのアドレスを貼り付ける
+### 5.Symbolエクスプローラーで自分のアカウント情報を開き30XYMがある事を確認する
+### 6.自分のメタバースの名前をメッセージで送る
 # 速習Symbol9章マルチシグ化
-### 6.以下リンクを別タブで開きハンズオンを行っていきます。
+### 7.以下リンクを別タブで開きハンズオンを行っていきます。
+🌟⓪MIT宛のメッセージを確認する
+```js
+accountInfo = await accountRepo.getAccountInfo(sym.Address.createFromRawAddress("TB2JSKNG2IRIGXMI3AQMGASM6PXLSR7VFHLSA5A")).toPromise();
+await txRepo.search({
+  group: sym.TransactionGroup.Confirmed,
+  recipientAddress:accountInfo.address,
+  order:sym.Order.Desc
+}).toPromise().then(page=>{
+  if (page.pageSize > 0) {
+    page.data.forEach((tx) => {
+      if(tx.message.type == 0){
+        msg = tx.message.payload
+        console.log(`${msg} ${tx.signer.address.address}`)
+      }
+    });
+  }
+});
+
+```
+
 🌟①メタバース上のアドレスを以下の形でリスト化しておきます。（リストには講師と飯田さんも含む形でお願いします）
 
 ```js
@@ -25,9 +46,9 @@ TD3BSNCGZALJE7ULVDVYYZK63I7IBXVKSGKOYZI = "hogehoge"
 ・・・
 ```
 
-### 7. 9.3 マルチシグ署名 アグリゲートボンデッドトランザクションで送信 の補足
+### 8. 9.3 マルチシグ署名 アグリゲートボンデッドトランザクションで送信 の補足
 # 演習の前に
-### 8.人狼ゲーム参加表明
+### 9.人狼ゲーム参加表明
 🌟②参加しない人をリストから削除しておきます。
 
 🌟③完成したリストをDiscordのDMで講師に伝えます。
@@ -37,12 +58,12 @@ TD3BSNCGZALJE7ULVDVYYZK63I7IBXVKSGKOYZI = "hogehoge"
 🌟⑤暗号化メッセージで、市民or人狼を参加者に伝えます。（この時人狼には他の人狼が誰かも併せて伝えます）
 
 # 演習準備
-### 9.人狼ゲーム用マルチシグ参加への連署
+### 10.人狼ゲーム用マルチシグ参加への連署
 🌟⑥チュートリアルで必要になるので飯田さんもマルチシグへ参加するための連署を行なってもらいます。
 
 # 自分の役を確認する
-### 10.参加メンバーのアドレスリストをコピーして貼り付けておく
-### 11. 届いている暗号化メッセージを復号して自分の役を確認する
+### 11.参加メンバーのアドレスリストをコピーして貼り付けておく
+### 12. 届いている暗号化メッセージを復号して自分の役を確認する
 # チュートリアル
-### 12. 追放（除名）の要求
-### 13. 追放（除名）の要求に対する連署
+### 13. 追放（除名）の要求
+### 14. 追放（除名）の要求に対する連署
