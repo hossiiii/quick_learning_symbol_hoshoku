@@ -321,7 +321,7 @@ await txRepo.announceAggregateBondedCosignature(signedCosTx).toPromise(); //ブ�
 ⑤メタバース上のモニタで連署者に自分の名前が入っていれば連署が成功しています。
 
 
-# 追放された人へ
+# 追放された人の楽しみ方
 
 追放された人にはMITのアカウントより誰が人狼であったのか暗号メッセージで送ります。
 
