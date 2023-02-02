@@ -117,7 +117,7 @@ await txRepo.search({
 [アドレスリストへ行きgitを更新する](https://github.com/hossiiii/quick_learning_symbol_hoshoku/blob/main/quick_learning_symbol_addressList_5.md)
 
 ### 9.参加メンバーにマルチシグ参加要求を行う
-注意❌　参加表明していない人はメンバーからは除外する事❌
+注意❌　参加表明していない人はメンバーからは除外する事❌　　参加表明した人の数を数える事
 ```js
 multisigTx = sym.MultisigAccountModificationTransaction.create(
     undefined,
@@ -125,10 +125,24 @@ multisigTx = sym.MultisigAccountModificationTransaction.create(
     x, //🌟修正🌟参加人数の人数の半分を指定する
     [
         sym.Address.createFromRawAddress(bob1),
-        sym.Address.createFromRawAddress(bob2),
-        sym.Address.createFromRawAddress(bob3),
-        sym.Address.createFromRawAddress(bob4),
-        sym.Address.createFromRawAddress(bob5),
+        sym.Address.createFromRawAddress(bob1),
+        sym.Address.createFromRawAddress(bob1),
+        sym.Address.createFromRawAddress(bob1),
+        sym.Address.createFromRawAddress(bob1),
+        sym.Address.createFromRawAddress(bob1),
+        sym.Address.createFromRawAddress(bob1),
+        sym.Address.createFromRawAddress(bob1),
+        sym.Address.createFromRawAddress(bob1),
+        sym.Address.createFromRawAddress(bob1),
+        sym.Address.createFromRawAddress(bob1),
+        sym.Address.createFromRawAddress(bob1),
+        sym.Address.createFromRawAddress(bob1),
+        sym.Address.createFromRawAddress(bob1),
+        sym.Address.createFromRawAddress(bob1),
+        sym.Address.createFromRawAddress(bob1),
+        sym.Address.createFromRawAddress(bob1),
+        sym.Address.createFromRawAddress(bob1),
+        sym.Address.createFromRawAddress(bob1),
     ], //🌟修正🌟参加人数のリスト分（hossiiiiは除外、参加表明していない人は除外）
     [],//除名対象アドレスリスト
     networkType
