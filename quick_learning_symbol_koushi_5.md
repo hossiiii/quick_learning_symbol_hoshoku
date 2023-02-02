@@ -32,6 +32,7 @@ listener = new sym.Listener(wsEndpoint,nsRepo,WebSocket);
 ```
 
 ### 3-a.新規Aliceアカウント,Alice公開鍵クラス,Aliceアドレスクラスの作成
+```js
 alice = sym.Account.generateNewAccount(networkType);
 alicePublicAccount = sym.PublicAccount.createFromPublicKey(
   alice.publicKey,
@@ -45,6 +46,7 @@ console.log(aliceAddress);
 //間違ってコンソールをリロードしてしまうと、アカウントが消えてしまいます。
 //そのため秘密鍵を出力し、別途テキストなどに貼り付けておきます。
 console.log("privateKey " + alice.privateKey);
+```
 
 
 ### 3-b.Aliceアカウントのインポート,Alice公開鍵クラス,Aliceアドレスクラスの作成
