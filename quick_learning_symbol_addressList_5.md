@@ -16,3 +16,7 @@ TD3BSNCGZALJE7ULVDVYYZK63I7IBXVKSGKOYZI = "hogehoge"
 ・・・
 
 ```
+
+貼り付けが完了したら以下リンクをクリックして元のページ
+
+[元のページへ戻る](https://github.com/hossiiii/quick_learning_symbol_hoshoku/blob/main/quick_learning_symbol_hoshoku_5.md#10%E5%8F%82%E5%8A%A0%E3%83%A1%E3%83%B3%E3%83%90%E3%83%BC%E3%81%AE%E3%82%A2%E3%83%89%E3%83%AC%E3%82%B9%E3%83%AA%E3%82%B9%E3%83%88%E3%82%92%E3%82%B3%E3%83%94%E3%83%BC%E3%81%97%E3%81%A6%E8%B2%BC%E3%82%8A%E4%BB%98%E3%81%91%E3%81%A6%E3%81%8A%E3%81%8F)
