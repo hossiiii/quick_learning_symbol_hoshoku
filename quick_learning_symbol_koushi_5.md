@@ -98,7 +98,8 @@ accountInfo = await accountRepo.getAccountInfo(sym.Address.createFromRawAddress(
 await txRepo.search({
   group: sym.TransactionGroup.Confirmed,
   recipientAddress:accountInfo.address,
-  order:sym.Order.Desc
+  order:sym.Order.Desc,
+  pageSize:30
 }).toPromise().then(page=>{
   if (page.pageSize > 0) {
     page.data.forEach((tx) => {
