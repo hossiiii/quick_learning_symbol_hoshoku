@@ -86,3 +86,63 @@ Discordからデータをコピーして、コンソールに貼り付ける
 
 ### 8.参加者用のｇｉｔｈｕｂで参加者リストを更新する
 [アドレスリストへ行きgitを更新する](https://github.com/hossiiii/quick_learning_symbol_hoshoku/blob/main/quick_learning_symbol_addressList_5.md)
+
+### 9.参加メンバーにマルチシグ参加要求を行う
+```js
+multisigTx = sym.MultisigAccountModificationTransaction.create(
+    undefined,
+    x, //🌟修正🌟参加人数の人数の半分を指定する
+    x, //🌟修正🌟参加人数の人数の半分を指定する
+    [
+        sym.Address.createFromRawAddress(bob1),
+        sym.Address.createFromRawAddress(bob2),
+        sym.Address.createFromRawAddress(bob3),
+        sym.Address.createFromRawAddress(bob4),
+        sym.Address.createFromRawAddress(bob5),
+    ], //🌟修正🌟参加人数のリスト分（hossiiii以外）
+    [],//除名対象アドレスリスト
+    networkType
+);
+
+aggregateTx = sym.AggregateTransaction.createBonded(
+    sym.Deadline.create(epochAdjustment),
+    [
+      multisigTx.toAggregate(alice.publicAccount),
+    ],
+    networkType,[]
+).setMaxFeeForAggregate(100, 0);
+
+signedAggregateTx = alice.sign(aggregateTx, generationHash);
+
+hashLockTx = sym.HashLockTransaction.create(
+  sym.Deadline.create(epochAdjustment),
+	new sym.Mosaic(new sym.NamespaceId("symbol.xym"),sym.UInt64.fromUint(10 * 1000000)), //固定値:10XYM
+	sym.UInt64.fromUint(480),
+	signedAggregateTx,
+	networkType
+).setMaxFee(100);
+
+signedLockTx = alice.sign(hashLockTx, generationHash);
+
+
+listener.open().then(() => {
+    transactionService
+      .announceHashLockAggregateBonded(
+        signedLockTx,
+        signedAggregateTx,
+        listener
+      )
+      .subscribe({
+        next: (x) => {
+          console.log(x);
+        },
+        error: (err) => {
+          console.error(err);
+          listener.close();
+        },
+        complete: () => {
+          listener.close();
+        },
+    });
+});
+```
