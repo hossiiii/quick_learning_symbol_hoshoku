@@ -185,21 +185,9 @@ await txRepo.announceAggregateBondedCosignature(signedCosTx).toPromise(); //ブ�
 
 # 自分の役を確認する
 ### 10.参加メンバーのアドレスリストをコピーして貼り付けておく
-名前からアドレスを呼び出せるように、また逆にアドレスから名前を呼び出せるように定義しておく
-```js
-tomohiro = "TA2JD6AB3XOCOKW3OMP3KJY3OPHCD3IJDL4B7TA"
-hossiiii = "TD3BSNCGZALJE7ULVDVYYZK63I7IBXVKSGKOYZI"
-yamada = "TD3BSNCGZALJE7ULVDVYYZK63I7IBXVKSGKOYZI"
-tanaka = "TD3BSNCGZALJE7ULVDVYYZK63I7IBXVKSGKOYZI"
-hogehoge = "TD3BSNCGZALJE7ULVDVYYZK63I7IBXVKSGKOYZI"
-・・・
-TA2JD6AB3XOCOKW3OMP3KJY3OPHCD3IJDL4B7TA = "tomohiro"
-TD3BSNCGZALJE7ULVDVYYZK63I7IBXVKSGKOYZI = "hossiiii"
-TD3BSNCGZALJE7ULVDVYYZK63I7IBXVKSGKOYZI = "yamada"
-TD3BSNCGZALJE7ULVDVYYZK63I7IBXVKSGKOYZI = "tanaka"
-TD3BSNCGZALJE7ULVDVYYZK63I7IBXVKSGKOYZI = "hogehoge"
-・・・
-```
+以下リンクへ移動
+
+https://github.com/hossiiii/quick_learning_symbol_hoshoku/blob/main/quick_learning_symbol_addressList_5.md
 
 ### 11. 届いている暗号化メッセージを復号して自分の役を確認する
 暗号化されているため、他の人には見えません。
