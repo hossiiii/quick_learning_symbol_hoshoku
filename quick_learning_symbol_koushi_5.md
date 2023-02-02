@@ -82,8 +82,7 @@ aliceAddress.plain()
 
 # 演習準備
 ### 7.参加メンバーのアドレスリストをコピーしてコンソールに貼り付けておく
-飯田さんのデータをコピー
+Discordからデータをコピーして、コンソールに貼り付ける
 
 ### 8.参加者用のｇｉｔｈｕｂで参加者リストを更新する
-忘れずに
 [アドレスリストへ行きgitを更新する](https://github.com/hossiiii/quick_learning_symbol_hoshoku/blob/main/quick_learning_symbol_addressList_5.md)
