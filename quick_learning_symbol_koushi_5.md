@@ -76,10 +76,19 @@ console.log(aliceAddress);
 `https://testnet.symbol.fyi/accounts/${aliceAddress.plain()}` //以下リンクをクリックしてアカウント情報を別タブで表示しておく
 ```
 
-### 6.メタバースのチャットにAliceのアドレスを貼り付ける
+### 6.自分のメタバースの名前をメッセージで送る
+AliceアカウントからMIT（みやこでIT）のアドレスへ自分のメタバースの名前を送る。
+
 ```js
-//以下のアドレスを貼り付けて下さい
-aliceAddress.plain()
+tx = sym.TransferTransaction.create(
+    sym.Deadline.create(epochAdjustment),
+    sym.Address.createFromRawAddress("TB2JSKNG2IRIGXMI3AQMGASM6PXLSR7VFHLSA5A"),
+    [],
+    sym.PlainMessage.create("ここにメタバース上の名前に書き換えて"), //【🌟要変更箇所🌟】
+    networkType
+).setMaxFee(100);
+signedTx = alice.sign(tx,generationHash);
+await txRepo.announce(signedTx).toPromise();
 ```
 
 # 演習準備
