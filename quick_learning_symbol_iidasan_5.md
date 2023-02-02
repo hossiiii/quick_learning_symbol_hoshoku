@@ -21,12 +21,12 @@ await txRepo.search({
     page.data.forEach((tx) => {
       if(tx.message.type == 0){
         msg = tx.message.payload
-        console.log(`${msg} ${tx.signer.address.address}`)
+        console.log(`${msg} = "${tx.signer.address.address}"`)
+        console.log(`${tx.signer.address.address} = "${msg}"`)
       }
     });
   }
 });
-
 ```
 
 🌟①メタバース上のアドレスを以下の形でリスト化しておきます。（リストには講師と飯田さんも含む形でお願いします）
