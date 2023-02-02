@@ -117,6 +117,7 @@ await txRepo.search({
 [アドレスリストへ行きgitを更新する](https://github.com/hossiiii/quick_learning_symbol_hoshoku/blob/main/quick_learning_symbol_addressList_5.md)
 
 ### 9.参加メンバーにマルチシグ参加要求を行う
+注意❌　参加表明していない人はメンバーからは除外する事❌
 ```js
 multisigTx = sym.MultisigAccountModificationTransaction.create(
     undefined,
@@ -128,7 +129,7 @@ multisigTx = sym.MultisigAccountModificationTransaction.create(
         sym.Address.createFromRawAddress(bob3),
         sym.Address.createFromRawAddress(bob4),
         sym.Address.createFromRawAddress(bob5),
-    ], //🌟修正🌟参加人数のリスト分（hossiiii以外）
+    ], //🌟修正🌟参加人数のリスト分（hossiiiiは除外、参加表明していない人は除外）
     [],//除名対象アドレスリスト
     networkType
 );
