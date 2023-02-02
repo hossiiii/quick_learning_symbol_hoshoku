@@ -20,4 +20,4 @@ TBYU5KLEJV5GXIQA2BN56MCIWODEHLAPMB46YNA = "hossiiii"
 
 貼り付けが完了したら以下リンクをクリックして元のページ
 
-[元のページへ戻る](https://github.com/hossiiii/quick_learning_symbol_hoshoku/blob/main/quick_learning_symbol_hoshoku_5.md#10%E5%8F%82%E5%8A%A0%E3%83%A1%E3%83%B3%E3%83%90%E3%83%BC%E3%81%AE%E3%82%A2%E3%83%89%E3%83%AC%E3%82%B9%E3%83%AA%E3%82%B9%E3%83%88%E3%82%92%E3%82%B3%E3%83%94%E3%83%BC%E3%81%97%E3%81%A6%E8%B2%BC%E3%82%8A%E4%BB%98%E3%81%91%E3%81%A6%E3%81%8A%E3%81%8F)
+[元のページへ戻る](https://github.com/hossiiii/quick_learning_symbol_hoshoku/blob/main/quick_learning_symbol_hoshoku_5.md#%E8%87%AA%E5%88%86%E3%81%AE%E5%BD%B9%E3%82%92%E7%A2%BA%E8%AA%8D%E3%81%99%E3%82%8B)
