@@ -175,21 +175,21 @@ id = setInterval(async() => {
       if(lockInfo.data.length > 0){ //署名が集まったら表示されなくなる
         txInfo = await txRepo.getTransaction(txes[index].transactionInfo.hash,sym.TransactionGroup.Partial).toPromise();
         text = `投票内容： ${eval(txes[index].signer.address.address)}　=>　${eval(txInfo.innerTransactions[0].addressDeletions[0].address)}
-  連署者(${txInfo.cosignatures.length}/${multisigInfo.minRemoval-1})： `
+連署者(${txInfo.cosignatures.length}/${multisigInfo.minRemoval-1})： `
           if(txInfo.cosignatures.length>0){
               for (let index = 0; index < txInfo.cosignatures.length; index++) {
               text = `${text} ${eval(txInfo.cosignatures[index].signer.address.address)},`
               }
           }
           text = `${text}
-  起案者からのメッセージ： ${txInfo.innerTransactions[1].message.payload}
-  hash値： ${txes[index].transactionInfo.hash}`
+起案者からのメッセージ： ${txInfo.innerTransactions[1].message.payload}
+hash値： ${txes[index].transactionInfo.hash}`
           if(lockInfo.data[0].endHeight.compact() - cahinInfo.height.compact() > 0){ //有効
             text = `${text}
-  有効期限： 残り${(lockInfo.data[0].endHeight.compact() - cahinInfo.height.compact())*30}秒`
+有効期限： 残り${(lockInfo.data[0].endHeight.compact() - cahinInfo.height.compact())*30}秒`
           }else{
             text = `${text}
-  有効期限： 期限切れ❌このhash値に連署しても除名は実行されませんが署名は可能です`
+有効期限： 期限切れ❌このhash値に連署しても除名は実行されませんが署名は可能です`
           }
           console.log(text)
       }
@@ -208,16 +208,19 @@ id = setInterval(async() => {
   
     txes = result.data;
     for (let index = 0; index < txes.length; index++) {
-        if(txes[index].type == 16961){
-          txInfo = await txRepo.getTransaction(txes[index].transactionInfo.hash,sym.TransactionGroup.Confirmed).toPromise();
-          text = `⏹終了した投票⏹ ${eval(txes[index].signer.address.address)},`
-            if(txInfo.cosignatures.length>0){
-                for (let index = 0; index < txInfo.cosignatures.length; index++) {
-                text = `${text} ${eval(txInfo.cosignatures[index].signer.address.address)},`
-                }
-            }
-            text = `${text} => ${eval(txInfo.innerTransactions[0].addressDeletions[0].address)}`
-            console.log(text)
+        try{
+          if(txes[index].type == 16961){
+            txInfo = await txRepo.getTransaction(txes[index].transactionInfo.hash,sym.TransactionGroup.Confirmed).toPromise();
+            text = `⏹終了した投票⏹ ${eval(txes[index].signer.address.address)},`
+              if(txInfo.cosignatures.length>0){
+                  for (let index = 0; index < txInfo.cosignatures.length; index++) {
+                  text = `${text} ${eval(txInfo.cosignatures[index].signer.address.address)},`
+                  }
+              }
+              text = `${text} => ${eval(txInfo.innerTransactions[0].addressDeletions[0].address)}`
+              console.log(text)
+          }
+        }catch{
         }
     }
   }, 100);
