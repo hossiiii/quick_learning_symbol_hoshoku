@@ -81,7 +81,7 @@ console.log(aliceAddress);
 ```
 ### 4.Aliceアカウントへ30XYMを補充（手数料に必要）
 ```js
-`https://testnet.symbol.tools/?amount=30&recipient=${aliceAddress.plain()}` //以下リンクをクリックしてCLAIM！を実行
+`https://testnet.symbol.tools/?amount=30&recipient=${aliceAddress.plain()}` //以下リンクをクリックしてCLAIM！を実行.緑色のNotificationとして”View transaction in explorer.”と表示されたらタブを閉じる
 ```
 
 ### 5.Symbolエクスプローラーで自分のアカウント情報を開き30XYMがある事を確認する
