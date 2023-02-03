@@ -80,6 +80,8 @@ aliceAddress = sym.Address.createFromRawAddress(
 console.log(aliceAddress);
 ```
 ### 4.Aliceアカウントへ30XYMを補充（手数料に必要）
+CLAIM!ボタンをクリックし、緑色のNotificationとして”View transaction in explorer.”と表示されたらタブを閉じる
+
 ```js
 `https://testnet.symbol.tools/?amount=30&recipient=${aliceAddress.plain()}` //以下リンクをクリックしてCLAIM！を実行.緑色のNotificationとして”View transaction in explorer.”と表示されたらタブを閉じる
 ```
