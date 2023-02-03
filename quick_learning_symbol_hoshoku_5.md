@@ -87,6 +87,7 @@ CLAIM!ボタンをクリックし、緑色のNotificationとして”View transa
 ```
 
 ### 5.Symbolエクスプローラーで自分のアカウント情報を開き30XYMがある事を確認する
+このエクスプローラーは何度も参照するので、左側の参照用ウィンドウに移動させておきます
 ```js
 `https://testnet.symbol.fyi/accounts/${alice.address.plain()}` //以下リンクをクリック
 ```
