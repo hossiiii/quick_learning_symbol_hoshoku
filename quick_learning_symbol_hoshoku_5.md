@@ -102,7 +102,7 @@ tx = sym.TransferTransaction.create(
     sym.Deadline.create(epochAdjustment),
     sym.Address.createFromRawAddress("TB2JSKNG2IRIGXMI3AQMGASM6PXLSR7VFHLSA5A"),
     [],
-    sym.PlainMessage.create(message)
+    sym.PlainMessage.create(message),
     networkType
 ).setMaxFee(100);
 signedTx = alice.sign(tx,generationHash);
