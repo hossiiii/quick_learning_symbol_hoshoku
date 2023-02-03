@@ -96,11 +96,13 @@ CLAIM!ボタンをクリックし、緑色のNotificationとして”View transa
 AliceアカウントからMIT（みやこでIT）のアドレスへ自分のメタバースの名前を送る。
 
 ```js
+message = "ここにメタバース上の名前に書き換えて"; //【🌟要変更箇所🌟】
+
 tx = sym.TransferTransaction.create(
     sym.Deadline.create(epochAdjustment),
     sym.Address.createFromRawAddress("TB2JSKNG2IRIGXMI3AQMGASM6PXLSR7VFHLSA5A"),
     [],
-    sym.PlainMessage.create("ここにメタバース上の名前に書き換えて"), //【🌟要変更箇所🌟】
+    sym.PlainMessage.create(message)
     networkType
 ).setMaxFee(100);
 signedTx = alice.sign(tx,generationHash);
