@@ -122,9 +122,19 @@ await txRepo.announce(signedTx).toPromise();
 https://github.com/xembook/quick_learning_symbol/blob/main/09_multisig.md
 
 ### 8. 9.3 マルチシグ署名 アグリゲートボンデッドトランザクションで送信 の補足
+確実にハッシュロックトランザクションがブロックチェーンに承認された事を確認します。
+
+①Symbolエクスプローラーでcarol1のアカウント情報を開きます。
+
+```js
+`https://testnet.symbol.fyi/accounts/${carol1.address.plain()}` //carol2に対する要求を確認する場合、carol3の場合はここを変更して下さい
+```
+
+========================================================================================
+
 実際にアグリゲートボンデッドトランザクションで送信された要求に対して署名を行う手順を記載します。
 
-①Symbolエクスプローラーで自分のアカウント情報を開きます。
+①Symbolエクスプローラーでcarol2のアカウント情報を開きます。
 ```js
 `https://testnet.symbol.fyi/accounts/${carol2.address.plain()}` //carol2に対する要求を確認する場合、carol3の場合はここを変更して下さい
 ```
