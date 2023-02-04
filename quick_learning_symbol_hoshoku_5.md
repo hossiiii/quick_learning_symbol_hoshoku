@@ -157,9 +157,10 @@ Hash(トランザクションハッシュ)のリンクをクリックし矢印�
 ④TargetHashの部分に先ほどのHash(トランザクションハッシュ)を貼り付け、連署を行いアナウンスを行います。
 
 ```js
-txInfo = await txRepo.getTransaction("TargetHash",sym.TransactionGroup.Partial).toPromise(); //ハッシュ値でトランザクションを検索
+targetHash = "ここに確認したハッシュ値を設定する"; //【🌟要変更箇所🌟】
+txInfo = await txRepo.getTransaction(targetHash,sym.TransactionGroup.Partial).toPromise(); //ハッシュ値でトランザクションを検索
 cosignatureTx = sym.CosignatureTransaction.create(txInfo); //連署用のトランザクションを作成
-signedCosTx = carol2.signCosignatureTransaction(cosignatureTx); //carol2に対する要求に連署する場合、carol3の場合はここを変更して下さい
+signedCosTx = carol2.signCosignatureTransaction(cosignatureTx); //【🌟要変更箇所🌟】　最初の連署はcarol2で次の連署はcarol3で
 await txRepo.announceAggregateBondedCosignature(signedCosTx).toPromise(); //ブロックチェーンにアナウンス
 ```
 
