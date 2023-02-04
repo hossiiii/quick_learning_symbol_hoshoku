@@ -154,21 +154,24 @@ Hash(トランザクションハッシュ)のリンクをクリックし矢印�
 
 <img width="1333" alt="スクリーンショット 2023-02-01 18 27 47" src="https://user-images.githubusercontent.com/47712051/216004369-0916ee55-c2d6-4910-a133-936476055400.png">
 
-④TargetHashの部分に先ほどのHash(トランザクションハッシュ)を貼り付け、連署を行いアナウンスを行います。
+④TargetHashの部分に先ほどのHash(トランザクションハッシュ)を貼り付け、carol2で連署を行いアナウンスを行います。
 
 ```js
 targetHash = "ここに確認したハッシュ値を設定する"; //【🌟要変更箇所🌟】
 txInfo = await txRepo.getTransaction(targetHash,sym.TransactionGroup.Partial).toPromise(); //ハッシュ値でトランザクションを検索
 cosignatureTx = sym.CosignatureTransaction.create(txInfo); //連署用のトランザクションを作成
-signedCosTx = carol2.signCosignatureTransaction(cosignatureTx); //【🌟要変更箇所🌟】　最初の連署はcarol2で次の連署はcarol3で
+signedCosTx = carol2.signCosignatureTransaction(cosignatureTx);
 await txRepo.announceAggregateBondedCosignature(signedCosTx).toPromise(); //ブロックチェーンにアナウンス
 ```
 
-⑤　③と同じページをリロードし、一番した部分にあるAGGREGATE COSIGNATURES(アグリゲート連署名)を確認し、自分のアドレスが入っていれば連署が成功となります。
-
-<img width="1359" alt="スクリーンショット 2023-02-01 18 41 50" src="https://user-images.githubusercontent.com/47712051/216007548-3a799f70-2adc-4cbd-b372-ad631aa56311.png">
-
-⑥　carl3についても同じように①〜⑤を実行し連署を行うことで起案者のcarol1,とcarol2,carol3の連署が完成しマルチシグからのトランザクションが実行される
+⑤　carl3についても同じハッシュ値に対して連署を行います。
+```js
+targetHash = "ここに確認したハッシュ値を設定する"; //【🌟要変更箇所🌟】
+txInfo = await txRepo.getTransaction(targetHash,sym.TransactionGroup.Partial).toPromise(); //ハッシュ値でトランザクションを検索
+cosignatureTx = sym.CosignatureTransaction.create(txInfo); //連署用のトランザクションを作成
+signedCosTx = carol3.signCosignatureTransaction(cosignatureTx);
+await txRepo.announceAggregateBondedCosignature(signedCosTx).toPromise(); //ブロックチェーンにアナウンス
+```
 
 # 演習の前に
 ### 9.人狼ゲーム参加表明
