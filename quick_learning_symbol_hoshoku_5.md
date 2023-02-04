@@ -127,7 +127,7 @@ https://github.com/xembook/quick_learning_symbol/blob/main/09_multisig.md
 ①Symbolエクスプローラーでcarol1のアカウント情報を開きます。
 
 ```js
-`https://testnet.symbol.fyi/accounts/${carol1.address.plain()}` //carol2に対する要求を確認する場合、carol3の場合はここを変更して下さい
+`https://testnet.symbol.fyi/accounts/${carol1.address.plain()}`
 ```
 
 ========================================================================================
