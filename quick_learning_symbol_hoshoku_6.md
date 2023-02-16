@@ -127,9 +127,7 @@ https://github.com/xembook/quick_learning_symbol/blob/main/08_lock.md#81-%E3%83%
 
 
 　　※1　再度bobを作成すると監視対象が変わるのでそこだけ抜いて実行する
-  
-　　※2　以下コマンドを実行しておく（速習Symbolドキュメント側に確認中）
-  
+    
 
 ```js
   rxjs  = require("/node_modules/rxjs");
