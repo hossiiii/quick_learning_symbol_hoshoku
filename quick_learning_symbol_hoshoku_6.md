@@ -126,12 +126,8 @@ https://xembook.github.io/xembook/xembook_config.js
 https://github.com/xembook/quick_learning_symbol/blob/main/08_lock.md#81-%E3%83%8F%E3%83%83%E3%82%B7%E3%83%A5%E3%83%AD%E3%83%83%E3%82%AF
 
 
-　　※1　再度bobを作成すると監視対象が変わるのでそこだけ抜いて実行する
+※1　再度bobを作成すると監視対象が変わるのでそこだけ抜いて実行する
     
-
-```js
-  rxjs  = require("/node_modules/rxjs");
-```
 
 
 # 分散型SNSをつくろう
