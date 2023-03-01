@@ -9,9 +9,7 @@ https://sym-test-04.opening-line.jp:3001/node/health
 表示用のウィンドウとF12コンソール実行用のウィンドウを左右に並べておく
 
 
-<img width="1512" alt="スクリーンショット 2023-02-04 7 56 57" src="https://user-images.githubusercontent.com/47712051/216727591-01b401a2-bb0a-41c1-87d0-d9c21b784a03.png">
-
-//✅ここの画像は変更する
+<img width="1512" alt="gazou" src="https://user-images.githubusercontent.com/47712051/222124362-a75071f6-f77c-45e9-b23f-5abac357eb13.png">
 
 
 
