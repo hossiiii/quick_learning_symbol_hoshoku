@@ -129,7 +129,17 @@ https://github.com/xembook/quick_learning_symbol/blob/main/08_lock.md#81-%E3%83%
 
 
 # 分散型SNSをつくろう
-・資料説明
+![image](https://user-images.githubusercontent.com/47712051/222125980-c8e5d81e-d48f-473e-b787-73bcadb8ea4a.png)
+![image](https://user-images.githubusercontent.com/47712051/222126002-b43ab6f2-2027-4944-8975-a6d89b7e49f8.png)
+![image](https://user-images.githubusercontent.com/47712051/222126012-d9cded2c-b958-41ee-85a8-be3616abf821.png)
+![image](https://user-images.githubusercontent.com/47712051/222126018-7d8ec5fa-3e03-4173-b449-9e689a6650eb.png)
+![image](https://user-images.githubusercontent.com/47712051/222126033-b0a4524a-63db-4dcd-ae91-ffe2fd42f965.png)
+![image](https://user-images.githubusercontent.com/47712051/222126043-89a4e251-96e5-4e78-9bca-9ea85769652c.png)
+![image](https://user-images.githubusercontent.com/47712051/222126057-ef8ef24d-b4a0-4661-8d74-bfff94dd13b1.png)
+![image](https://user-images.githubusercontent.com/47712051/222126072-042c392d-38f7-4d04-8e26-8b7427e4d564.png)
+![image](https://user-images.githubusercontent.com/47712051/222126077-f57784a3-40c4-4f9a-8ab5-e73eb6d93d99.png)
+![image](https://user-images.githubusercontent.com/47712051/222126087-29954896-b06c-4c8c-9daf-e65c7a927756.png)
+![image](https://user-images.githubusercontent.com/47712051/222126100-39aff2a3-7107-45fb-abc8-b22ffee593de.png)
 
 
 ①監視をリセットするためコンソールF12側のリロードを行う
