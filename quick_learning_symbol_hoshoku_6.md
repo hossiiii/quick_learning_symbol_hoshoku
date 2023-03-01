@@ -293,7 +293,7 @@ await txRepo.announce(signedTx).toPromise();
 ```js
 tx = sym.TransferTransaction.create(
     sym.Deadline.create(epochAdjustment),
-    sym.Address.createFromRawAddress("TD7CMSZBAZTEPST5SS6QCQTJIXEGCHIW6SIHSLY"), //✅ここのアドレスは変更する
+    sym.Address.createFromRawAddress("TCUHY7P5SRPPWPBRIY536LQJI5EOXTLBUKLXQNA"),
     [],
     sym.PlainMessage.create(`
     ①
@@ -311,5 +311,5 @@ await txRepo.announce(signedTx).toPromise();
 ### こちらからみなさんの回答を誰もがオンチェーンで見る事ができます。
 
 ```js
-`https://testnet.symbol.fyi/accounts/TD7CMSZBAZTEPST5SS6QCQTJIXEGCHIW6SIHSLY` //✅ここのアドレスは変更する
+`https://testnet.symbol.fyi/accounts/TCUHY7P5SRPPWPBRIY536LQJI5EOXTLBUKLXQNA`
 ```
