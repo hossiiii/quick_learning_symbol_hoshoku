@@ -1,3 +1,4 @@
+```js
 metaRepo = repo.createMetadataRepository();
 mosaicRepo = repo.createMosaicRepository();
 metaService = new sym.MetadataTransactionService(metaRepo);
@@ -58,3 +59,6 @@ console.log(transactionStatusUrl);
 
 //途中でモザイクを作成し、メタデータを付与する必要がある
 5章、7章
+
+
+```
