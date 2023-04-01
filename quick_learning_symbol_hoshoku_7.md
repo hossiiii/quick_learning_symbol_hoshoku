@@ -71,6 +71,9 @@ trTx = sym.TransferTransaction.create(
       ).setMaxFee(100);
 signedTx = bob.sign(trTx,generationHash);
 await txRepo.announce(signedTx).toPromise();
+```
+
+```js
 transactionStatusUrl = NODE + "/transactionStatus/" + signedTx.hash //アナウンスしたTxがブロックチェーン上でどの状態か確認するため
 console.log(transactionStatusUrl);
 ```
@@ -86,6 +89,9 @@ trTx = sym.TransferTransaction.create(
       ).setMaxFee(100);
 signedTx = dave.sign(trTx,generationHash);
 await txRepo.announce(signedTx).toPromise();
+```
+
+```js
 transactionStatusUrl = NODE + "/transactionStatus/" + signedTx.hash //アナウンスしたTxがブロックチェーン上でどの状態か確認するため
 console.log(transactionStatusUrl);
 ```
