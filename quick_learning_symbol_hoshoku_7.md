@@ -35,53 +35,62 @@ accountRepo = repo.createAccountRepository();
   epochAdjustment = await repo.getEpochAdjustment().toPromise();
 })();
 ```
-### 3-a.新規Aliceアカウント,Alice公開鍵クラス,Aliceアドレスクラスの作成
-```js
-alice = sym.Account.generateNewAccount(networkType);
-alicePublicAccount = sym.PublicAccount.createFromPublicKey(
-  alice.publicKey,
-  networkType
-);
-console.log(alicePublicAccount);
-aliceAddress = sym.Address.createFromRawAddress(
-  alice.address.plain()
-);
-console.log(aliceAddress);
-//間違ってコンソールをリロードしてしまうと、アカウントが消えてしまいます。
-//そのため秘密鍵を出力し、別途テキストなどに貼り付けておきます。
-console.log("privateKey " + alice.privateKey);
-```
-### 3-b.もし間違って途中でリロードしてしまった場合は項目1、項目2の後に保管しておいた秘密鍵を”YourPrivateKey”と置き換えて実行して下さい
-```js
-alice = sym.Account.createFromPrivateKey(
-  "YourPrivateKey",
-  networkType
-);
-alicePublicAccount = sym.PublicAccount.createFromPublicKey(
-  alice.publicKey,
-  networkType
-);
-console.log(alicePublicAccount);
-aliceAddress = sym.Address.createFromRawAddress(
-  alice.address.plain()
-);
-console.log(aliceAddress);
-```
-### 4.Aliceアカウントへ50XYMを補充（手数料に必要）
-CLAIM!ボタンをクリックし、緑色のNotificationとして”View transaction in explorer.”と表示されたらタブを閉じる
 
+### 3.新規Carolアカウントの作成とXYM補充
 ```js
-`https://testnet.symbol.tools/?amount=50&recipient=${aliceAddress.plain()}` //以下リンクをクリックしてCLAIM！を実行.緑色のNotificationとして”View transaction in explorer.”と表示されたらタブを閉じる
+carol = sym.Account.generateNewAccount(networkType);
+`https://testnet.symbol.tools/?amount=100&recipient=${carol.address.plain()}` //以下リンクをクリックしてCLAIM！を実行.緑色のNotificationとして”View transaction in explorer.”と表示されたらタブを閉じる
 ```
 
-### 5.Symbolエクスプローラーで自分のアカウント情報を開き50XYMがある事を確認する
+### 4.新規bobアカウントの作成とXYM補充
+```js
+bob = sym.Account.generateNewAccount(networkType);
+`https://testnet.symbol.tools/?amount=100&recipient=${bob.address.plain()}` //以下リンクをクリックしてCLAIM！を実行.緑色のNotificationとして”View transaction in explorer.”と表示されたらタブを閉じる
+```
+
+### 5.新規daveアカウントの作成とXYM補充
+```js
+dave = sym.Account.generateNewAccount(networkType);
+`https://testnet.symbol.tools/?amount=100&recipient=${dave.address.plain()}` //以下リンクをクリックしてCLAIM！を実行.緑色のNotificationとして”View transaction in explorer.”と表示されたらタブを閉じる
+```
+
+### 6.SymbolエクスプローラーでCarolのアカウント情報を開いておく
 このエクスプローラーは何度も参照するので、左側の参照用ウィンドウに移動させておきます
 ```js
-`https://testnet.symbol.fyi/accounts/${alice.address.plain()}` //以下リンクをクリック
+`https://testnet.symbol.fyi/accounts/${carol.address.plain()}` //以下リンクをクリック
 ```
 
+### 6.bobからcarolにトランスファーTxを送ってみる
+```js
+trTx = sym.TransferTransaction.create(
+        sym.Deadline.create(epochAdjustment),
+        carol.address, 
+        [new sym.Mosaic(mosaicDefTx.mosaicId, sym.UInt64.fromUint(1))],
+        sym.PlainMessage.create(""),
+        networkType
+      ).setMaxFee(100);
+signedTx = bob.sign(trTx,generationHash);
+await txRepo.announce(signedTx).toPromise();
+transactionStatusUrl = NODE + "/transactionStatus/" + signedTx.hash //アナウンスしたTxがブロックチェーン上でどの状態か確認するため
+console.log(transactionStatusUrl);
+```
 
-# 速習Symbol10.監視
+### 7.daveからcarolにトランスファーTxを送ってみる
+```js
+trTx = sym.TransferTransaction.create(
+        sym.Deadline.create(epochAdjustment),
+        carol.address, 
+        [new sym.Mosaic(mosaicDefTx.mosaicId, sym.UInt64.fromUint(1))],
+        sym.PlainMessage.create(""),
+        networkType
+      ).setMaxFee(100);
+signedTx = dave.sign(trTx,generationHash);
+await txRepo.announce(signedTx).toPromise();
+transactionStatusUrl = NODE + "/transactionStatus/" + signedTx.hash //アナウンスしたTxがブロックチェーン上でどの状態か確認するため
+console.log(transactionStatusUrl);
+```
+
+# 速習Symbol11.制限
 
 ### 以下リンクを別タブで開きハンズオンを行っていきます。
 
