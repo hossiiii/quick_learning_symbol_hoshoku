@@ -60,12 +60,12 @@ dave = sym.Account.generateNewAccount(networkType);
 `https://testnet.symbol.fyi/accounts/${carol.address.plain()}` //以下リンクをクリック
 ```
 
-### 6.bobからcarolにトランスファーTxを送ってみる
+### 7.bobからcarolにトランスファーTxを送ってみる
 ```js
 trTx = sym.TransferTransaction.create(
         sym.Deadline.create(epochAdjustment),
         carol.address, 
-        [new sym.Mosaic(mosaicDefTx.mosaicId, sym.UInt64.fromUint(1))],
+        [new sym.Mosaic(new sym.MosaicId("72C0212E67A08BCE"), sym.UInt64.fromUint(1))],
         sym.PlainMessage.create(""),
         networkType
       ).setMaxFee(100);
@@ -75,12 +75,12 @@ transactionStatusUrl = NODE + "/transactionStatus/" + signedTx.hash //アナウ�
 console.log(transactionStatusUrl);
 ```
 
-### 7.daveからcarolにトランスファーTxを送ってみる
+### 8.daveからcarolにトランスファーTxを送ってみる
 ```js
 trTx = sym.TransferTransaction.create(
         sym.Deadline.create(epochAdjustment),
         carol.address, 
-        [new sym.Mosaic(mosaicDefTx.mosaicId, sym.UInt64.fromUint(1))],
+        [new sym.Mosaic(new sym.MosaicId("72C0212E67A08BCE"), sym.UInt64.fromUint(1))],
         sym.PlainMessage.create(""),
         networkType
       ).setMaxFee(100);
