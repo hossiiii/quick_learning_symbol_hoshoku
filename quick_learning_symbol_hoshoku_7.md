@@ -169,11 +169,22 @@ transactionStatusUrl = NODE + "/transactionStatus/" + signedTx.hash //アナウ�
 console.log(transactionStatusUrl);
 ```
 
+### 11.1.3.2 Carolアカウント作り直し
+
+```js
+carol = sym.Account.generateNewAccount(networkType);
+`https://testnet.symbol.tools/?amount=100&recipient=${carol.address.plain()}` //以下リンクをクリックしてCLAIM！を実行.緑色のNotificationとして”View transaction in explorer.”と表示されたらタブを閉じる
+```
+
+```js
+`https://testnet.symbol.fyi/accounts/${carol.address.plain()}` //以下リンクをクリック
+```
+
 
 # オンチェーンアンケート
 今日の勉強をオンチェーンアンケートに回答します。
 
-①こちらの速習Symbol勉強会は何回目の参加ですか？<１回目/２回目/3回目/4回目/5回目/６回目>
+①こちらの速習Symbol勉強会は何回目の参加ですか？<１回目/２回目/3回目/4回目/5回目/６回目/7回目>
 
 ②今日の勉強会の理解度を1~10で回答して下さい<5>
 
@@ -187,7 +198,7 @@ console.log(transactionStatusUrl);
 ```js
 tx = sym.TransferTransaction.create(
     sym.Deadline.create(epochAdjustment),
-    sym.Address.createFromRawAddress("TCUHY7P5SRPPWPBRIY536LQJI5EOXTLBUKLXQNA"),
+    sym.Address.createFromRawAddress("TBDGKVKGFITSZEXI676WNPRL7JDKFDJ5D4JG4TQ"),
     [],
     sym.PlainMessage.create(`
     ①
@@ -205,5 +216,5 @@ await txRepo.announce(signedTx).toPromise();
 ### こちらからみなさんの回答を誰もがオンチェーンで見る事ができます。
 
 ```js
-`https://testnet.symbol.fyi/accounts/TCUHY7P5SRPPWPBRIY536LQJI5EOXTLBUKLXQNA`
+`https://testnet.symbol.fyi/accounts/TBDGKVKGFITSZEXI676WNPRL7JDKFDJ5D4JG4TQ`
 ```
