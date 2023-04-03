@@ -67,9 +67,9 @@ dave = sym.Account.generateNewAccount(networkType);
 
 https://github.com/xembook/quick_learning_symbol/blob/main/11_restriction.md
 
-## 11.1 アカウント制限
+## 11.1 アカウント制限　補足
 
-## 指定アドレスからの受信制限・指定アドレスへの送信制限
+## 指定アドレスからの受信制限・指定アドレスへの送信制限　補足
 
 ### 11.1.1.1 carolからbobにトランスファーTxを送ってみる
 ```js
