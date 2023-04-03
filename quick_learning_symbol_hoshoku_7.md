@@ -62,6 +62,18 @@ dave = sym.Account.generateNewAccount(networkType);
 
 
 # 速習Symbol11.制限
+![image](https://user-images.githubusercontent.com/47712051/229624965-eaf6ae6e-7a61-4cf4-9ca9-1bdfad5cafbf.png)
+![image](https://user-images.githubusercontent.com/47712051/229624979-b306ee0b-c83e-4b86-8376-91f031af7856.png)
+![image](https://user-images.githubusercontent.com/47712051/229624993-7527cdd1-7919-44b9-9c6f-1f5b3e4d1310.png)
+![image](https://user-images.githubusercontent.com/47712051/229625002-455e6099-9b95-431d-8686-d09f91b9a16d.png)
+![image](https://user-images.githubusercontent.com/47712051/229625011-449e35b6-8510-49c6-9f45-e07bce0295dd.png)
+![image](https://user-images.githubusercontent.com/47712051/229625022-c67dc00f-d002-4120-8a14-fe885a95f670.png)
+![image](https://user-images.githubusercontent.com/47712051/229625035-d3408a69-bb9a-40cc-b405-70fdf68ccbd2.png)
+![image](https://user-images.githubusercontent.com/47712051/229625053-4a91f670-e1e1-4d20-a32f-cabb082c5915.png)
+![image](https://user-images.githubusercontent.com/47712051/229625065-d561e4cd-aaf2-4701-a10e-cd4f7c063cb0.png)
+![image](https://user-images.githubusercontent.com/47712051/229625087-5411527e-004d-45d6-ba0f-52ccb3c650f7.png)
+
+
 
 ### 以下リンクを別タブで開きハンズオンを行っていきます。
 
