@@ -143,8 +143,31 @@ transactionStatusUrl = NODE + "/transactionStatus/" + signedTx.hash //アナウ�
 console.log(transactionStatusUrl);
 ```
 
+### 11.1.3.1 carolからbobにアグリゲートTxを送ってみる
+```js
+trTx = sym.TransferTransaction.create(
+        sym.Deadline.create(epochAdjustment),
+        bob.address, 
+        [new sym.Mosaic(new sym.MosaicId("72C0212E67A08BCE"), sym.UInt64.fromUint(1))],
+        sym.PlainMessage.create(""),
+        networkType
+      );
+aggregateArray = [
+  trTx.toAggregate(carol.publicAccount),
+]
+aggregateTx = sym.AggregateTransaction.createComplete(
+  sym.Deadline.create(epochAdjustment),
+  aggregateArray,
+  networkType,[]
+).setMaxFeeForAggregate(100, 1);
+signedTx = carol.sign(aggregateTx,generationHash);
+await txRepo.announce(signedTx).toPromise();
+```
 
-
+```js
+transactionStatusUrl = NODE + "/transactionStatus/" + signedTx.hash //アナウンスしたTxがブロックチェーン上でどの状態か確認するため
+console.log(transactionStatusUrl);
+```
 
 
 # オンチェーンアンケート
