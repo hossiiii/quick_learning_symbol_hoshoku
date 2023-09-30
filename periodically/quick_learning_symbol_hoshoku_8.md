@@ -1,7 +1,7 @@
 # 準備
 以下リンクを別ウィンドウで開き、F12からコンソールを表示させる
 
-https://sym-test-04.opening-line.jp:3001/node/health
+https://sym-test-03.opening-line.jp:3001/node/health
 
 
 
@@ -29,7 +29,6 @@ accountRepo = repo.createAccountRepository();
 ```
 
 
-# 速習Symbol11.制限
 ![image](https://github.com/hossiiii/quick_learning_symbol_hoshoku/assets/47712051/92b1753c-f270-4b9e-af17-229cc6dbe094)
 
 ![image](https://github.com/hossiiii/quick_learning_symbol_hoshoku/assets/47712051/b7351301-d098-4d61-b4ff-c8fb03ce5a45)
